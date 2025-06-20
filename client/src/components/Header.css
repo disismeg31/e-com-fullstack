@@ -1,0 +1,68 @@
+.header-container{
+    position: sticky;
+    top: 0;  
+    z-index: 1000;  
+    display:flex;
+    justify-content: center;
+    width:100%;
+    border-radius: 5px;
+    padding: 0px 40px;
+    box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+.icons-container{
+    display: flex;  
+    align-items: center;  
+    justify-content: center; 
+}
+ 
+/* dark theme  */
+.dark .icons {
+    background-color: #333333;
+    color: #F0EFE7;
+}
+.icon{
+    position: absolute;
+     margin:2px 0 0 2px;
+}
+.rounded-container-style{
+    display: flex;
+    color:#3a395a;
+    padding: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    background-color: #35795a60;
+    margin: 0px  2px;
+    text-decoration: none;
+}
+.rounded-container-style:hover{
+    color:#141414;
+    background-color: #35795a7a; 
+}
+
+span.cart-items-badge{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    bottom:10px;
+    left:25px;
+    width: 20px;
+    height: 20px;
+    background-color: #e65d5d;
+}
+/* dark theme */
+
+.dark .rounded-container-style{
+    background-color: #141414;
+    color: #5dd39e;
+}
+.dark .rounded-container-style:hover{
+    background-color: #5dd39e;
+    color:#141414;
+}
+
+.dark span.cart-items-badge{
+    color: #141414;
+}

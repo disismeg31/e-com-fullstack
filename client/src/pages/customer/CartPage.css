@@ -1,0 +1,46 @@
+.cart-container{
+    display: flex;
+    margin: 35px 40px;
+    padding: 35px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #1a1b25;
+}
+.total-amt{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: underline;
+
+}
+
+.total{
+    font-size: larger;
+    margin:  0 110px;
+    color: crimson;
+}
+.placeorder-btn{
+    border-style: none;
+    height: 40px;
+    border-radius: 5px;
+    background-color:#5dd39e ;
+    color: #1a1b25;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+.placeorder-btn:hover{
+    border: 1px solid #1a1b25;
+}
+
+.no-item{
+    color: #1a1b25;
+}
+.dark .no-item{
+    color: #F0EFE7;
+}

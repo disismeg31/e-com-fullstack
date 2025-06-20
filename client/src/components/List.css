@@ -1,0 +1,31 @@
+.list-container{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+     
+    /* width: calc(100% - 30px); */
+    justify-content:space-evenly;
+    align-items: center;
+    /* margin: 10px; */
+    padding: 10px;
+    border-radius: 5px;
+    color: #292828;
+    background-color: #dfeed3;
+}
+
+.dark .list-container {
+    background-color: #1E201E;
+    color: #ffffffde;
+  }
+   
+/* For the case when the number of items is small (1 to 3) */
+.list-container.align-start {
+    justify-content: flex-start; /* Align items to the start when there are few items */
+  }
+  
+  /* For more than 3 items, use the default space-evenly */
+  .list-container.space-evenly {
+    justify-content: space-evenly;
+  }
+ 
+ 
