@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const CONSTANTS = require('./../shared/constants');
+const { verify } = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -9,10 +11,12 @@ const userSchema = new mongoose.Schema({
     },
     email:{
         type:String,
-        required:[true,"Plaese Enter email"]
+        required:[true,"Plaese enter email"],
+        unique:true
     },
     password:{
-        type:String
+        type:String,
+        required:[true,"Please enter password"]
     },
     role:{
         type:String,
@@ -21,7 +25,27 @@ const userSchema = new mongoose.Schema({
             values:['customer','admin','seller'],
             message:'role must be customer,seller,or admin'
         }
-    }
+    },
+    verifyOtp:{
+        type:Boolean,
+        default:''
+    },
+    verifyOtpExpiredAt:{
+        type:Number,
+        default:0
+    },
+    isAccountVerified:{
+        type:Boolean,
+        default:false
+    },
+    resetOtp:{
+        type:String,
+        default:''
+    },
+    resetOtpExpireAt:{
+        type:Number,
+        default:0
+    },
 })
 
 
@@ -45,7 +69,22 @@ userSchema.pre('save',function(next){
  * 
  * 
  */
+userSchema.pre('save',function(next){
+    const user = this;
 
+    // Only hash the password if it has been modified or is new
+    if (!user.isModified('password')) return next();
+    bcrypt.hash(user.password,10)
+    .then((hashedPassword)=>{
+        user.password = hashedPassword;
+        next();
+    })
+    .catch((err)=>{
+        return next();
+    })
+
+
+})
 
 const User = mongoose.model(CONSTANTS.collectionName.users_collection,userSchema);
 module.exports = User;
