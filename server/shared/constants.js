@@ -8,8 +8,27 @@ const CONSTANTS = {
         products_collection:'products'
     },
     URLS:{
-        USERS_PREFIX:'/users',
-        PRODUCTS_PREFIX:'/products'
+        USERS_PREFIX:'api/users',
+        PRODUCTS_PREFIX:'api/products'
+    },
+    subURLS:{
+        sellers:{
+            getProducts:'/id:/seller',
+            insertProduct:'',
+            updateProduct:'/id:/update',
+            deleteProduct:'/id:'
+        },
+        admin:{
+            getAllProducts:'',
+            insertProducts:'',
+            updateProducts:'/id:',
+            deleteProducts:'/id:',
+            updateProductStatus:'/id:/status'
+        },
+        customer:{
+            get_Products:'',
+            getProduct:'/id:'
+        }
     }
     /**Q:
      *  so on role based acces admin prefix ,

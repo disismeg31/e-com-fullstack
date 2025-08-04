@@ -12,28 +12,24 @@ const productSchema = new mongoose.Schema({
         required:[true,"Please enter the title for the product"],
         minLength:[3,"Title should be 3 or more letters"]
     },
-    Description:{
+    description:{
         type:String,
         required:[true,"Please enter the description for the product"],
-        min: [10, "description should be within range 10-200"],
-        max: [300, "description should be within range 10-200"]
+        min: [10, "description should be within range 10-300"],
+        max: [300, "description should be within range 10-300"]
     },
     price:{
         type:Number,
         required:[true,"Please enter the price of the product"],
     },
     stock:{
-        type:Boolean,
-        required:[true,"Please enter the stock is available or not"],
-        enum:{
-            values: ['true', 'false'],
-            message: 'stock must be either "true" or "false"'
+        type:String,
+        required: [true, "Please enter the stock status"],
+        enum: {
+          values: ['inStock', 'limited', 'outOfStock'],
+          message: 'Stock must be one of "inStock", "limited", or "outOfStock"'
         }
     },
-    // rating:{
-    //     type:Number,
-    //     required:[true,"Please enter the rating of the product"],
-    // },
     imageUrl:{  
         type:String,
         required:[true,"Please enter the image of the product"],
@@ -70,7 +66,7 @@ const productSchema = new mongoose.Schema({
 })
 
  const Product = mongoose.model(CONSTANTS.collectionName.products_collection,productSchema);
- module.exports(Product);
+ module.exports= Product;
 
 
  /**admin role is made by devs and given to admint for control and 
