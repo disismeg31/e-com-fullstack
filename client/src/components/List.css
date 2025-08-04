@@ -10,7 +10,8 @@
     padding: 10px;
     border-radius: 5px;
     color: #292828;
-    background-color: #dfeed3;
+    /* background-color: #dfeed3; */
+    background-color: #FFFDEC;
 }
 
 .dark .list-container {

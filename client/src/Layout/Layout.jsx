@@ -44,21 +44,21 @@ function Layout() {
     backgroundColor: themeName ==='dark'? "#333333" :"#5dd39e",
     display:"flex",
     alignItems:"center",
-    top:0,
-    right:0,
     width:"100%",
-    position:"fixed" 
+    position: "sticky",
+    top: 0,
+    zIndex: 10
   }
   const footerStyle ={
     backgroundColor:"#adf16e",
-    left: 0,
-    bottom: 0,
+    // left: 0,
+    // bottom: 0,
     width: "100%",
     height:"50px",
-    position:"fixed"
+    // position:"fixed"
   }
   const sidebarStyle={
-    backgroundColor:themeName ==='dark'? "#1E201E" :"#dfeed3",
+    backgroundColor:themeName ==='dark'? "#1E201E" :"#FFFDEC",
     width: isSidebarCollapsed ? "70px" : "180px", // Shrink sidebar on small screens
     minHeight: "100vh",
     borderRight:themeName ==='dark' 
@@ -77,29 +77,51 @@ function Layout() {
   }
 
   const sideNdout = {
-    display:"flex"
+    display:"flex",
+    flex:1, //new
+    minHeight:"100vh", //new
   }
 
   const outlinendfooter = {
     display:'flex',
     flexDirection:"column",
     flex: 1,
+    minHeight:"100vh", //new
   }
 
   return (
-    <div style={containerSt}>
-      <div style={headerStyle}>
-        <Header/>
-        </div>
+    // <div style={containerSt}>
       <div style={sideNdout}>
       <aside style={sidebarStyle}><Sidebar isSidebarCollapsed={isSidebarCollapsed}/></aside>
       <div style={outlinendfooter}>
+        <div style={headerStyle}>
+        <Header/>
+      </div>
       <div className={themeName} style={outletStyle} ><Outlet/></div>
       <div style={footerStyle}><Footer/></div>
       </div>
       </div>
-    </div>
+    // </div>
   )
 }
 
 export default Layout
+
+/**
+ * 
+ * <div style={containerSt}>
+      {/* <div style={headerStyle}>
+        <Header/>
+      </div> 
+      // <div style={sideNdout}>
+      // <aside style={sidebarStyle}><Sidebar isSidebarCollapsed={isSidebarCollapsed}/></aside>
+      // <div style={outlinendfooter}>
+      //   <div style={headerStyle}>
+      //   <Header/>
+      // </div>
+      // <div className={themeName} style={outletStyle} ><Outlet/></div>
+      // <div style={footerStyle}><Footer/></div>
+      // </div>
+      // </div>
+    // </div>
+ */
