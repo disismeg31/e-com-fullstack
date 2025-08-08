@@ -12,6 +12,11 @@ const CONSTANTS = {
         PRODUCTS_PREFIX:'api/products'
     },
     subURLS:{
+        auth:{
+            signUp:'signUp',
+            signIn:'signIn',
+            signOut:'signOut',
+        },
         sellers:{
             getProducts:'/id:/seller',
             insertProduct:'',
@@ -21,9 +26,11 @@ const CONSTANTS = {
         admin:{
             getAllProducts:'',
             insertProducts:'',
-            updateProducts:'/id:',
-            deleteProducts:'/id:',
-            updateProductStatus:'/id:/status'
+            updateProduct:'/id:',
+            deleteProduct:'/id:',
+            updateProductStatus:'/id:/status',
+            getAllSellers:'/sellers',
+            updateSellerStatus:'sellers/id:/status'
         },
         customer:{
             get_Products:'',

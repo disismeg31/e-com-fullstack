@@ -26,6 +26,11 @@ const userSchema = new mongoose.Schema({
             message:'role must be customer,seller,or admin'
         }
     },
+    status: {
+        type: String,
+        enum: ['rejected', 'approved', 'pending'],
+        default: undefined // Optional — allows it to be unset for non-sellers
+    }
     // verifyOtp:{
     //     type:Boolean,
     //     default:''
@@ -46,11 +51,22 @@ const userSchema = new mongoose.Schema({
     //     type:Number,
     //     default:0
     // },
+},{
+    timestamps: true //for adding createdAt and updatedAt
 })
 
 
 userSchema.pre('save',function(next){
     const user = this;
+
+    if(this.role === 'seller'){
+        if(!this.status){
+            this.status = 'pending';
+        }
+    }
+    else{
+            this.status = undefined;
+    }
 
     // Only hash the password if it has been modified or is new
     if (!user.isModified('password')) return next();
@@ -59,11 +75,7 @@ userSchema.pre('save',function(next){
         user.password = hashedPassword;
         next();
     })
-    .catch((err)=>{
-        return next();
-    })
-
-
+    .catch((err)=> next(err))
 })
 
 const User = mongoose.model(CONSTANTS.collectionName.users_collection,userSchema);
