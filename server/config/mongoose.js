@@ -3,7 +3,7 @@ const CONSTANTS = require('./../shared/constants');
 
 const connectDB = async ()=>{
     mongoose.connection.on('connected',()=>console.log('.......Connection Created.......'))
-    await mongoose.connect(`${process.env.MONGODB_URL}/${CONSTANTS.mongoDBName}`)
+    await mongoose.connect(`${process.env.MONGODB_URI}/${CONSTANTS.mongoDBName}`)
 }
 
 // mongoose.connect(CONSTANTS.MongoDBUrl+CONSTANTS.mongoDBPort+CONSTANTS.mongoDBName)

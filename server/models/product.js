@@ -15,8 +15,8 @@ const productSchema = new mongoose.Schema({
     description:{
         type:String,
         required:[true,"Please enter the description for the product"],
-        min: [10, "description should be within range 10-300"],
-        max: [300, "description should be within range 10-300"]
+        min: [10, "description should be within range 10-500"],
+        max: [500, "description should be within range 10-500"]
     },
     price:{
         type:Number,
@@ -51,20 +51,41 @@ const productSchema = new mongoose.Schema({
   createdBy: {
     type: String,
     enum: ['admin', 'seller'],
-    required: true
+    default:'admin',
   },
   status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending'
   },
-  createdAt: {
-    type: Date,
-    default: Date.now
+},{timestamps:true})
+
+productSchema.pre('save', function(next){
+  const product = this;
+
+  if(this.createdBy === 'admin'){
+    this.status = 'approved';
+    this.sellerId = null;
+  }
+  else if(this.createdBy === 'seller'){
+    this.status = 'pending'
   }
 
+  next();
 })
 
+/**
+ * For development phase we're 
+ * manually adding createdBy field 
+ * but after adding jwt middlewear we can fetch the user role and according to role 
+ * if the role is seller we can add seller to createdBy field as a presave and by default the createdBy
+ * would be admin 
+ * 
+ * also note that only admin and seller can add products
+ * 
+ * also in that we can set sellerId and also the approved status for createdBy admin products and pending for createdBy seller products
+ * 
+ */
  const Product = mongoose.model(CONSTANTS.collectionName.products_collection,productSchema);
  module.exports= Product;
 

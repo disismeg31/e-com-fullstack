@@ -3,4 +3,15 @@ const express = require('express');
 const router = express.Router();
 const authController = require('./../controllers/authentication.controller.js')
 
-router.route(CONSTANTS.subURLS.)
+// registeration route - for adding users
+router.route(CONSTANTS.subURLS.auth.signUp).post(authController.signUp);
+ 
+// login route - for checking if credentials are correct
+router.route(CONSTANTS.subURLS.auth.signIn).post(authController.signIn);
+
+// // logout route 
+// router.route(CONSTANTS.subURLS.auth.signOut).patch(authController.signOut)
+
+// i dont think i need route for logout because we're deleteing the cookis from frontend thats all no backend 
+
+module.exports = router;

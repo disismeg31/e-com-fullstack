@@ -1,7 +1,7 @@
 const User = require('./../models/user.js');
 const bcrypt = require('bcryptjs');
 
-function signup(req,res){
+function signUp(req,res){
  const userDataToInsert = req.body;
  User.findOne({email:userDataToInsert.email})
  .then((data)=>{
@@ -39,8 +39,17 @@ function signup(req,res){
 }
 
 
-function signin(req,res){
+function signIn(req,res){
     const loginData = req.body;
+    const {email,password} = loginData;
+
+    if(!email || !password){
+       return res.json({
+            message:"Email and password field are required",
+            status:false,
+        })
+    }
+
     User.findOne({email:loginData.email})
     .then((result)=>{
         if(result){
@@ -87,7 +96,10 @@ function signin(req,res){
     })
 }
 
+
+ 
+
 module.exports = {
-    signup,
-    signin
+    signUp,
+    signIn,
 }

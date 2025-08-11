@@ -2,20 +2,20 @@ const CONSTANTS = {
     PORT:3500,
     MongoDBUrl:'mongodb://localhost:',
     mongoDBPort:27017,
-    mongoDBName:'/ecommerce-app',
+    mongoDBName:'ecommerce-app',
     collectionName:{
         users_collection:'users',
         products_collection:'products'
     },
     URLS:{
-        USERS_PREFIX:'api/users',
-        PRODUCTS_PREFIX:'api/products'
+        USERS_PREFIX:'/api/users',
+        PRODUCTS_PREFIX:'/api/products'
     },
     subURLS:{
         auth:{
-            signUp:'signUp',
-            signIn:'signIn',
-            signOut:'signOut',
+            signUp:'/signup',
+            signIn:'/signin',
+            // signOut:'signOut',
         },
         sellers:{
             getProducts:'/id:/seller',
