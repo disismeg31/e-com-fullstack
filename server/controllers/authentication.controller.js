@@ -6,7 +6,7 @@ function signUp(req,res){
  User.findOne({email:userDataToInsert.email})
  .then((data)=>{
     if(data){
-    res.json({
+    res.status(409).json({
         message:'This email already exists try another one',
         status:false,
     })
@@ -15,24 +15,27 @@ function signUp(req,res){
         const user = new User(userDataToInsert);
         user.save()
         .then((result)=>{
-            res.json({
+            const {name,email,role} = result;
+            const userPayload = {name,email,role}
+            res.status(201).json({
                 message:`Succesfully registered ${result.name}`,
+                payload:userPayload,
                 status:true
             })
         })
         .catch((err)=>{
-            res.json({
-                message:err.message,
-                payload:err,
+            console.log("error during registeration",err);
+            res.status(500).json({
+                message:"Internal server error",
                 status:false
             })
         })
     }
  })
  .catch((err)=>{
-        res.json({
-            message:err.message,
-            payload:err,
+        console.log("Error during data fetching while registeration",err);
+        res.status(500).json({
+            message:"Internal server error",
             status:false
         })
  })
@@ -44,7 +47,7 @@ function signIn(req,res){
     const {email,password} = loginData;
 
     if(!email || !password){
-       return res.json({
+       return res.status(400).json({
             message:"Email and password field are required",
             status:false,
         })
@@ -53,19 +56,25 @@ function signIn(req,res){
     User.findOne({email:loginData.email})
     .then((result)=>{
         if(result){
+            if (!result.password) {
+                return res.status(500).json({
+                    message: "Internal server error",
+                    status: false
+                })
+            }
             bcrypt.compare(loginData.password,result.password)
             .then((isMatch)=>{
                 if(isMatch){
                     const {name,email,role} = result;
                     const userPayload = {name,email,role}
-                    res.json({
+                    res.status(200).json({
                         message:'Login successfull',
                         payload:userPayload,
                         status:true,
                     })
                 }
                 else{
-                    res.json({
+                    res.status(401).json({
                         message:'Incorrect password',
                         status:false
                     })
@@ -73,14 +82,14 @@ function signIn(req,res){
             })
             .catch((err)=>{
                 console.error('Error during password comparison:', err);
-                res.json({
-                    message:'Error while loggin in',
+                res.status(500).json({
+                    message:'Internal server error',
                     status:false
                 })
             })
         }
         else{
-            res.json({
+            res.status(404).json({
                 message:"User not found",
                 status:false
             })
@@ -88,9 +97,35 @@ function signIn(req,res){
     })
     .catch((err)=>{
         console.error('Error during user lookup:', err);
-        res.json({
-            message:err.message,
-            payload:err,
+        res.status(500).json({
+            message:"Internal server error",
+            status:false
+        })
+    })
+}
+
+function getAllUsers(req,res){
+    User.find({},{__v:0,password:0})
+    .then((result)=>{
+        if(result.length>0){
+            res.status(200).json({
+            message:"Fetched Users",
+            payload:result,
+            status:true
+            })
+        }
+        else{
+            res.status(200).json({
+            message:"No users found, enter new users",
+            payload:[],
+            status:false
+            })
+        }
+    })
+    .catch((err)=>{
+        console.log(err);
+        res.status(500).json({
+            message:"Internal server error",
             status:false
         })
     })
@@ -102,4 +137,5 @@ function signIn(req,res){
 module.exports = {
     signUp,
     signIn,
+    getAllUsers
 }

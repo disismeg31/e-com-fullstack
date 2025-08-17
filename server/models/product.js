@@ -30,10 +30,6 @@ const productSchema = new mongoose.Schema({
           message: 'Stock must be one of "inStock", "limited", or "outOfStock"'
         }
     },
-    imageUrl:{  
-        type:String,
-        required:[true,"Please enter the image of the product"],
-    },
     category:{
         type:String,
         required:[true,"Please enter category of product"],
@@ -42,22 +38,32 @@ const productSchema = new mongoose.Schema({
             message: 'category must be any of these "clothing","accessories","perfume"'
         }
     },
+    imageUrl:{  
+        type:String,
+        default:'https://placehold.co/300x300'
+        // required:[true,"Please enter the image of the product"],
+        // for implimenting image uplade frontend is necessary so for now we're not uploading ,
+        // on updating a product we can do the image upload i guess
+    },
 
-  sellerId: {
+    sellerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // this is the key part
     required: false, // admin products may not have sellerId
-  },
-  createdBy: {
+    },
+
+    createdBy: {
     type: String,
     enum: ['admin', 'seller'],
     default:'admin',
-  },
-  status: {
+    },
+
+    status: {
     type: String,
     enum: ['pending', 'approved', 'rejected'],
     default: 'pending'
-  },
+    },
+    
 },{timestamps:true})
 
 productSchema.pre('save', function(next){
