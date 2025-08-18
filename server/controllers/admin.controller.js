@@ -20,8 +20,9 @@ function getAllProducts(req,res){
 
     })
     .catch((err)=>{
+        console.log("getAllProducts",err)
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
         })
     })
@@ -39,8 +40,9 @@ function addProducts(req,res){
         })
     })
     .catch((err)=>{
+        console.log("addProducts",err)
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
         })
     })
@@ -67,8 +69,9 @@ function updateProduct(req,res){
 
     })
     .catch((err)=>{
+        console.log("updateProduct",err);
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
         })
     })
@@ -100,8 +103,9 @@ function deleteProduct(req,res){
         })
     })
     .catch((err)=>{
+        console.log("deleteProduct",err)
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
         })
     })
@@ -142,8 +146,9 @@ function updateProductStatus(req,res){
         })
     })
     .catch((err)=>{
+        console.log("updateProductStatus",err)
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
          })
     })
@@ -168,8 +173,9 @@ function getAllSellers(req,res){
         }    
     })
     .catch((err)=>{
+        console.log("getAllSellers",err)
          res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
          })
     })
@@ -213,8 +219,9 @@ function updateSellerStatus(req,res){
         })
     })
     .catch((err)=>{
+        console.log("updateSellerStatus",err)
         res.status(500).json({
-            message:err.message,
+            message:"Internal server error",
             status:false
          })
     })
