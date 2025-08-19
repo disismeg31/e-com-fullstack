@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Classic Black Baseball Cap",
+    "companyName": "CapWorld",
+    "description": "Adjustable cotton baseball cap with breathable fabric.",
+    "price": 499,
+    "stock": "inStock",
+    "category": "Accessories"
+  },
+  {
+    "title": "Snapback Hat",
+    "companyName": "StreetWear",
+    "description": "Trendy flat-brim snapback with adjustable strap.",
+    "price": 699,
+    "stock": "limited",
+    "category": "Accessories"
+  },
+  {
+    "title": "Polarized Aviator Sunglasses",
+    "companyName": "VisionX",
+    "description": "Stylish aviator sunglasses with UV400 polarized lenses.",
+    "price": 2499,
+    "stock": "inStock",
+    "category": "Accessories"
+  },
+  {
+    "title": "Round Retro Sunglasses",
+    "companyName": "VisionX",
+    "description": "Vintage-inspired round sunglasses with tinted lenses.",
+    "price": 1799,
+    "stock": "limited",
+    "category": "Accessories"
+  },
+  {
+    "title": "Sports Cap",
+    "companyName": "CapWorld",
+    "description": "Lightweight and breathable cap designed for outdoor activities.",
+    "price": 599,
+    "stock": "outOfStock",
+    "category": "Accessories"
+  }
+]

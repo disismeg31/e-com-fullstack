@@ -21,20 +21,22 @@ const CONSTANTS = {
         sellers:{
             getProducts:'/id:/seller',
             insertProduct:'',
-            updateProduct:'/id:/update',
-            deleteProduct:'/id:'
-        },
-        admin:{
-            getAllProducts:'',
-            insertProducts:'',
+            getProduct:'/id:',
             updateProduct:'/id:',
             deleteProduct:'/id:',
-            updateProductStatus:'/id:/status',
+        },
+        admin:{
             getAllSellers:'/sellers',
-            updateSellerStatus:'sellers/id:/status'
+            updateSellerStatus:'/sellers/id:',
+            getAllProducts:'',
+            insertProducts:'',
+            getProduct:'/id:',
+            updateProduct:'/id:',
+            deleteProduct:'/id:',
+            updateProductStatus:'/id:',
         },
         customer:{
-            get_Products:'',
+            getProducts:'',
             getProduct:'/id:'
         }
     }

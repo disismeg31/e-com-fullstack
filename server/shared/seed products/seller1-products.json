@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Ocean Breeze Eau de Parfum",
+    "companyName": "AromaLux",
+    "description": "A fresh aquatic fragrance with hints of citrus and musk.",
+    "price": 2499,
+    "stock": "inStock",
+    "category": "Perfume"
+  },
+  {
+    "title": "Velvet Rose Eau de Toilette",
+    "companyName": "Scentify",
+    "description": "Romantic floral notes blended with soft vanilla and amber.",
+    "price": 3299,
+    "stock": "limited",
+    "category": "Perfume"
+  },
+  {
+    "title": "Citrus Burst Cologne",
+    "companyName": "FreshScents",
+    "description": "A zesty blend of lemon, bergamot, and grapefruit for all-day freshness.",
+    "price": 1499,
+    "stock": "inStock",
+    "category": "Perfume"
+  },
+  {
+    "title": "Mystic Oud Perfume",
+    "companyName": "AromaLux",
+    "description": "Deep and exotic oud fragrance with spicy undertones.",
+    "price": 4999,
+    "stock": "outOfStock",
+    "category": "Perfume"
+  },
+  {
+    "title": "Green Meadow Mist",
+    "companyName": "Nature’s Essence",
+    "description": "Light fragrance inspired by fresh grass and wild herbs.",
+    "price": 1999,
+    "stock": "limited",
+    "category": "Perfume"
+  }
+]

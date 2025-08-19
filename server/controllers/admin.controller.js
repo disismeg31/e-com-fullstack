@@ -2,7 +2,7 @@ const User =  require('./../models/user.js');
 const Product = require('./../models/product.js');
 
 function getAllProducts(req,res){
-    Product.find({})
+    Product.find({},{__v:0})
     .then((result)=>{
         if(result.length === 0){
             res.status(404).json({
@@ -20,7 +20,7 @@ function getAllProducts(req,res){
 
     })
     .catch((err)=>{
-        console.log("getAllProducts",err)
+        console.log("getAllProducts admin err",err)
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -40,7 +40,7 @@ function addProducts(req,res){
         })
     })
     .catch((err)=>{
-        console.log("addProducts",err)
+        console.log("addProducts admin err",err)
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -49,9 +49,38 @@ function addProducts(req,res){
     
 }
 
+function getProduct(req,res){
+    const {id} = req.params;
+    Product.find({_id:id},{__v:0})
+    .then((result)=>{
+        if(result.length === 0){
+            res.status(404).json({
+                message:"No product Found",
+                status:false
+            })
+        }
+        else{
+            res.status(200).json({
+                message:"Succesfully fetched product",
+                payload:result,
+                status:true
+            })
+        }
+
+    })
+    .catch((err)=>{
+        console.log("getProduct of admin err",err)
+        res.status(500).json({
+            message:"Internal server error",
+            status:false
+        })
+    })
+}
+
 function updateProduct(req,res){
+    const {id} = req.params;
     let dataToUpdate = req.body;
-    Product.findByIdAndUpdate(dataToUpdate.id,dataToUpdate,{ new: true, runValidators: true })
+    Product.findByIdAndUpdate(id,dataToUpdate,{ new: true, runValidators: true })
     .then((result)=>{
         if(!result){
             return res.status(404).json({
@@ -60,7 +89,6 @@ function updateProduct(req,res){
             })
         }
 
-        console.log(result)
         res.status(200).json({
             message:"Succesfully Updated",
             payload: { id: result._id, status: result.status },
@@ -69,7 +97,7 @@ function updateProduct(req,res){
 
     })
     .catch((err)=>{
-        console.log("updateProduct",err);
+        console.log("updateProduct admin err",err);
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -95,7 +123,6 @@ function deleteProduct(req,res){
             })  
         }
 
-        console.log(result)
         res.status(200).json({
             message:"Succesfully Deleted",
             payload:{ id: result._id, title: result.title },
@@ -103,7 +130,7 @@ function deleteProduct(req,res){
         })
     })
     .catch((err)=>{
-        console.log("deleteProduct",err)
+        console.log("deleteProduct admin err",err)
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -138,7 +165,6 @@ function updateProductStatus(req,res){
             })
         }
 
-        console.log(result)
         res.status(200).json({
             message:"Succesfully Updated",
             payload: { id: result._id, status: result.status },
@@ -146,7 +172,7 @@ function updateProductStatus(req,res){
         })
     })
     .catch((err)=>{
-        console.log("updateProductStatus",err)
+        console.log("updateProductStatus admin err",err)
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -173,7 +199,7 @@ function getAllSellers(req,res){
         }    
     })
     .catch((err)=>{
-        console.log("getAllSellers",err)
+        console.log("getAllSellers admin err",err)
          res.status(500).json({
             message:"Internal server error",
             status:false
@@ -211,7 +237,6 @@ function updateSellerStatus(req,res){
             })
         }
 
-        console.log(result)
         res.status(200).json({
             message:"Succesfully Updated Seller status",
             payload: { id: result._id, status: result.status },
@@ -219,7 +244,7 @@ function updateSellerStatus(req,res){
         })
     })
     .catch((err)=>{
-        console.log("updateSellerStatus",err)
+        console.log("updateSellerStatus admin err",err)
         res.status(500).json({
             message:"Internal server error",
             status:false
@@ -231,6 +256,7 @@ function updateSellerStatus(req,res){
 module.exports = {
     getAllProducts,
     addProducts,
+    getProduct,
     updateProduct,
     deleteProduct,
     updateProductStatus,

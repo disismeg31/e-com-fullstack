@@ -15,8 +15,8 @@ const productSchema = new mongoose.Schema({
     description:{
         type:String,
         required:[true,"Please enter the description for the product"],
-        min: [10, "description should be within range 10-500"],
-        max: [500, "description should be within range 10-500"]
+        min: [10, "description should be within range 10-2000"],
+        max: [2000, "description should be within range 10-2000"]
     },
     price:{
         type:Number,

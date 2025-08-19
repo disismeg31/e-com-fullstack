@@ -1,0 +1,42 @@
+[
+  {
+    "title": "Classic White Cotton T-Shirt",
+    "companyName": "Urban Basics",
+    "description": "A breathable cotton t-shirt with a relaxed fit, perfect for daily wear and layering.",
+    "price": 699,
+    "stock": "inStock",
+    "category": "Clothes"
+  },
+  {
+    "title": "Slim Fit Blue Denim Jeans",
+    "companyName": "DenimCo",
+    "description": "Slim-fit jeans made from stretchable denim fabric for comfort and style.",
+    "price": 1899,
+    "stock": "limited",
+    "category": "Clothes"
+  },
+  {
+    "title": "Hooded Sweatshirt",
+    "companyName": "StreetWear",
+    "description": "Warm and soft fleece-lined hoodie, designed for casual comfort.",
+    "price": 1499,
+    "stock": "inStock",
+    "category": "Clothes"
+  },
+  {
+    "title": "Formal White Shirt",
+    "companyName": "OfficeLine",
+    "description": "A crisp white shirt with a tailored fit, ideal for office and formal occasions.",
+    "price": 1299,
+    "stock": "limited",
+    "category": "Clothes"
+  },
+  {
+    "title": "Casual Chinos",
+    "companyName": "Urban Basics",
+    "description": "Comfortable slim-fit chinos available in versatile beige color.",
+    "price": 1799,
+    "stock": "outOfStock",
+    "category": "Clothes"
+  }
+]
