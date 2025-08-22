@@ -5,7 +5,7 @@
     "description": "A breathable cotton t-shirt with a relaxed fit, perfect for daily wear and layering.",
     "price": 699,
     "stock": "inStock",
-    "category": "Clothes"
+    "category": "clothing"
   },
   {
     "title": "Slim Fit Blue Denim Jeans",
@@ -13,7 +13,7 @@
     "description": "Slim-fit jeans made from stretchable denim fabric for comfort and style.",
     "price": 1899,
     "stock": "limited",
-    "category": "Clothes"
+    "category": "clothing"
   },
   {
     "title": "Hooded Sweatshirt",
@@ -21,7 +21,7 @@
     "description": "Warm and soft fleece-lined hoodie, designed for casual comfort.",
     "price": 1499,
     "stock": "inStock",
-    "category": "Clothes"
+    "category": "clothing"
   },
   {
     "title": "Formal White Shirt",
@@ -29,7 +29,7 @@
     "description": "A crisp white shirt with a tailored fit, ideal for office and formal occasions.",
     "price": 1299,
     "stock": "limited",
-    "category": "Clothes"
+    "category": "clothing"
   },
   {
     "title": "Casual Chinos",
@@ -37,6 +37,6 @@
     "description": "Comfortable slim-fit chinos available in versatile beige color.",
     "price": 1799,
     "stock": "outOfStock",
-    "category": "Clothes"
+    "category": "clothing"
   }
 ]

@@ -1,7 +1,7 @@
 const Product = require('./../models/product.js');
 
 function getProducts(req,res){
-    Product.find({})
+    Product.find({status:'approved'})
     .then((result)=>{
         if(result.length === 0){
             res.status(404).json({

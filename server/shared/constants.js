@@ -8,8 +8,15 @@ const CONSTANTS = {
         products_collection:'products'
     },
     URLS:{
-        USERS_PREFIX:'/api/users',
-        PRODUCTS_PREFIX:'/api/products'
+        ADMIN_USERS_PREFIX:'/api/admin/users',
+        
+        ADMIN_PRODUCTS_PREFIX:'/api/admin/products',
+
+        SELLER_PRODUCTS_PREFIX:'/api/seller/products',// (GET,POST,PUT,DELETE) for seller
+        
+        USERS_PREFIX:'/api/users',   //used for auth
+
+        PRODUCTS_PREFIX:'/api/products',  //(GET) for customer also for specific products
     },
     subURLS:{
         auth:{
@@ -19,25 +26,27 @@ const CONSTANTS = {
             // signOut:'signOut',
         },
         sellers:{
-            getProducts:'/id:/seller',
+            getProducts:'/:id/seller',
             insertProduct:'',
-            getProduct:'/id:',
-            updateProduct:'/id:',
-            deleteProduct:'/id:',
+            getProduct:'/:id',
+            updateProduct:'/:id',
+            deleteProduct:'/:id',
         },
         admin:{
             getAllSellers:'/sellers',
-            updateSellerStatus:'/sellers/id:',
+            updateSellerStatus:'/sellers/:id',
             getAllProducts:'',
             insertProducts:'',
-            getProduct:'/id:',
-            updateProduct:'/id:',
-            deleteProduct:'/id:',
-            updateProductStatus:'/id:',
+            // updateAdminProductStatus:'',
+            // updateAdminSellerIDNull:'',
+            getProduct:'/:id',
+            updateProduct:'/:id',
+            deleteProduct:'/:id',
+            updateProductStatus:'/:id',
         },
         customer:{
             getProducts:'',
-            getProduct:'/id:'
+            getProduct:'/:id'
         }
     }
     /**Q:

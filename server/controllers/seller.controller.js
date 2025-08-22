@@ -2,7 +2,7 @@ const Product = require('./../models/product.js');
 
 function getMyProducts(req,res){
     let {id} = req.params;
-    Product.findById({sellerId:id})
+    Product.find({sellerId:id})
     .then((result)=>{
         res.status(200).json({
             message:"Successfully fetched your products",

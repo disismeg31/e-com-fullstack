@@ -66,17 +66,19 @@ const productSchema = new mongoose.Schema({
     
 },{timestamps:true})
 
-productSchema.pre('save', function(next){
-  const product = this;
-
-  if(this.createdBy === 'admin'){
-    this.status = 'approved';
-    this.sellerId = null;
+productSchema.pre('insertMany', function(next,docs){
+//   const product = this;
+docs.forEach(doc => {
+    if (!doc.createdBy) doc.createdBy = 'admin';
+    if(doc.createdBy === 'admin'){
+    doc.status = 'approved';
+    doc.sellerId = null;
   }
-  else if(this.createdBy === 'seller'){
-    this.status = 'pending'
+  else if(doc.createdBy === 'seller'){
+    doc.status = 'pending'
   }
-
+});
+  
   next();
 })
 

@@ -45,8 +45,7 @@ function addProducts(req,res){
             message:"Internal server error",
             status:false
         })
-    })
-    
+    })    
 }
 
 function getProduct(req,res){
@@ -104,6 +103,42 @@ function updateProduct(req,res){
         })
     })
 }
+
+// function updateAdminProductStatus(req,res){
+//     Product.updateMany({createdBy:"admin"},{$set:{status:"approved"}})
+//     .then((result)=>{
+//         res.status(200).json({
+//             message: "Admin products status updated successfully",
+//             modifiedCount: result.modifiedCount,
+//             status: true
+//         });
+//     }) 
+//     .catch((err)=>{
+//         console.log("updateAdminStatus admin err",err)
+//         res.status(500).json({
+//             message:"Internal server error",
+//             status:false
+//         })
+//     })
+// }
+
+// function updateAdminSellerIDNull(req,res){
+//     Product.updateMany({createdBy:"admin"},{$set:{sellerId:null}})
+//     .then((result)=>{
+//         res.status(200).json({
+//             message: "Admin products sellerID updated successfully",
+//             modifiedCount: result.modifiedCount,
+//             status: true
+//         });
+//     }) 
+//     .catch((err)=>{
+//         console.log("updateAdminSellerIDNull admin err",err)
+//         res.status(500).json({
+//             message:"Internal server error",
+//             status:false
+//         })
+//     })
+// }
 
 function deleteProduct(req,res){
     const {id} = req.params;
@@ -261,5 +296,7 @@ module.exports = {
     deleteProduct,
     updateProductStatus,
     getAllSellers,
-    updateSellerStatus
+    updateSellerStatus,
+    // updateAdminProductStatus,
+    // updateAdminSellerIDNull
 }

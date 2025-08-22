@@ -17,6 +17,10 @@ router.route(CONSTANTS.subURLS.admin.updateProductStatus).patch(adminController.
 
 router.route(CONSTANTS.subURLS.admin.updateSellerStatus).patch(adminController.updateSellerStatus);
 
+router.route(CONSTANTS.subURLS.admin.getProduct).get(adminController.getProduct);
 
+// router.route(CONSTANTS.subURLS.admin.updateAdminProductStatus).patch(adminController.updateAdminProductStatus)
+
+// router.route(CONSTANTS.subURLS.admin.updateAdminSellerIDNull).patch(adminController.updateAdminSellerIDNull);
 
 module.exports = router;
