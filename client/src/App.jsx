@@ -2,7 +2,7 @@
 import  ThemeContextProvider  from './context/ThemeContextProvider.jsx';
 import { BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Home from './pages/customer/Home.jsx';
-import Login from './pages/customer/Login.jsx';
+import LoginPage from './pages/customer/LoginPage.jsx';
 import './App.css';
 import SearchContextProvider from "./context/SearchContextProvider.jsx";
 import Layout from './Layout/Layout.jsx';
@@ -37,7 +37,7 @@ function App() {
           <SearchContextProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<LoginPage />} />
 
                 {/* Customer Route */}
                 
