@@ -22,22 +22,23 @@
 }
 .icon{
     position: absolute;
-     margin:2px 0 0 2px;
 }
 .rounded-container-style{
     display: flex;
+    align-items: center;
+    justify-content: center;
     color:#3a395a;
-    padding: 10px;
+    padding: 20px;
     width: 30px;
     height: 30px;
     border-radius: 50px;
-    background-color: #35795a60;
+    background-color:#aaa6a64b;
     margin: 0px  2px;
     text-decoration: none;
 }
 .rounded-container-style:hover{
     color:#141414;
-    background-color: #35795a7a; 
+    background-color:#7875754b ;
 }
 
 span.cart-items-badge{

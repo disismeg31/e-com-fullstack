@@ -3,11 +3,11 @@ display:flex;
 justify-content:center;
 align-items:center;
 height:50px;
-background-color:#5dd39e;
+background-color:#FFFDEC;
 }
 
 .dark .footer-container{
-    background-color: #333333;
+    background-color: #1E201E;
 }
 .para{
     color:#3a395a;

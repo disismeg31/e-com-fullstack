@@ -4,9 +4,6 @@
     flex-direction: column;
     justify-content: center;
     width: 300px;
-    /* width: calc(33.33% - 20px); */
-    /* max-width:270px; */
-    /* min-width:250px; */
     height:350px;
     margin:10px;
     background-color: #aaa6a64b;

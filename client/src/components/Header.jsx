@@ -28,16 +28,16 @@ function Header() {
           {
             themeName ==='light'? 
               (
-              <MdSunny className='icon' size={25} />
+              <MdSunny className='icon' size={23} />
               )
                :
               (
-              <IoMdMoon className='icon' size={25} />
+              <IoMdMoon className='icon' size={23} />
               )   
           }
           </span>
         <NavLink to='/home/cart' className='rounded-container-style'>
-          <IoIosCart className='icon' size={25} />
+          <IoIosCart className='icon' size={23} />
           {
             cartCount>0?
             <span className='cart-items-badge'>{cartCount}</span>
@@ -46,7 +46,7 @@ function Header() {
           }
         </NavLink>
         <NavLink to='/home/profile' className='rounded-container-style'>
-          <FaUserCircle  className='icon' size={25} />
+          <FaUserCircle  className='icon' size={23} />
         </NavLink>
         </div>  
     </div>

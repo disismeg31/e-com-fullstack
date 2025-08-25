@@ -10,14 +10,6 @@ function Layout() {
   const { themeName } = useContext(ThemeContext);
   const [isSidebarCollapsed, setSidebarCollapsed] = useState(window.innerWidth <= 768);
 
-  // useEffect(() => {
-  //   // If no user is logged in, redirect to login
-  //   const isLoggedIn = true;  
-  //   if (!isLoggedIn) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
-
   useEffect(() => {
     document.body.className = themeName;
   }, [themeName]);
@@ -41,21 +33,24 @@ function Layout() {
   }
   const headerStyle={
     height:"100px",
-    backgroundColor: themeName ==='dark'? "#333333" :"#5dd39e",
+    backgroundColor: themeName ==='dark'? "#1E201E" :"#FFFDEC",
     display:"flex",
     alignItems:"center",
     width:"100%",
     position: "sticky",
     top: 0,
-    zIndex: 10
+    zIndex: 10,
+    borderBottom:themeName ==='dark' 
+    ? "solid 1px #333333"
+    : "solid 1px rgba(51, 51, 51, 0.2)",
   }
   const footerStyle ={
-    backgroundColor:"#adf16e",
-    // left: 0,
-    // bottom: 0,
     width: "100%",
     height:"50px",
-    // position:"fixed"
+    flexShrink:0, //new 25/8 for sticking footer to bottom -2
+    borderTop:themeName ==='dark' 
+    ? "solid 1px #333333"
+    : "solid 1px rgba(51, 51, 51, 0.2)",
   }
   const sidebarStyle={
     backgroundColor:themeName ==='dark'? "#1E201E" :"#FFFDEC",
@@ -67,41 +62,40 @@ function Layout() {
   }
 
   const outletStyle ={
-    flex: 1,
+    flex: "1 0 auto",  // new 25/8 for sticking footer to bottom - 2  // it was flex:1 before
     width:"100%",
     display:"flex",
     flexDirection:"column",
     boxSizing: "border-box",
     overflowY: "auto",  /* Enables vertical scrolling */
-    maxHeight: "calc(100vh - 150px)",
+    maxHeight: "calc(100vh - 150px)",  //when i removed this it resulted in no scroll so i kept it
   }
 
   const sideNdout = {
     display:"flex",
-    flex:1, //new
-    minHeight:"100vh", //new
+    flex:"1", 
+    minHeight:"100vh", 
   }
 
-  const outlinendfooter = {
+  const headerandoutlineandfooter = {
     display:'flex',
     flexDirection:"column",
     flex: 1,
-    minHeight:"100vh", //new
+    // minHeight:"100vh",   // for the ⬇️ we removed this line
+    height:"100%", //new 25/8 for sticking footer to bottom - 1
   }
 
   return (
-    // <div style={containerSt}>
       <div style={sideNdout}>
       <aside style={sidebarStyle}><Sidebar isSidebarCollapsed={isSidebarCollapsed}/></aside>
-      <div style={outlinendfooter}>
+      <div style={headerandoutlineandfooter}>
         <div style={headerStyle}>
         <Header/>
-      </div>
+        </div>
       <div className={themeName} style={outletStyle} ><Outlet/></div>
       <div style={footerStyle}><Footer/></div>
       </div>
-      </div>
-    // </div>
+      </div> 
   )
 }
 
