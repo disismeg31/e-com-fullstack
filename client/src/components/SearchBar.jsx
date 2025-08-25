@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState,useEffect,useContext } from "react";
+import { IoSearchOutline } from "react-icons/io5";
 import "./SearchBar.css";
 import { SearchContext } from "../context/SearchContextProvider";
 
@@ -20,13 +21,20 @@ function SearchBar( ) {
   };
   return (
     <>
+      {/* <label htmlFor="searchhere"> */}
+
+      {/* <div className="w-full flex items-center text-[#1a1b25]">
+      <span className="z-1 t-10"><IoSearchOutline size={23}/></span> */}
       <input
+        id="searchhere"
         value={searchText}
         className="searchB"
         type="text"
-        placeholder="🔍Search here"
+        placeholder='🔍︎Search here'
         onChange={handleInputChange}
       />
+      {/* </div> */}
+      {/* </label> */}
       <p className="count">{`Count:${count}`}</p>
     </>
   );

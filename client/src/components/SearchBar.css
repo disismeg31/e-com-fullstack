@@ -1,15 +1,18 @@
-.searchB{
+ .searchB{
     width:100%;
-    height:35px;
+    height:40px;
     font-size: large;
     border-style: none;
     border-radius: 5px;
     padding: 5px;
-    color:#3a395a ;
+    color:#1a1b25;
+    /* color:#3a395a ; */
     background-color:#aaa6a64b ;
 }
 input::placeholder{
-    color:#3a395a ;
+    color:#1a1b25;
+
+    /* color:#3a395a ; */
 }
 
 .searchB:focus{

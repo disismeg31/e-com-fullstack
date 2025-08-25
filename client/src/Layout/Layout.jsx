@@ -32,7 +32,7 @@ function Layout() {
     padding: "100px 0px",
   }
   const headerStyle={
-    height:"100px",
+    height:"80px",
     backgroundColor: themeName ==='dark'? "#1E201E" :"#FFFDEC",
     display:"flex",
     alignItems:"center",
@@ -46,8 +46,8 @@ function Layout() {
   }
   const footerStyle ={
     width: "100%",
-    height:"50px",
-    flexShrink:0, //new 25/8 for sticking footer to bottom -2
+    // height:"70px",removed this to keep the footer on bottom
+    // flexShrink:0, //new 25/8 for sticking footer to bottom -2
     borderTop:themeName ==='dark' 
     ? "solid 1px #333333"
     : "solid 1px rgba(51, 51, 51, 0.2)",
@@ -62,13 +62,14 @@ function Layout() {
   }
 
   const outletStyle ={
-    flex: "1 0 auto",  // new 25/8 for sticking footer to bottom - 2  // it was flex:1 before
+    flex:1,
+    // flex: "1 0 auto",  // new 25/8 for sticking footer to bottom - 2  // it was flex:1 before
     width:"100%",
     display:"flex",
     flexDirection:"column",
     boxSizing: "border-box",
     overflowY: "auto",  /* Enables vertical scrolling */
-    maxHeight: "calc(100vh - 150px)",  //when i removed this it resulted in no scroll so i kept it
+    maxHeight: "calc(100vh - 125px)",  //when i removed this it resulted in no scroll so i kept it
   }
 
   const sideNdout = {
@@ -80,9 +81,10 @@ function Layout() {
   const headerandoutlineandfooter = {
     display:'flex',
     flexDirection:"column",
+    justifyContent:"space-between",
     flex: 1,
-    // minHeight:"100vh",   // for the ⬇️ we removed this line
-    height:"100%", //new 25/8 for sticking footer to bottom - 1
+    minHeight:"100vh",   // for the ⬇️ we removed this line
+    // height:"100%", //new 25/8 for sticking footer to bottom - 1
   }
 
   return (
