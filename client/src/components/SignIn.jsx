@@ -56,12 +56,12 @@ function SignIn() {
   console.log("login");
 
   return (
-    <div className="main-container flex flex-col flex-wrap justify-center items-center h-[100%]">
-      <div className="login-wrapper w-90 p-5 rounded-md">
+    <>
+      <div className="login-wrapper w-[400px] max-w-sm mx-auto p-6 rounded-md">
         <div className="head-btn flex flex-col justify-center items-center">
-          <h1 className="login-title m-0 text-[#3C6E71] text-3xl">LOGIN</h1>
+          <p className="mb-4 !text-[#3a395a] text-3xl">LOGIN</p>
           <input
-            className="input-box w-60 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:text-[#3a395a] focus:outline-hidden focus:bg-none"
+            className="w-70 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
             ref={usernameInputElement}
             name="username"
             autoComplete="off"
@@ -70,7 +70,7 @@ function SignIn() {
           />
           <div className="psw relative flex items-center">
             <input
-              className="input-box w-60 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:text-[#3a395a] focus:outline-hidden focus:bg-none"
+              className="w-70 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:!text-[#3a395a] placeholder:opacity-100 focus:outline-hidden focus:bg-none"
               ref={passwordInputElement}
               name="password"
               type={isVisible ? "text" : "password"}
@@ -78,15 +78,15 @@ function SignIn() {
             />
             {isVisible ? (
               <span
-                className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
-                onClick={() => setIsVisible((i) => !i)}
+              className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
+              onClick={() => setIsVisible((i) => !i)}
               >
                 <FaRegEyeSlash />
               </span>
             ) : (
               <span
-                className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
-                onClick={() => setIsVisible((i) => !i)}
+              className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
+              onClick={() => setIsVisible((i) => !i)}
               >
                 <FaRegEye />
               </span>
@@ -108,7 +108,7 @@ function SignIn() {
           Login successful.
         </Alert>
       </Snackbar>
-    </div>
+        </>
   );
 }
 
