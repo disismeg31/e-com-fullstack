@@ -1,6 +1,8 @@
 import { useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import { userLogin } from "./../store/actions/productActions.js";
 import Btn from "./Btn.jsx";
 import "./SignIn.css";
@@ -57,45 +59,61 @@ function SignIn() {
 
   return (
     <>
-      <div className="login-wrapper w-[400px] max-w-sm mx-auto p-6 rounded-md">
-        <div className="head-btn flex flex-col justify-center items-center">
-          <p className="mb-4 !text-[#3a395a] text-3xl">LOGIN</p>
-          <input
-            className="w-70 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
-            ref={usernameInputElement}
-            name="username"
-            autoComplete="off"
-            type="text"
-            placeholder="username"
-          />
-          <div className="psw relative flex items-center">
-            <input
-              className="w-70 h-11 m-2 py-0 px-2.5 text-base bg-[#c5c5c554] text-[#3a395a] rounded-md placeholder:!text-[#3a395a] placeholder:opacity-100 focus:outline-hidden focus:bg-none"
-              ref={passwordInputElement}
-              name="password"
-              type={isVisible ? "text" : "password"}
-              placeholder="password"
-            />
-            {isVisible ? (
-              <span
-              className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
-              onClick={() => setIsVisible((i) => !i)}
-              >
-                <FaRegEyeSlash />
-              </span>
-            ) : (
-              <span
-              className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
-              onClick={() => setIsVisible((i) => !i)}
-              >
-                <FaRegEye />
-              </span>
-            )}
+      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-sm mx-auto p-6 rounded-md">
+        <div className="head-btn flex flex-col justify-center">
+          <div className="flex flex-col">
+            <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Signin</p>
+            <p className="mx-1 my-2 text-sm font-medium !text-[#3a395a] ">Don&apos;t have an account? <span className="text-[#e65d5d] font-medium hover:font-semibold hover:cursor-pointer hover:underline">signup</span></p>
           </div>
-          <Btn label="Login" onClick={handleLoginClick} />
-        </div>
-        <div className="forgot flex justify-end items-end py-0 px-10">
-          <span className="forgot-password text-[#3a395a] underline cursor-pointer text-sm pb-2.5">forgot password?</span>
+          {/* bg-[#c5c5c554] - inside of input color */}
+          <div className="w-full flex flex-col justify-center">
+            <div className="w-full flex items-center">
+              <input
+                className="w-full h-11 mx-1 my-2 py-0 px-2.5 text-base  text-[#3a395a]  border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
+                ref={usernameInputElement}
+                name="username"
+                autoComplete="off"
+                type="text"
+                placeholder="username"
+              />
+            </div>
+
+            <div className="w-full relative flex items-center">
+              <input
+                className="w-full mx-1 my-2 h-11 py-0 px-2.5 text-base text-[#3a395a] border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] placeholder:opacity-100 focus:outline-hidden focus:bg-none"
+                ref={passwordInputElement}
+                name="password"
+                type={isVisible ? "text" : "password"}
+                placeholder="password"
+              />
+              {isVisible ? (
+                <span
+                  className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
+                  onClick={() => setIsVisible((i) => !i)}
+                >
+                  <FaRegEyeSlash />
+                </span>
+              ) : (
+                <span
+                  className="psw-icon absolute right-5 top-[55%] z-1 text-[#3a395a] cursor-pointer"
+                  onClick={() => setIsVisible((i) => !i)}
+                >
+                  <FaRegEye />
+                </span>
+              )}
+            </div>
+            <div className="forgot flex justify-end items-end py-0">
+              <span className="forgot-password text-[#3a395a] font-light underline cursor-pointer text-xs pb-1 hover:font-medium">
+                forgot password?
+              </span>
+            </div>
+
+            <div className="w-full flex justify-center items-center my-1">
+              <Btn label="SignIn" onClick={handleLoginClick} />
+            </div>
+
+          </div>
+            
         </div>
       </div>
       <Snackbar
@@ -108,7 +126,7 @@ function SignIn() {
           Login successful.
         </Alert>
       </Snackbar>
-        </>
+    </>
   );
 }
 
