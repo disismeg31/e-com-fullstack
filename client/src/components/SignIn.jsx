@@ -20,7 +20,7 @@ function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLoginClick = useCallback(() => {
+  const handleSignInClick = useCallback(() => {
     const email = usernameInputElement.current.value;
     const password = passwordInputElement.current.value;
     if (password === "123") {
@@ -109,7 +109,7 @@ function SignIn() {
             </div>
 
             <div className="w-full flex justify-center items-center my-1">
-              <Btn label="SignIn" onClick={handleLoginClick} />
+              <Btn label="SignIn" onClick={handleSignInClick} />
             </div>
 
           </div>
