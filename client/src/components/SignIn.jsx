@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -11,7 +12,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 
-function SignIn() {
+function SignIn({onSwitch}) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
   // const [errorOpen,setErrorOpen]= useState(false);
@@ -59,11 +60,11 @@ function SignIn() {
 
   return (
     <>
-      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-sm mx-auto p-6 rounded-md">
+      <div className="login-wrapper border-2 border-[#3a395a] w-[400px]  max-w-xs sm:max-w-sm  mx-auto p-6 rounded-md">
         <div className="head-btn flex flex-col justify-center">
           <div className="flex flex-col">
-            <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Signin</p>
-            <p className="mx-1 my-2 text-sm font-medium !text-[#3a395a] ">Don&apos;t have an account? <span className="text-[#e65d5d] font-medium hover:font-semibold hover:cursor-pointer hover:underline">signup</span></p>
+            <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Sign In</p>
+            <p className="mx-1 my-2 text-sm font-medium !text-[#3a395a] ">Don&apos;t have an account? <span onClick={onSwitch} className="text-[#e65d5d] font-medium hover:font-semibold hover:cursor-pointer hover:underline">signup</span></p>
           </div>
           {/* bg-[#c5c5c554] - inside of input color */}
           <div className="w-full flex flex-col justify-center">
@@ -109,7 +110,7 @@ function SignIn() {
             </div>
 
             <div className="w-full flex justify-center items-center my-1">
-              <Btn label="SignIn" onClick={handleSignInClick} />
+              <Btn type="button" label="Login-" onClick={handleSignInClick} />
             </div>
 
           </div>

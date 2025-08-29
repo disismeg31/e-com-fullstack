@@ -1,4 +1,5 @@
-import { useRef, useState, useCallback } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 // import { userLogin } from "./../store/actions/productActions.js";
@@ -8,103 +9,85 @@ import CheckIcon from "@mui/icons-material/Check";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 
-function SignUp() {
+function SignUp({onSwitch}) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const roles = ["customer", "seller"];
   // const [errorOpen,setErrorOpen]= useState(false);
-  const nameInputElement = useRef();
-  const usernameInputElement = useRef();
-  const passwordInputElement = useRef();
-  const roleSelectElement = useRef();
+  const [formData,setFormData] = useState({
+    name:"",
+    email:"",
+    password:"",
+    role:""
+  })
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  const handleInputChange=(e)=>{
+    const {name,value} = e.target;
+    setFormData((f)=>({...f,[name]:value}))
+  }
 
-  const handleSignUpClick = useCallback(() => {
-    const name = nameInputElement.current.value;
-    const email = usernameInputElement.current.value;
-    const password = passwordInputElement.current.value;
-    const role = roleSelectElement.current.value;
-
-    // if (password === "123") {
-    //   let role = "customer";
-    //   if (email.includes("@admin")) {
-    //     role = "admin";
-    //   } else if (email.includes("@seller")) {
-    //     role = "seller";
-    //   }
-      // navigate("/home"); // Navigate to the home page
-      // dispatch(userLogin({ isLoggedIn: true, role }));
-      // setOpen(true);
-      // setTimeout(() => {
-      //   if (role === "admin") {
-      //     navigate("/admin");
-      //   } else if (role === "seller") {
-      //     navigate("/seller");
-      //   } else {
-      //     navigate("/home");
-      //   }
-      //   // navigate("/home"); // Navigate after showing the alert
-      // }, 1000); // 2-second delay
-
-      console.log(
-        usernameInputElement.current.value,
-        passwordInputElement.current.value
-      );
-    // } else {
-    //   alert("incorrect username👤 & password🔑");
-    //   usernameInputElement.current.value = "";
-    //   passwordInputElement.current.value = "";
-    //   // setErrorOpen(true)
-    // }
-  }, []
-  // [navigate, dispatch]
-);
-
+  const handleSignUpClick =  (e) => {
+      e.preventDefault();
+      console.log(formData);
+      setFormData({
+        name:"",
+        email:"",
+        password:"",
+        role:""
+      })
+    
+    }
+     
   console.log("SignIn");
   return (
     <>
-      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-sm mx-auto p-6 rounded-md">
-        <div className="head-btn flex flex-col justify-center">
+      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-xs sm:max-w-sm mx-auto p-6 rounded-md">
+        <div className="head-btn flex flex-col flex-wrap justify-center">
           <div className="flex flex-col">
-            <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Create account</p>
+            <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Sign Up</p>
             <p className="mx-1 my-2 text-sm font-medium !text-[#3a395a] ">
               Already have an account?{" "}
-              <span className="text-[#e65d5d] font-medium hover:font-semibold hover:cursor-pointer hover:underline">
+              <span onClick={onSwitch} className="text-[#e65d5d] font-medium hover:font-semibold hover:cursor-pointer hover:underline">
                 signin
               </span>
             </p>
           </div>
-          {/* bg-[#c5c5c554] - inside of input color */}
+
+          <form onSubmit={handleSignUpClick}>
           <div className="w-full flex flex-col justify-center">
             <div className="w-full flex items-center">
               <input
                 className="w-full h-11 mx-1 my-2 py-0 px-2.5 text-base  text-[#3a395a]  border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
-                ref={nameInputElement}
+                value={formData.name}
                 name="name"
                 autoComplete="off"
                 type="text"
                 placeholder="name"
+                onChange={handleInputChange}
               />
             </div>
             <div className="w-full flex items-center">
               <input
                 className="w-full h-11 mx-1 my-2 py-0 px-2.5 text-base  text-[#3a395a]  border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
-                ref={usernameInputElement}
-                name="username"
+                value={formData.email}
+                name="email"
                 autoComplete="off"
                 type="text"
                 placeholder="username / email"
+                onChange={handleInputChange}
               />
             </div>
 
             <div className="w-full relative flex items-center">
               <input
                 className="w-full mx-1 my-2 h-11 py-0 px-2.5 text-base text-[#3a395a] border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] placeholder:opacity-100 focus:outline-hidden focus:bg-none"
-                ref={passwordInputElement}
+                value={formData.password}
                 name="password"
                 type={isVisible ? "text" : "password"}
                 placeholder="password"
+                onChange={handleInputChange}
               />
               {isVisible ? (
                 <span
@@ -128,17 +111,23 @@ function SignUp() {
               </span>
             </div>
 
-            <div className="w-full flex items-center relative">
-              <button
-                // id="dropdownDefaultButton"
-                // data-dropdown-toggle="dropdown"
-                onClick={() => setOpen(!open)}
-                className="text-[#3a395a] w-full border-b-2 hover:cursor-pointer focus:outline-none  text-base px-3 py-2.5 mx-1 mt-1 mb-3 text-center inline-flex justify-between items-center"
-                type="button"
+            <div className=" w-full flex items-center relative">
+              <select 
+                className="h-11 w-full mx-1 my-2 py-0 px-2 bg-[#dfeed3] text-[#3a395a] text-base border-b-2 border-[#3a395a] focus:outline-0 placeholder:text-[#3a395a] appearance-none"
+                placeholder = "Select Role"
+                name="role"
+                value={formData.role}
+                onChange={(e)=>{setFormData((f)=>({...f,[e.target.name] : e.target.value}))}}
               >
-                Select Role{" "}
+                <option value="" hidden>Select role</option>
+                {roles.map((role)=>(
+                  <option key={role} value={role}>{role[0].toUpperCase() + role.slice(1)}</option>
+                ))}
+              </select>
+               
+                 {/* custom arrow */}
                 <svg
-                  className="w-3 h-3 ms-3 mr-1.5"
+                  className="w-3 h-3 absolute right-5 top-1/2 -translate-y-1/2 pointer-events-none text-[#3a395a]"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -152,41 +141,27 @@ function SignUp() {
                     d="m1 1 4 4 4-4"
                   />
                 </svg>
-              </button>
-              {open && (
-                <div className="absolute top-full left-0 z-10 bg-[#dfeed3] divide-y divide-gray-100  shadow-sm w-full">
-                  <ul className="py-2 text-sm text-gray-700">
-                    <li>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-[#cedbc3]">
-                        Customer
-                      </button>
-                    </li>
-                    <li>
-                      <button className="block w-full text-left px-4 py-2 hover:bg-[#cedbc3]">
-                        Seller
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              )}
+              
             </div>
 
             <div className="w-full flex justify-center items-center my-1">
-              <Btn label="SignIn" onClick={handleSignUpClick} />
+              <Btn type="submit" label="Create Account-" onClick={handleSignUpClick} />
             </div>
           </div>
+          </form>
+
         </div>
       </div>
-      {/* <Snackbar
+      <Snackbar
         open={open}
         autoHideDuration={2000}
         onClose={() => setOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
         <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
           Registeratin successful.
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </>
   );
 }
