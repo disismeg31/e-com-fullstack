@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState, useCallback } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 // import { userLogin } from "./../store/actions/productActions.js";
@@ -13,6 +14,7 @@ function SignUp({onSwitch}) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const roles = ["customer", "seller"];
+  const form =useForm()
   // const [errorOpen,setErrorOpen]= useState(false);
   const [formData,setFormData] = useState({
     name:"",
@@ -43,7 +45,7 @@ function SignUp({onSwitch}) {
   console.log("SignIn");
   return (
     <>
-      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-xs sm:max-w-sm mx-auto p-6 rounded-md">
+      <div className="login-wrapper border-2 border-[#3a395a] w-[400px] max-w-xs sm:max-w-sm mx-auto p-6 rounded-sm">
         <div className="head-btn flex flex-col flex-wrap justify-center">
           <div className="flex flex-col">
             <p className="mx-1 my-2 !text-[#3a395a] text-3xl">Sign Up</p>
@@ -64,7 +66,7 @@ function SignUp({onSwitch}) {
                 name="name"
                 autoComplete="off"
                 type="text"
-                placeholder="name"
+                placeholder="Name"
                 onChange={handleInputChange}
               />
             </div>
@@ -75,7 +77,7 @@ function SignUp({onSwitch}) {
                 name="email"
                 autoComplete="off"
                 type="text"
-                placeholder="username / email"
+                placeholder="Email"
                 onChange={handleInputChange}
               />
             </div>
@@ -86,7 +88,7 @@ function SignUp({onSwitch}) {
                 value={formData.password}
                 name="password"
                 type={isVisible ? "text" : "password"}
-                placeholder="password"
+                placeholder="Password"
                 onChange={handleInputChange}
               />
               {isVisible ? (
