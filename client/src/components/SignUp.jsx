@@ -14,33 +14,49 @@ function SignUp({onSwitch}) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const roles = ["customer", "seller"];
-  const form =useForm()
-  // const [errorOpen,setErrorOpen]= useState(false);
-  const [formData,setFormData] = useState({
+  const {register, handleSubmit, reset, formState: {errors}} =useForm({
+  defaultValues:{
     name:"",
     email:"",
     password:"",
     role:""
+  },
+  shouldUseNativeValidation: false,
+  mode: "onChange",
+  criteriaMode: "all",
   })
+  // const [errorOpen,setErrorOpen]= useState(false);
+  // const [formData,setFormData] = useState({
+  //   name:"",
+  //   email:"",
+  //   password:"",
+  //   role:""
+  // })
 
   // const navigate = useNavigate();
   // const dispatch = useDispatch();
-  const handleInputChange=(e)=>{
-    const {name,value} = e.target;
-    setFormData((f)=>({...f,[name]:value}))
-  }
-
-  const handleSignUpClick =  (e) => {
-      e.preventDefault();
-      console.log(formData);
-      setFormData({
-        name:"",
-        email:"",
-        password:"",
-        role:""
-      })
-    
+ 
+  const handleSignUpClick =  (data) => {
+      console.log(data);
+      reset();
     }
+     
+  //   const handleInputChange=(e)=>{
+  //   const {name,value} = e.target;
+  //   setFormData((f)=>({...f,[name]:value}))
+  // }
+
+  // const handleSignUpClick =  (e) => {
+  //     e.preventDefault();
+  //     console.log(formData);
+  //     setFormData({
+  //       name:"",
+  //       email:"",
+  //       password:"",
+  //       role:""
+  //     })
+    
+  //   }
      
   console.log("SignIn");
   return (
@@ -57,39 +73,79 @@ function SignUp({onSwitch}) {
             </p>
           </div>
 
-          <form onSubmit={handleSignUpClick}>
+          <form onSubmit={handleSubmit(handleSignUpClick)} noValidate>
           <div className="w-full flex flex-col justify-center">
             <div className="w-full flex items-center">
               <input
                 className="w-full h-11 mx-1 my-2 py-0 px-2.5 text-base  text-[#3a395a]  border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
-                value={formData.name}
-                name="name"
+                {
+                  ...register("name",{
+                  required:"name is required !",
+                  minLength: { value: 3, message: "Name must be at least 3 characters" },
+                  maxLength: { value: 40, message: "Name must be 40 characters" },
+                })
+                }
+                // value={formData.name}
+                // name="name"
                 autoComplete="off"
                 type="text"
                 placeholder="Name"
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
               />
             </div>
+            <div className="for username error message">
+              {errors.name && (
+              <p className="!text-[#e65d5d] text-xs mx-1">
+              {errors.name?.message}
+              </p>
+              )}
+            </div>
+
             <div className="w-full flex items-center">
               <input
                 className="w-full h-11 mx-1 my-2 py-0 px-2.5 text-base  text-[#3a395a]  border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] focus:outline-hidden focus:bg-none"
-                value={formData.email}
-                name="email"
+                {...register("email",{
+                  required:"Email is required!",
+                  minLength: { value: 5, message: "Email must be at least 5 characters" },
+                  maxLength: { value: 50, message: "Email must be at most 50 characters" },
+                  pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Enter a valid email address",
+                          },
+                })}
+                // value={formData.email}
                 autoComplete="off"
-                type="text"
+                type="email"
                 placeholder="Email"
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
               />
+            </div>
+            <div className="for username error message">
+              {errors.email && (
+              <p className="!text-[#e65d5d] text-xs mx-1">
+              {errors.email?.message}
+              </p>
+              )}
             </div>
 
             <div className="w-full relative flex items-center">
               <input
                 className="w-full mx-1 my-2 h-11 py-0 px-2.5 text-base text-[#3a395a] border-b-2 border-[#3a395a] placeholder:!text-[#3a395a] placeholder:opacity-100 focus:outline-hidden focus:bg-none"
-                value={formData.password}
-                name="password"
+                {
+                  ...register("password",{
+                  required:"Password is required!",
+                  minLength: { value: 6, message: "Password must be at least 6 characters" },
+                  maxLength: { value: 8, message: "Password must be 8 characters" },
+                  pattern: {
+                          value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+                          message: "Password must include letters, numbers & symbols"
+                  }})
+                }
+                // value={formData.password}
+                // name="password"
                 type={isVisible ? "text" : "password"}
                 placeholder="Password"
-                onChange={handleInputChange}
+                // onChange={handleInputChange}
               />
               {isVisible ? (
                 <span
@@ -107,6 +163,14 @@ function SignUp({onSwitch}) {
                 </span>
               )}
             </div>
+            <div className="for username error message">
+              {errors.password && (
+              <p className="!text-[#e65d5d] text-xs mx-1">
+              {errors.password?.message}
+              </p>
+              )}
+            </div>
+
             <div className="forgot flex justify-end items-end py-0">
               <span className="forgot-password text-[#3a395a] font-light underline cursor-pointer text-xs pb-1 hover:font-medium">
                 forgot password?
@@ -117,9 +181,14 @@ function SignUp({onSwitch}) {
               <select 
                 className="h-11 w-full mx-1 my-2 py-0 px-2 bg-[#dfeed3] text-[#3a395a] text-base border-b-2 border-[#3a395a] focus:outline-0 placeholder:text-[#3a395a] appearance-none"
                 placeholder = "Select Role"
-                name="role"
-                value={formData.role}
-                onChange={(e)=>{setFormData((f)=>({...f,[e.target.name] : e.target.value}))}}
+                {
+                  ...register("role",{
+                  required:"Role is required !",
+                })
+                }
+                // name="role"
+                // value={formData.role}
+                // onChange={(e)=>{setFormData((f)=>({...f,[e.target.name] : e.target.value}))}}
               >
                 <option value="" hidden>Select role</option>
                 {roles.map((role)=>(
@@ -145,9 +214,17 @@ function SignUp({onSwitch}) {
                 </svg>
               
             </div>
+            <div className="for username error message">
+              {errors.role && (
+              <p className="!text-[#e65d5d] text-xs mx-1">
+              {errors.role?.message}
+              </p>
+              )}
+            </div>
 
             <div className="w-full flex justify-center items-center my-1">
-              <Btn type="submit" label="Create Account-" onClick={handleSignUpClick} />
+              <Btn type="submit" label="Create Account-" />
+              {/* <Btn type="submit" label="Create Account-" onClick={handleSignUpClick} /> */}
             </div>
           </div>
           </form>
