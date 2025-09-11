@@ -115,7 +115,7 @@ function SignUp({onSwitch}) {
                 })}
                 // value={formData.email}
                 autoComplete="off"
-                type="email"
+                type="text"
                 placeholder="Email"
                 // onChange={handleInputChange}
               />

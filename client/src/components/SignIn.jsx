@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useRef, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
 import { userLogin } from "./../store/actions/productActions.js";
 import Btn from "./Btn.jsx";
+import { seedUsers } from "../shared/seedUser.js";
+import {userSignIn} from './../services/apiService.js'
 import "./SignIn.css";
 import { Alert, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
 
@@ -24,46 +25,78 @@ function SignIn({onSwitch}) {
     mode:"onChange"
   })
 
-  // const [errorOpen,setErrorOpen]= useState(false);
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const [errorOpen,setErrorOpen]= useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignInClick = useCallback((data) => {
     const { email, password } = data;
+
+    // const getUser = async() =>{
+    //   try{
+    //       const user = await userSignIn(data);
+    //       if(user){
+    //         console.log("Login Success ✅:",user.role);
+
+    //         // here you can:
+    //         // 1. Dispatch Redux action
+    //         dispatch(userLogin({ isLoggedIn: true, role:user.role }));
+
+    //         // 2. Navigate based on role
+    //         setTimeout(()=>{
+    //           if (user.role === "admin") navigate("/admin");
+    //           else if (user.role === "seller") navigate("/seller");
+    //           else navigate("/home");
+    //         },1000)
+            
+    
+    //         // 3. Show snackbar
+    //         setOpen(true);  
+    //       }
+          
+    //   }
+    //   catch(err){
+    //     console.log("Error while Signing in",err);
+    //     setErrorOpen(true)
+    //     throw err;
+    //   }
+    // }
+    // getUser();
+
+
+    // the below⬇️ section was to check if snackbars are working and its successfull
+    const user = seedUsers.find((u)=>u.email === email && u.password === password);
+
+    if(user){
+    console.log("Login Success ✅:",user.role);
+
+    // here you can:
+    // 1. Dispatch Redux action
+    dispatch(userLogin({ isLoggedIn: true, role:user.role }));
+
+    // 2. Navigate based on role
+    setTimeout(()=>{
+      if (user.role === "admin") navigate("/admin");
+      else if (user.role === "seller") navigate("/seller");
+      else navigate("/home");
+    },1000)
+    
+    
+    // 3. Show snackbar
+    setOpen(true);  
+    }
+    else{
+    console.log("❌ Invalid Credentials");
+    // show error snackbar / alert
+    setErrorOpen(true)
+      
+    }
     console.log(email, password)
      
-    // if (password === "123") {
-    //   let role = "customer";
-    //   if (email.includes("@admin")) {
-    //     role = "admin";
-    //   } else if (email.includes("@seller")) {
-    //     role = "seller";
-    //   }
-      // navigate("/home"); // Navigate to the home page
-      // dispatch(userLogin({ isLoggedIn: true, role }));
-      // setOpen(true);
-      
-      // setTimeout(() => {
-      //   if (role === "admin") {
-      //     navigate("/admin");
-      //   } else if (role === "seller") {
-      //     navigate("/seller");
-      //   } else {
-      //     navigate("/home");
-      //   }
-        // navigate("/home"); // Navigate after showing the alert
-      // }, 1000); // 2-second delay
-
-    // } else {
-    //   alert("incorrect username👤 & password🔑");
-    //   usernameInputElement.current.value = "";
-    //   passwordInputElement.current.value = "";
-    //   // setErrorOpen(true)
-    // }
+    
     reset();
   }, 
-  [reset]);
-  // [navigate, dispatch]);
+  [reset,dispatch,navigate]);
   console.log("login");
 
   return (
@@ -105,7 +138,7 @@ function SignIn({onSwitch}) {
                 ...register("password",{
                   required:"Password is required!",
                   minLength: { value: 6, message: "Password must be at least 6 characters" },
-                  maxLength: { value: 8, message: "Password must be 8 characters" },
+                  // maxLength: { value: 8, message: "Password must be 8 characters" },
                   pattern: {
                           value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
                           message: "Password must include letters, numbers & symbols"
@@ -157,7 +190,21 @@ function SignIn({onSwitch}) {
             
         </div>
       </div>
-      <Snackbar
+      {
+        errorOpen ? (
+          <Snackbar
+        open={errorOpen}
+        autoHideDuration={2000}
+        onClose={() => setErrorOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert icon={<ErrorOutlineIcon fontSize="inherit" />} severity="error">
+          Login unsuccessful.
+        </Alert>
+      </Snackbar>
+        ) :
+        (
+          <Snackbar
         open={open}
         autoHideDuration={2000}
         onClose={() => setOpen(false)}
@@ -167,6 +214,9 @@ function SignIn({onSwitch}) {
           Login successful.
         </Alert>
       </Snackbar>
+        )
+      }
+      
     </>
   );
 }
