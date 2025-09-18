@@ -41,7 +41,7 @@ function SignUp({onSwitch}) {
                if (res?.status === true) {
                   setOpen(true);
                   onSwitch();
-                  navigate("/"); // go straight to home
+                  navigate("/"); //to loginpage
                 } else {
                 console.log("Signup failed:", res);
                 }
@@ -51,13 +51,12 @@ function SignUp({onSwitch}) {
             const msg = err?.message || "something went wrong";
             setErrMessage(msg);
             setErrorOpen(true);
-            // throw err;
           })
       }
       console.log(data);
       registerUser(data);
       reset();
-    },[reset,navigate]
+    },[reset,navigate,onSwitch]
   ) 
        
   console.log("SignIn");

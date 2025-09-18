@@ -17,6 +17,8 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 function SignIn({ onSwitch }) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [errMessage,setErrMessage] = useState("")
+  
   const {
     register,
     handleSubmit,
@@ -36,8 +38,6 @@ function SignIn({ onSwitch }) {
 
   const handleSignInClick = useCallback(
     (data) => {
-      // const { email, password } = data;
-
       const getUser = () => {
         userSignIn(data)
           .then((user) => {
@@ -54,13 +54,14 @@ function SignIn({ onSwitch }) {
               //  3. Show snackbar
               setOpen(true);
             } else {
-              console.log("Login Uncsuccess 🔴:", user);
+              console.log("Login failed 🔴:", user);
             }
           })
           .catch((err) => {
             console.log("Error while Signing in", err);
+            const errMsg = err?.message || "Login Failed"
+            setErrMessage(errMsg)
             setErrorOpen(true);
-            throw err;
           });
       };
       getUser();
@@ -186,7 +187,7 @@ function SignIn({ onSwitch }) {
             icon={<ErrorOutlineIcon fontSize="inherit" />}
             severity="error"
           >
-            Login unsuccessful.
+            {errMessage}
           </Alert>
         </Snackbar>
       ) : (
