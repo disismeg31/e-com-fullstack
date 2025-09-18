@@ -7,13 +7,19 @@ import { useDispatch } from "react-redux";
 import Btn from "./Btn.jsx";
 import { Alert, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { userSignUp } from "./../services/authService.js";
 
 function SignUp({onSwitch}) {
   const [isVisible, setIsVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [errMessage,setErrMessage] = useState("Registeration unsuccessful.")
   const roles = ["customer", "seller"];
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const {register, handleSubmit, reset, formState: {errors}} =useForm({
   defaultValues:{
     name:"",
@@ -25,39 +31,35 @@ function SignUp({onSwitch}) {
   mode: "onChange",
   criteriaMode: "all",
   })
-  // const [errorOpen,setErrorOpen]= useState(false);
-  // const [formData,setFormData] = useState({
-  //   name:"",
-  //   email:"",
-  //   password:"",
-  //   role:""
-  // })
-
-  // const navigate = useNavigate();
-  // const dispatch = useDispatch();
+   
  
-  const handleSignUpClick =  (data) => {
+  const handleSignUpClick = useCallback(
+    (data) => {
+      const registerUser = (data) => {
+          userSignUp(data)
+          .then((res)=>{
+               if (res?.status === true) {
+                  setOpen(true);
+                  onSwitch();
+                  navigate("/"); // go straight to home
+                } else {
+                console.log("Signup failed:", res);
+                }
+          })
+          .catch((err)=>{
+            console.log("Error while Signing Up", err);
+            const msg = err?.message || "something went wrong";
+            setErrMessage(msg);
+            setErrorOpen(true);
+            // throw err;
+          })
+      }
       console.log(data);
+      registerUser(data);
       reset();
-    }
-     
-  //   const handleInputChange=(e)=>{
-  //   const {name,value} = e.target;
-  //   setFormData((f)=>({...f,[name]:value}))
-  // }
-
-  // const handleSignUpClick =  (e) => {
-  //     e.preventDefault();
-  //     console.log(formData);
-  //     setFormData({
-  //       name:"",
-  //       email:"",
-  //       password:"",
-  //       role:""
-  //     })
-    
-  //   }
-     
+    },[reset,navigate]
+  ) 
+       
   console.log("SignIn");
   return (
     <>
@@ -231,7 +233,37 @@ function SignUp({onSwitch}) {
 
         </div>
       </div>
-      <Snackbar
+       
+       {errorOpen ? (
+        <Snackbar
+          open={errorOpen}
+          autoHideDuration={2000}
+          onClose={() => setErrorOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            icon={<ErrorOutlineIcon fontSize="inherit" />}
+            severity="error"
+          >
+            {errMessage}
+          </Alert>
+        </Snackbar>
+      ) : (
+        <Snackbar
+          open={open}
+          autoHideDuration={2000}
+          onClose={() => setOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+            Registeration successful.
+          </Alert>
+        </Snackbar>
+      )}
+       
+       
+      
+      {/* <Snackbar
         open={open}
         autoHideDuration={2000}
         onClose={() => setOpen(false)}
@@ -240,7 +272,7 @@ function SignUp({onSwitch}) {
         <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
           Registeratin successful.
         </Alert>
-      </Snackbar>
+      </Snackbar> */}
     </>
   );
 }
