@@ -22,8 +22,8 @@ const CONSTANTS = {
         auth:{
             signUp:'/signup',
             signIn:'/signin',
-            getUsers:''
-            // signOut:'signOut',
+            getUsers:'',
+            signOut:'signOut',
         },
         sellers:{
             getProducts:'/:id/seller',

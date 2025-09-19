@@ -1,5 +1,6 @@
 const User = require('./../models/user.js');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 function signUp(req,res){
  const userDataToInsert = req.body;
@@ -15,8 +16,15 @@ function signUp(req,res){
         const user = new User(userDataToInsert);
         user.save()
         .then((result)=>{
+            const token = jwt.sign({id: result._id},process.env.JWT_SECRET,{expiresIn:'7d'})
             const {name,email,role} = result;
             const userPayload = {name,email,role}
+            res.cookie('token',token,{
+                httpOnly:true,
+                secure:process.env.NODE_ENV === 'production',
+                sameSite:process.env.NODE_ENV === 'production'? 'none' : 'strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000
+            })
             res.status(201).json({
                 message:`Succesfully registered ${result.name}`,
                 payload:userPayload,
@@ -67,11 +75,19 @@ function signIn(req,res){
                 if(isMatch){
                     const {name,email,role} = result;
                     const userPayload = {name,email,role}
+                    const token = jwt.sign({id: result._id},process.env.JWT_SECRET,{expiresIn:'7d'})
+                    res.cookie('token',token,{
+                        httpOnly:true,
+                        secure:process.env.NODE_ENV === 'production',
+                        sameSite:process.env.NODE_ENV === 'production'? 'none' : 'strict',
+                        maxAge: 7 * 24 * 60 * 60 * 1000
+                    })
                     res.status(200).json({
                         message:'Login successfull',
                         payload:userPayload,
                         status:true,
                     })
+
                 }
                 else{
                     res.status(401).json({
@@ -102,6 +118,18 @@ function signIn(req,res){
             status:false
         })
     })
+}
+
+function signOut(req,res){
+    res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict'
+  });
+  res.status(200).json({
+    message: 'Logged Out',
+    status: true
+  });
 }
 
 function getAllUsers(req,res){
@@ -137,5 +165,6 @@ function getAllUsers(req,res){
 module.exports = {
     signUp,
     signIn,
+    signOut,
     getAllUsers
 }

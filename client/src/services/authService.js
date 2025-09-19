@@ -5,6 +5,7 @@ export const userSignIn = async(credentials)=>{
   try{
     const res = await axios.post(url,credentials,{
       headers: { "Content-Type": "application/json" },
+      withCredentials: true,
     })
     const signInData = res.data
     return signInData;
@@ -20,6 +21,7 @@ export const userSignUp = async(credentials)=>{
   try{
     const res = await axios.post(url,credentials,{
       headers: { "Content-Type": "application/json" },
+      withCredentials: true,
     })
     const signUpData = res.data
     return signUpData;
@@ -27,5 +29,20 @@ export const userSignUp = async(credentials)=>{
   catch(error){
     // console.log("Error while Signing up",error);
     throw error.response?.data || error; // so you get backend message
+  }
+}
+
+export const userSignOut = async()=>{
+  const url = 'http://localhost:3500/api/users/signout';
+  try{
+    const res = await axios.post(url,{},{
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    })
+    const signOutData = res.data;
+    return signOutData;
+  }
+  catch(error){
+    throw error.response?.data || error;
   }
 }

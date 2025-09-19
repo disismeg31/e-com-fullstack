@@ -11,9 +11,8 @@ router.route(CONSTANTS.subURLS.auth.signIn).post(authController.signIn);
 
 router.route(CONSTANTS.subURLS.auth.getUsers).get(authController.getAllUsers);
 
-
 // // logout route 
-// router.route(CONSTANTS.subURLS.auth.signOut).patch(authController.signOut)
+router.route(CONSTANTS.subURLS.auth.signOut).patch(authController.signOut);
 
 // i dont think i need route for logout because we're deleteing the cookis from frontend thats all no backend 
 
