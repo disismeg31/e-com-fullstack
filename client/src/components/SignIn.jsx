@@ -42,13 +42,13 @@ function SignIn({ onSwitch }) {
         userSignIn(data)
           .then((user) => {
             if (user.status === true) {
-              console.log("Login Success ✅:", user.role);
+              console.log("Login Success ✅:", user.payload.role);
               // 1. Dispatch Redux action
-              dispatch(userLogin({ isLoggedIn: true, role: user.role }));
+              dispatch(userLogin({ isLoggedIn: true, role: user.payload.role }));
               //  2. Navigate based on role
               setTimeout(() => {
-                if (user.role === "admin") navigate("/admin");
-                else if (user.role === "seller") navigate("/seller");
+                if (user.payload.role === "admin") navigate("/admin");
+                else if (user.payload.role === "seller") navigate("/seller");
                 else navigate("/home");
               }, 1000);
               //  3. Show snackbar

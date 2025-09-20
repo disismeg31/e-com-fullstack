@@ -16,7 +16,7 @@ function signUp(req,res){
         const user = new User(userDataToInsert);
         user.save()
         .then((result)=>{
-            const token = jwt.sign({id: result._id},process.env.JWT_SECRET,{expiresIn:'7d'})
+            const token = jwt.sign({id: result._id,name:result.name,role:result.role},process.env.JWT_SECRET,{expiresIn:'7d'})
             const {name,email,role} = result;
             const userPayload = {name,email,role}
             res.cookie('token',token,{
@@ -75,7 +75,7 @@ function signIn(req,res){
                 if(isMatch){
                     const {name,email,role} = result;
                     const userPayload = {name,email,role}
-                    const token = jwt.sign({id: result._id},process.env.JWT_SECRET,{expiresIn:'7d'})
+                    const token = jwt.sign({id: result._id,name:result.name,role:result.role},process.env.JWT_SECRET,{expiresIn:'7d'})
                     res.cookie('token',token,{
                         httpOnly:true,
                         secure:process.env.NODE_ENV === 'production',

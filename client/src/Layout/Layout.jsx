@@ -103,21 +103,4 @@ function Layout() {
 
 export default Layout
 
-/**
- * 
- * <div style={containerSt}>
-      {/* <div style={headerStyle}>
-        <Header/>
-      </div> 
-      // <div style={sideNdout}>
-      // <aside style={sidebarStyle}><Sidebar isSidebarCollapsed={isSidebarCollapsed}/></aside>
-      // <div style={outlinendfooter}>
-      //   <div style={headerStyle}>
-      //   <Header/>
-      // </div>
-      // <div className={themeName} style={outletStyle} ><Outlet/></div>
-      // <div style={footerStyle}><Footer/></div>
-      // </div>
-      // </div>
-    // </div>
- */
+ 
