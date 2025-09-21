@@ -3,7 +3,7 @@ import { Outlet,useNavigate } from "react-router-dom"
 import { useState,useEffect,useContext } from "react";
 // import Header from "../components/Header.jsx" 
 import Footer from "../components/Footer.jsx"
-// import Sidebar from "../components/Sidebar.jsx";
+import SellerSideBar from "../components/SellerSideBar.jsx";
 import { ThemeContext } from "../context/ThemeContextProvider";
 
 function SellerLayout() {
@@ -60,6 +60,7 @@ function SellerLayout() {
     borderRight:themeName ==='dark' 
     ? "solid 1px #333333"
     : "solid 1px rgba(51, 51, 51, 0.2)",
+
   }
 
   const outletStyle ={
@@ -70,7 +71,9 @@ function SellerLayout() {
     flexDirection:"column",
     boxSizing: "border-box",
     overflowY: "auto",  /* Enables vertical scrolling */
-    maxHeight: "calc(100vh - 125px)",  //when i removed this it resulted in no scroll so i kept it
+    // maxHeight: "calc(100vh - 125px)",  //when i removed this it resulted in no scroll so i kept it
+    maxHeight: "100vh",  //so that it will take the entire space left
+
   }
 
   const sideNdout = {
@@ -82,7 +85,7 @@ function SellerLayout() {
   const headerandoutlineandfooter = {
     display:'flex',
     flexDirection:"column",
-    justifyContent:"space-between",
+    // justifyContent:"space-between",
     flex: 1,
     minHeight:"100vh",   // for the ⬇️ we removed this line
     // height:"100%", //new 25/8 for sticking footer to bottom - 1
@@ -90,17 +93,16 @@ function SellerLayout() {
 
   return (
      <div style={sideNdout}>
-      <aside style={sidebarStyle}>
-        <p className="text-black">Seller Sidebar</p>
-        {/* <Sidebar isSidebarCollapsed={isSidebarCollapsed}/> */}
+        <aside style={sidebarStyle}>
+        <SellerSideBar isSidebarCollapsed={isSidebarCollapsed}/>
         </aside>
       <div style={headerandoutlineandfooter}>
         <div style={headerStyle}>
-        {/* <Header/> */} 
-        <p className="text-black">Seller Header</p>
+        {/* <Header/>  */}
+        <p className="text-black">Seller Header - theme and profile</p>
         </div>
       <div className={themeName} style={outletStyle} ><Outlet/></div>
-      <div style={footerStyle}><Footer/></div>
+      {/* <div style={footerStyle}><Footer/></div> */}
       </div>
       </div> 
   )
