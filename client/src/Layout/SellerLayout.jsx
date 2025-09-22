@@ -1,10 +1,11 @@
 // import React from 'react'
 import { Outlet,useNavigate } from "react-router-dom"
 import { useState,useEffect,useContext } from "react";
-// import Header from "../components/Header.jsx" 
+import SAHeader from "../components/SAHeader.jsx" 
 import Footer from "../components/Footer.jsx"
 import SellerSideBar from "../components/SellerSideBar.jsx";
 import { ThemeContext } from "../context/ThemeContextProvider";
+ 
 
 function SellerLayout() {
   const navigate = useNavigate();
@@ -45,26 +46,19 @@ function SellerLayout() {
     ? "solid 1px #333333"
     : "solid 1px rgba(51, 51, 51, 0.2)",
   }
-  const footerStyle ={
-    width: "100%",
-    // height:"70px",removed this to keep the footer on bottom
-    // flexShrink:0, //new 25/8 for sticking footer to bottom -2
-    borderTop:themeName ==='dark' 
-    ? "solid 1px #333333"
-    : "solid 1px rgba(51, 51, 51, 0.2)",
-  }
+  
   const sidebarStyle={
     backgroundColor:themeName ==='dark'? "#1E201E" :"#FFFDEC",
     width: isSidebarCollapsed ? "70px" : "180px", // Shrink sidebar on small screens
-    minHeight: "100vh",
+    minHeight: "calc(100vh-80px)",
     borderRight:themeName ==='dark' 
     ? "solid 1px #333333"
     : "solid 1px rgba(51, 51, 51, 0.2)",
-
   }
 
   const outletStyle ={
     flex:1,
+    backgroundColor:themeName ==='dark'? "#1E201E" :"#FFFDEC",
     // flex: "1 0 auto",  // new 25/8 for sticking footer to bottom - 2  // it was flex:1 before
     width:"100%",
     display:"flex",
@@ -73,7 +67,6 @@ function SellerLayout() {
     overflowY: "auto",  /* Enables vertical scrolling */
     // maxHeight: "calc(100vh - 125px)",  //when i removed this it resulted in no scroll so i kept it
     maxHeight: "100vh",  //so that it will take the entire space left
-
   }
 
   const sideNdout = {
@@ -98,11 +91,9 @@ function SellerLayout() {
         </aside>
       <div style={headerandoutlineandfooter}>
         <div style={headerStyle}>
-        {/* <Header/>  */}
-        <p className="text-black">Seller Header - theme and profile</p>
+        <SAHeader/>
         </div>
       <div className={themeName} style={outletStyle} ><Outlet/></div>
-      {/* <div style={footerStyle}><Footer/></div> */}
       </div>
       </div> 
   )

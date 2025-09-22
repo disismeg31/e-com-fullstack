@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    /* align-items: center;   */
     margin: 0px;
     padding: 10px;
     font-size: larger;
@@ -30,6 +31,9 @@
      cursor: pointer;
      /* margin-top:5px ; */
      padding: 10px 10px;
+}
+.logout.sidebar-item svg {
+  color: red !important;
 }
 .logout:hover{
     color:#e65d5d;
