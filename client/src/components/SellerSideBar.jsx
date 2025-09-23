@@ -2,6 +2,8 @@
 import { useCallback, useContext } from 'react';
 import {NavLink} from 'react-router-dom';
 import './Sidebar.css';
+import logodark from './../assets/images/logodark.png';
+import logolight from './../assets/images/logolight.png';
 import { useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import {ThemeContext} from '../context/ThemeContextProvider';
@@ -34,6 +36,18 @@ function SellerSideBar({isSidebarCollapsed}) {
   return (
     <div className={`sidebar-container ${themeName} ${isSidebarCollapsed ? 'shrunk' : ''}`}>
         <div>
+          <span className='w-4 p-4'>
+            {
+              themeName === 'light' ?
+              (
+                <img src={logolight} alt="logo" />
+              ) 
+              :
+              (
+                <img src={logodark} alt="logo" />
+              )
+            }
+          </span>
         <NavLink to="/seller" className="a sidebar-item">
         <MdDashboard size={24}/>
         {

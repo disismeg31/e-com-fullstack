@@ -34,7 +34,7 @@ function SellerLayout() {
     padding: "100px 0px",
   }
   const headerStyle={
-    height:"80px",
+    height:"70px",
     backgroundColor: themeName ==='dark'? "#1E201E" :"#FFFDEC",
     display:"flex",
     alignItems:"center",

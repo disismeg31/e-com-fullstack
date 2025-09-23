@@ -20,13 +20,13 @@ body {
   overflow: hidden;
   min-width: 320px;
   min-height: 100vh;
-  /* color: #ffffffde; */
-  /* background-color: #dfeed3; */
+  color: #ffffffde;
+  background-color: #dfeed3;
 
   /* background-color: #dfeed3; */
 }
 
 body.dark {
-  /* background-color: #1E201E; Dark mode */
+  background-color: #1E201E;  /*Dark mode*/
 } 
  
