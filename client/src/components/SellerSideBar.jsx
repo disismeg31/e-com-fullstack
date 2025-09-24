@@ -4,6 +4,9 @@ import {NavLink} from 'react-router-dom';
 import './Sidebar.css';
 import logodark from './../assets/images/logodark.png';
 import logolight from './../assets/images/logolight.png';
+import logoIconLight from './../assets/images/logoipsum-light-logo.svg';
+import logoIconDark from './../assets/images/logoipsum-dark-logo.svg';
+
 import { useNavigate } from "react-router-dom";
 import { MdLogout } from "react-icons/md";
 import {ThemeContext} from '../context/ThemeContextProvider';
@@ -36,15 +39,27 @@ function SellerSideBar({isSidebarCollapsed}) {
   return (
     <div className={`sidebar-container ${themeName} ${isSidebarCollapsed ? 'shrunk' : ''}`}>
         <div>
-          <span className='w-4 p-4'>
+          <span className=''>
             {
               themeName === 'light' ?
               (
-                <img src={logolight} alt="logo" />
+                <>
+                {
+                  !isSidebarCollapsed ?
+                <img className='mt-2 h-7 p-0.5' src={logolight} alt="logo" />:
+                  <img className='mt-2' src={logoIconLight} alt='logo'/>
+                }
+                </>
               ) 
               :
               (
-                <img src={logodark} alt="logo" />
+                <>
+                {
+                  !isSidebarCollapsed ?
+                <img className='mt-2 h-7 p-0.5' src={logodark} alt="logo" />:
+                <img className='mt-2' src={logoIconDark} alt='logo'/>
+                }
+                </>
               )
             }
           </span>

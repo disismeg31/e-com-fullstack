@@ -16,7 +16,7 @@ function MyProducts() {
         
         <button
         disabled={isStatus === 'pending'} 
-        className={`items-center justify-center bg-transparent border p-2 rounded-xl 
+        className={`items-center justify-center bg-transparent border px-2 py-1 rounded-xl 
           ${isStatus === 'pending'? 
           'bg-gray-400 border-gray-400 text-gray-700 hover:bg-gray-400 hover:text-gray-700 cursor-not-allowed' 
         : 'bg-transparent border-[#5dd39e] text-[#5dd39e] hover:bg-[#5dd39e] hover:text-[#FFFDEC]' } `}>
