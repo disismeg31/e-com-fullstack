@@ -11,14 +11,7 @@ import CancelIcon from "@mui/icons-material/Close";
 import MuiToolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import moment from "moment";
-import {
-  GridRowModes,
-  DataGrid,
-  GridActionsCellItem,
-  GridRowEditStopReasons,
-  // Toolbar,
-  // ToolbarButton,
-} from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import ViewOnlyModal from "./../../components/ViewOnlyModal.jsx";
 
 const randomId = () => Math.random().toString(36).substring(2, 9);
@@ -77,59 +70,15 @@ const initialRows = [
   },
 ];
 
-function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
-
-  const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [
-      ...oldRows,
-      { id, status: "", description: "", amount: "", isNew: true },
-    ]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: "description" },
-    }));
-  };
-  return (
-    <MuiToolbar>
-      <Tooltip title="Add record">
-        <IconButton onClick={handleClick}>
-          <AddIcon fontSize="small" />
-        </IconButton>
-      </Tooltip>
-    </MuiToolbar>
-  );
-}
-
 function MyProducts() {
   const [isStatus, setIsStatus] = useState("approved");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rowData, setRowData] = useState({});
 
   const [rows, setRows] = useState(initialRows);
-  const [rowModesModel, setRowModesModel] = useState({});
 
   const handleClose = () => {
     setIsModalOpen(false);
-  };
-
-  const handleRowEditStop = (params, event) => {
-    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-      event.defaultMuiPrevented = true;
-    }
-  };
-
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleViewClick = (id) => {
@@ -140,26 +89,13 @@ function MyProducts() {
     setIsModalOpen(true);
   };
 
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
+  const handleEditClick = (id) => () => {
+    console.log(id, "Inside edit function");
   };
 
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    return updatedRow;
-  };
-
-  const handleRowModesModelChange = (newRowModesModel) => {
-    setRowModesModel(newRowModesModel);
+  const handleDeleteClick = (id) => () => {
+    console.log(id, "Inside delete function");
+    setRows(rows.filter((row) => row.id !== id));
   };
 
   const columns = [
@@ -167,7 +103,7 @@ function MyProducts() {
       field: "status",
       headerName: "Status",
       width: 100,
-      editable: false,
+      // editable: false,
       type: "singleSelect",
       headerAlign: "center",
       align: "center",
@@ -180,17 +116,17 @@ function MyProducts() {
       width: 200,
       align: "left",
       headerAlign: "center",
-      editable: true,
+      // editable: true,
     },
     {
       field: "amount",
       headerName: "Amount",
       type: "number",
       width: 180,
-      editable: true,
+      // editable: true,
       align: "center",
       headerAlign: "center",
-      format: (value) => value.toFixed(2),
+      renderCell: (params) => `₹${params.value.toFixed(2)}`,
     },
     {
       field: "createdAt",
@@ -206,64 +142,82 @@ function MyProducts() {
     },
     { field: "_id", hide: true },
     {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
-      width: 180,
-      cellClassName: "actions",
-      resizable: false,
-      getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              key={id}
-              icon={<SaveIcon />}
-              label="Save"
-              material={{
-                sx: {
-                  color: "primary.main",
-                },
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              key={id}
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            key={id}
-            icon={<VisibilityIcon />}
-            label="View"
-            className="textPrimary"
-            onClick={() => handleViewClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            key={id}
-            icon={<EditIcon />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            key={id}
-            icon={<DeleteIcon />}
-            label="Delete"
-            className="textPrimary"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
-        ];
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: ({ id }) => {
+        return (
+          <>
+            <div className="flex justify-between gap-2">
+              <Tooltip
+                title="View"
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -19],
+                        },
+                      },
+                    ],
+                  },
+                }}
+              >
+                <button
+                  className=" h-10 flex items-center hover:cursor-pointer"
+                  onClick={() => handleViewClick(id)}
+                >
+                  <VisibilityIcon fontSize="medium" />
+                </button>
+              </Tooltip>
+              <Tooltip
+                title="Edit"
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -19],
+                        },
+                      },
+                    ],
+                  },
+                }}
+              >
+                <button
+                  className=" h-10 flex items-center hover:cursor-pointer"
+                  onClick={() => handleEditClick(id)}
+                >
+                  <EditIcon fontSize="medium" />
+                </button>
+              </Tooltip>
+              <Tooltip
+                title="Delete"
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: "offset",
+                        options: {
+                          offset: [0, -19],
+                        },
+                      },
+                    ],
+                  },
+                }}
+              >
+                <button
+                  className=" h-10 flex items-center hover:cursor-pointer"
+                  onClick={() => handleDeleteClick(id)}
+                >
+                  <DeleteIcon fontSize="medium" />
+                </button>
+              </Tooltip>
+            </div>
+          </>
+        );
       },
     },
   ];
@@ -289,12 +243,13 @@ function MyProducts() {
         </div>
 
         <button
-          disabled={(isStatus === "pending")||(isStatus === "rejected")}
+          disabled={isStatus === "pending" || isStatus === "rejected"}
           className={`items-center justify-center bg-transparent border px-2 py-1 rounded-xl 
           ${
             isStatus === "pending"
               ? "bg-gray-400 border-gray-400 text-gray-700 hover:bg-gray-400 hover:text-gray-700 cursor-not-allowed"
-              :isStatus === "rejected"? "bg-gray-400 border-gray-400 text-gray-700 hover:bg-gray-400 hover:text-gray-700 cursor-not-allowed"
+              : isStatus === "rejected"
+              ? "bg-gray-400 border-gray-400 text-gray-700 hover:bg-gray-400 hover:text-gray-700 cursor-not-allowed"
               : "bg-transparent border-[#5dd39e] text-[#5dd39e] hover:bg-[#5dd39e] hover:text-[#FFFDEC]"
           } `}
         >
@@ -305,15 +260,11 @@ function MyProducts() {
         <div className="bg-yellow-200 my-4 p-4 rounded-xl">
           <p> Your seller status is {isStatus}. You cannot add products yet.</p>
         </div>
-      ) 
-      :isStatus === "rejected" ?
-      (
+      ) : isStatus === "rejected" ? (
         <div className="bg-red-300 my-4 p-4 rounded-xl">
           <p> Your seller status is {isStatus}. You cannot add products.</p>
         </div>
-      )
-       : 
-       (
+      ) : (
         <div className="mt-4">
           {/* here the table will be there */}
           <Box
@@ -331,17 +282,19 @@ function MyProducts() {
             <DataGrid
               rows={rows}
               columns={columns}
-              editMode="row"
-              rowModesModel={rowModesModel}
-              disableColumnResize
-              onRowModesModelChange={handleRowModesModelChange}
-              onRowEditStop={handleRowEditStop}
-              processRowUpdate={processRowUpdate}
-              slots={{ toolbar: EditToolbar }}
-              slotProps={{
-                toolbar: { setRows, setRowModesModel },
+              // pageSize={5}
+              // pageSizeOptions={[10]}
+              // disableSelectionOnClick
+              disableRowSelectionOnClick
+              disableColumnSelector
+              sx={{
+                "& .MuiDataGrid-cell:focus": {
+                  outline: "none",
+                },
+                "& .MuiDataGrid-cell:focus-within": {
+                  outline: "none",
+                },
               }}
-              showToolbar
             />
           </Box>
         </div>

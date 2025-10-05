@@ -2,6 +2,7 @@
 import React from "react";
 import reactDom from "react-dom";
 import { CgClose } from "react-icons/cg";
+import moment from "moment";
 
 function ViewOnlyModal({ open, onClose,rowData }) {
   const MODAL_STYLES = {
@@ -44,7 +45,7 @@ function ViewOnlyModal({ open, onClose,rowData }) {
               <br />
               <p>AMOUNT:{rowData.amount}</p>
               <br />
-              <p>CREATED AT:{rowData.createdAt}</p>
+              <p>CREATED AT:{moment(rowData.createdAt).format("YYYY-MM-DD HH:mm:ss")} </p>
               </div>
           </div>
         </div>       
