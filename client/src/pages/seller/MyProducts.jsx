@@ -1,103 +1,40 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState,useContext } from "react";
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
-import MuiToolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import moment from "moment";
 import { DataGrid } from "@mui/x-data-grid";
 import ViewOnlyModal from "./../../components/ViewOnlyModal.jsx";
-
-const randomId = () => Math.random().toString(36).substring(2, 9);
-
-const randomArrayItem = (array) =>
-  array[Math.floor(Math.random() * array.length)];
-
-const status = ["Pending", "Approved", "Rejected"];
-const randomStatus = () => {
-  return randomArrayItem(status);
-};
-
-const amount = [1299, 699, 899];
-const randomAmount = () => {
-  return randomArrayItem(amount);
-};
-
-const description = [
-  "Blue T-shirt",
-  "Black Cargos",
-  "White Tee",
-  "Green Jeans",
-];
-const randomDescription = () => {
-  return randomArrayItem(description);
-};
-
-const initialRows = [
-  {
-    id: randomId(),
-    status: randomStatus(),
-    description: randomDescription(),
-    amount: randomAmount(),
-    createdAt: new Date(),
-  },
-  {
-    id: randomId(),
-    status: randomStatus(),
-    description: randomDescription(),
-    amount: randomAmount(),
-    createdAt: new Date(),
-  },
-  {
-    id: randomId(),
-    status: randomStatus(),
-    description: randomDescription(),
-    amount: randomAmount(),
-    createdAt: new Date(),
-  },
-  {
-    id: randomId(),
-    status: randomStatus(),
-    description: randomDescription(),
-    amount: randomAmount(),
-    createdAt: new Date(),
-  },
-];
+import { SellerContext } from "../../context/SellerContextProvider.jsx";
+import EditModal from "../../components/EditModal.jsx";
 
 function MyProducts() {
   const [isStatus, setIsStatus] = useState("approved");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [rowData, setRowData] = useState({});
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [rowData, setRowData] = useState({});
+  const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData } = useContext(SellerContext);
 
-  const [rows, setRows] = useState(initialRows);
 
-  const handleClose = () => {
+  const handleViewClose = () => {
     setIsModalOpen(false);
   };
 
-  const handleViewClick = (id) => {
-    console.log("here");
-    //to find the specific row that was selected
-    const selectedRow = rows.find((row) => row.id === id);
-    setRowData(selectedRow);
-    setIsModalOpen(true);
-  };
+  const handleEditClose = ()=>{
+    setIsEditModalOpen(false);
+  }
 
-  const handleEditClick = (id) => () => {
-    console.log(id, "Inside edit function");
-  };
+  // const handleViewClick = (id) => {
+  //   console.log("here");
+  //   //to find the specific row that was selected
+  //   const selectedRow = rows.find((row) => row.id === id);
+  //   setRowData(selectedRow);
+  //   setIsModalOpen(true);
+  // };
 
-  const handleDeleteClick = (id) => () => {
-    console.log(id, "Inside delete function");
-    setRows(rows.filter((row) => row.id !== id));
-  };
-
+  
   const columns = [
     {
       field: "status",
@@ -133,7 +70,6 @@ function MyProducts() {
       headerName: "Created At",
       align: "center",
       headerAlign: "center",
-      // type: "date",
       width: 280,
       renderCell: (params) => {
         const value = params.row?.createdAt;
@@ -270,7 +206,7 @@ function MyProducts() {
           <Box
             sx={{
               height: 500,
-              width: "100%",
+              width: "1100px",
               "& .actions": {
                 color: "text.secondary",
               },
@@ -303,7 +239,14 @@ function MyProducts() {
         <ViewOnlyModal
           rowData={rowData}
           open={isModalOpen}
-          onClose={handleClose}
+          onClose={handleViewClose}
+        />
+      )}
+      {isEditModalOpen && (
+        <EditModal
+          rowData={rowData}
+          open={isEditModalOpen}
+          onClose={handleEditClose}
         />
       )}
     </div>
