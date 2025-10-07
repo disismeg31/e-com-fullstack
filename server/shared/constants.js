@@ -22,6 +22,7 @@ const CONSTANTS = {
         auth:{
             signUp:'/signup',
             signIn:'/signin',
+            checkSession:'/check-session',
             getUsers:'',
             signOut:'signOut',
         },

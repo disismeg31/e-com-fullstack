@@ -12,8 +12,8 @@ import { MdLogout } from "react-icons/md";
 import {ThemeContext} from '../context/ThemeContextProvider';
 import { MdDashboard } from "react-icons/md";
 import { GiCardboardBoxClosed } from "react-icons/gi";
-import { useDispatch} from 'react-redux';
-import { userLogin } from '../store/actions/productActions';
+import { useDispatch} from 'react-redux'; 
+import { logout } from '../store/actions/authActions';
 import { userSignOut } from '../services/authService';
 
 
@@ -27,7 +27,7 @@ function SellerSideBar({isSidebarCollapsed}) {
       userSignOut()
       .then((res)=>{
         console.log("LoggedOut",res)
-        dispatch(userLogin({isLoggedIn:false}))
+        dispatch(logout())
         nav('/')
       })
     .catch((err)=>{

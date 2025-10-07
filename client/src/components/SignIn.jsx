@@ -3,9 +3,8 @@ import { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { userLogin } from "./../store/actions/productActions.js";
+import { setUser } from "./../store/actions/authActions.js";
 import Btn from "./Btn.jsx";
-// import { seedUsers } from "../shared/seedUser.js";
 import { userSignIn } from "./../services/authService.js";
 import "./SignIn.css";
 import { Alert, Snackbar } from "@mui/material";
@@ -44,7 +43,7 @@ function SignIn({ onSwitch }) {
             if (user.status === true) {
               console.log("Login Success ✅:", user.payload.role);
               // 1. Dispatch Redux action
-              dispatch(userLogin({ isLoggedIn: true, role: user.payload.role }));
+               dispatch(setUser({ isLoggedIn: true, role: user.payload.role }));
               //  2. Navigate based on role
               setTimeout(() => {
                 if (user.payload.role === "admin") navigate("/admin");

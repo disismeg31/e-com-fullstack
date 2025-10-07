@@ -9,6 +9,9 @@ router.route(CONSTANTS.subURLS.auth.signUp).post(authController.signUp);
 // login route - for checking if credentials are correct
 router.route(CONSTANTS.subURLS.auth.signIn).post(authController.signIn);
 
+//chack session route - for checking for token 
+router.get(CONSTANTS.subURLS.auth.checkSession, authController.checkSession);
+
 router.route(CONSTANTS.subURLS.auth.getUsers).get(authController.getAllUsers);
 
 // // logout route 

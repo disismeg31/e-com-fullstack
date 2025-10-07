@@ -28,12 +28,14 @@ import PageNotFound from './components/PageNotFound.jsx';
 // import { ErrorBoundary } from 'react-error-boundary';
 import {lazy,Suspense} from 'react';
 import SellerContextProvider from './context/SellerContextProvider.jsx';
+import SessionProvider from './services/SessionProvider.jsx';
 const OrderPlaced = lazy(()=> import('./pages/customer/OrderPlaced.jsx'))
 // so we have to learn about suspence and error boundaries and skeltons so i paused this
 function App() {
   return (
     <>
       <Provider store={productStore}>
+        <SessionProvider>
         <ThemeContextProvider>
           <SearchContextProvider>
             <SellerContextProvider>
@@ -96,6 +98,7 @@ function App() {
             </SellerContextProvider>
           </SearchContextProvider>
         </ThemeContextProvider>
+        </SessionProvider>
       </Provider>
     </>
   );

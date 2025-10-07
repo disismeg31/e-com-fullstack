@@ -7,7 +7,7 @@ import { MdLogout } from "react-icons/md";
 import {ThemeContext} from '../context/ThemeContextProvider';
 import { MdDashboard } from "react-icons/md";
 import { useDispatch} from 'react-redux';
-import { userLogin } from '../store/actions/productActions';
+import {logout} from '../store/actions/authActions';
 import { userSignOut } from '../services/authService';
 
 function Sidebar({isSidebarCollapsed}) {
@@ -20,7 +20,7 @@ function Sidebar({isSidebarCollapsed}) {
       userSignOut()
       .then((res)=>{
         console.log("LoggedOut",res)
-        dispatch(userLogin({isLoggedIn:false}))
+        dispatch(logout())
         nav('/')
       })
     .catch((err)=>{

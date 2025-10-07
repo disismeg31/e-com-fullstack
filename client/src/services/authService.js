@@ -42,7 +42,20 @@ export const userSignOut = async()=>{
     const signOutData = res.data;
     return signOutData;
   }
-  catch(error){
-    throw error.response?.data || error;
+  catch(err){
+    console.log("Error while signOut", err?.message || err?.msg || err);
+  }
+}
+
+export const checkSession = async()=> {
+  const url = 'http://localhost:3500/api/users/check-session'
+    try {
+    const res = await axios.get(url, {
+      withCredentials: true, // send cookies
+    });
+    return res.data;
+  } catch (err) {
+    console.error("checkSession error:", err);
+    throw err;
   }
 }

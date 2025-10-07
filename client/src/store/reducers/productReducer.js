@@ -3,14 +3,8 @@ const initialState = {
     cartItems:[],
     cartCount:0,
     totalAmount:0,
-    user:{
-        isLoggedIn:false,
-        role:""
-    } 
 }
 
-
-// const productReducer =(state={products:[]},action) => {
 const productReducer =(state=initialState,action) => {
 
 switch(action.type){
@@ -90,16 +84,6 @@ switch(action.type){
                 totalAmount:totalAmt
             }
     }
-
-    case 'SET_USER_LOGIN':
-         return{
-            ...state,
-            user:{
-                ...state.user,
-                isLoggedIn:action.payload.isLoggedIn,
-                role:action.payload.role
-            }
-         }
 
     default:
       return state; 

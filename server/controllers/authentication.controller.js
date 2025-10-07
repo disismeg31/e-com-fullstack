@@ -120,6 +120,44 @@ function signIn(req,res){
     })
 }
 
+function checkSession(req, res) {
+  const token = req.cookies?.token;
+  if (!token) {
+    // No cookie -> not authenticated
+    return res.status(401).json({ authenticated: false });
+  }
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    return res.status(401).json({ authenticated: false });
+  }
+
+  // Use Promise chaining instead of async/await
+  User.findById(decoded.id)
+    .select("name email role status")
+    .then(user => {
+      if (!user) {
+        return res.status(401).json({ authenticated: false });
+      }
+
+      return res.json({
+        authenticated: true,
+        user: {
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          status: user.status,
+        },
+      });
+    })
+    .catch(err => {
+      console.error("Error checking session:", err);
+      return res.status(401).json({ authenticated: false });
+    });
+}
+
 function signOut(req,res){
     res.clearCookie('token', {
     httpOnly: true,
@@ -165,6 +203,7 @@ function getAllUsers(req,res){
 module.exports = {
     signUp,
     signIn,
+    checkSession,
     signOut,
     getAllUsers
 }
