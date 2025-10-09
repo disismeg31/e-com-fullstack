@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState,useContext } from "react";
+import { useSelector } from "react-redux"
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
 import EditIcon from "@mui/icons-material/Edit";
@@ -12,7 +13,9 @@ import { SellerContext } from "../../context/SellerContextProvider.jsx";
 import EditModal from "../../components/EditModal.jsx";
 
 function MyProducts() {
-  const [isStatus, setIsStatus] = useState("approved");
+  const isStatus = useSelector(state=>state.auth.user?.status)
+  console.log(isStatus)
+  // const [isStatus, setIsStatus] = useState("approved");
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const [rowData, setRowData] = useState({});
   const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData } = useContext(SellerContext);

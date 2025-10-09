@@ -43,7 +43,14 @@ function SignIn({ onSwitch }) {
             if (user.status === true) {
               console.log("Login Success ✅:", user.payload.role);
               // 1. Dispatch Redux action
-               dispatch(setUser({ isLoggedIn: true, role: user.payload.role }));
+              const userData = {
+              isLoggedIn: true,
+              name:user.payload.name,
+              role: user.payload.role,
+              ...(user.payload.role === "seller" && { status:user.payload.status }) // Only add status if role is seller
+                };
+                console.log("User payload:",user.payload)
+               dispatch(setUser(userData));
               //  2. Navigate based on role
               setTimeout(() => {
                 if (user.payload.role === "admin") navigate("/admin");

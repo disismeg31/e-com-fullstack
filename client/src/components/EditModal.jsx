@@ -51,41 +51,42 @@ function EditModal({ open, onClose, rowData }) {
               <CgClose size={23} />
             </span>
           </div>
-          <form onSubmit={handleSubmit}  className="text-black">
-            <label htmlFor="name">
-              Product Name
+          <form onSubmit={handleSubmit}  className="text-black w-[100%]">
+            <label  htmlFor="name">
+              Product Title
               <br />
-              <input name="name" type="text" value={rowData.description} onChange={handleInputChange} />
+              <input className="w-full my-2 bg-gray-200 rounded-md p-2" name="name" type="text" value={rowData.description} onChange={handleInputChange} />
             </label>
             <br />
             <label htmlFor="description">
               Product Description
               <br />
-              <input name="description" type="text" value={rowData.description} onChange={handleInputChange} />
+              <input className="w-full  my-2 bg-gray-200 rounded-md p-2" name="description" type="text" value={rowData.description} onChange={handleInputChange} />
             </label>
             <br />
             <label htmlFor="stock">
               Stock
-              <select name="stock" id="" onChange={handleInputChange}>
+              <br />
+              <select className="w-full  my-2 bg-gray-200 rounded-md p-2" name="stock" id="" onChange={handleInputChange}>
                 <option value="" hidden></option>
-                <option value="instock">In Stock</option>
+                <option value="inStock" selected>In Stock</option>
                 <option value="limited">Limited</option>
-                <option value="outofstock">Out Of Stock</option>
+                <option value="outOfStock">Out Of Stock</option>
               </select>
             </label>
             <br />
             <label htmlFor="amount">
               Product Price
-              <input name="amount" type="text"  value={rowData.amount} onChange={handleInputChange}/>
+              <br />
+              <input className="w-full  my-2 bg-gray-200 rounded-md p-2" name="amount" type="text"  value={rowData.amount} onChange={handleInputChange}/>
             </label>
+            <br />
             <label htmlFor="img">Upload Image
-              <input name="img" type="file" />
+              <input className="bg-gray-200  my-2 rounded-md p-2" name="img" type="file" />
             </label>
-            <div className="flex justify-center">
-            <button className="bg-green-300 h-10 p-3 flex justify-center items-center hover:cursor-pointer" type="submit">Submit</button>
-
+            <div className="flex justify-center my-2">
+            <button className="w-full  my-2 rounded-md bg-green-300 h-10 p-3 flex justify-center items-center hover:cursor-pointer" type="submit">Submit</button>
             </div>
-             
           </form>
         </div>
       </div>

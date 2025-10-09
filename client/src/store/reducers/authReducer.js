@@ -1,7 +1,9 @@
 const initialAuthState = {
   user: {
     isLoggedIn: false,
+    name:"",
     role: "",
+    status:""
   },
 };
 const authReducer = (state = initialAuthState, action) => {
@@ -9,11 +11,17 @@ const authReducer = (state = initialAuthState, action) => {
     case "SET_USER":
       return {
         ...state,
+        // user: {
+        //   ...state.user,
+        //   isLoggedIn: action.payload.isLoggedIn,
+        //   name:action.payload.name,
+        //   role: action.payload.role,
+        //   status: action.payload.role === "seller" ? action.payload.status : "" // only for sellers
+        // },
         user: {
-          ...state.user,
-          isLoggedIn: action.payload.isLoggedIn,
-          role: action.payload.role,
-        },
+      ...state.user,
+      ...action.payload
+    }
       };
     case "LOGOUT":
       return {
