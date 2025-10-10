@@ -32,31 +32,28 @@ const initialRows = [
   {
     id: randomId(),
     status: randomStatus(),
+    title: randomDescription(),
     description: randomDescription(),
-    amount: randomAmount(),
+    price: randomAmount(),
     createdAt: new Date(),
   },
   {
     id: randomId(),
     status: randomStatus(),
+    title: randomDescription(),
     description: randomDescription(),
-    amount: randomAmount(),
+    price: randomAmount(),
     createdAt: new Date(),
   },
   {
     id: randomId(),
     status: randomStatus(),
+    title: randomDescription(),
     description: randomDescription(),
-    amount: randomAmount(),
+    price: randomAmount(),
     createdAt: new Date(),
   },
-  {
-    id: randomId(),
-    status: randomStatus(),
-    description: randomDescription(),
-    amount: randomAmount(),
-    createdAt: new Date(),
-  },
+   
 ];
 
 function SellerContextProvider({children}) {
@@ -65,12 +62,13 @@ const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 const [rowData, setRowData] = useState({});
 
-const [rows, setRows] = useState(initialRows);
+const [rows, setRows] = useState([]);
+// const [rows, setRows] = useState(initialRows);
 
 
 const handleEditClick = (id) => {
     console.log(id, "Inside edit function");
-    const selectedEditRow = rows.find((row)=>row.id === id);
+    const selectedEditRow = rows.find((row)=>row._id === id);
     setRowData(selectedEditRow)
     setIsEditModalOpen(true);
   };
@@ -78,7 +76,7 @@ const handleEditClick = (id) => {
   const handleViewClick = (id) => {
     console.log("here");
     //to find the specific row that was selected
-    const selectedRow = rows.find((row) => row.id === id);
+    const selectedRow = rows.find((row) => row._id === id);
     setRowData(selectedRow);
     setIsModalOpen(true);
   };

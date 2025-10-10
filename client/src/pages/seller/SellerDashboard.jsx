@@ -6,8 +6,8 @@ function SellerDashboard() {
   const userName = useSelector(state=>state.auth.user?.name)
   return (
     <div className="m-4 !text-[#fff] h-[calc(735px-40px-48px)] overflow-y-auto">
+      <span><p className="mb-3 text-2xl">Hi {userName}</p></span>
       <div className="grid lg:grid-cols-3 grid-rows-0 gap-4 grid-cols-1">
-        <span><p className="text-2xl">Hi {userName}</p></span>
         <span className="flex flex-col  py-4 px-6 bg-[#a590cf] rounded-2xl">
           <span className="w-12 h-12 p-1 mb-2 flex justify-center items-center rounded-full bg-[#09376e]"><GiCardboardBoxClosed size={25}/></span>
           <span className="text-sm sm:text-lg">Total Products</span>

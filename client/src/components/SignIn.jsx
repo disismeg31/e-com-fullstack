@@ -45,6 +45,7 @@ function SignIn({ onSwitch }) {
               // 1. Dispatch Redux action
               const userData = {
               isLoggedIn: true,
+              id:user.payload._id,
               name:user.payload.name,
               role: user.payload.role,
               ...(user.payload.role === "seller" && { status:user.payload.status }) // Only add status if role is seller

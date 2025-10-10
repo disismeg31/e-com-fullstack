@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState,useContext } from "react";
+import { useContext,useEffect } from "react";
 import { useSelector } from "react-redux"
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
@@ -11,15 +11,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import ViewOnlyModal from "./../../components/ViewOnlyModal.jsx";
 import { SellerContext } from "../../context/SellerContextProvider.jsx";
 import EditModal from "../../components/EditModal.jsx";
+import { getMyproducts } from "../../services/sellerService.js";
 
 function MyProducts() {
   const isStatus = useSelector(state=>state.auth.user?.status)
-  console.log(isStatus)
-  // const [isStatus, setIsStatus] = useState("approved");
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [rowData, setRowData] = useState({});
+  const id = useSelector(state=>state.auth.user?.id)
+   
   const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData } = useContext(SellerContext);
-
+  
+  useEffect(()=>{
+    //if status is approved then only call the getProducts Api
+    if(isStatus === 'approved' && id){
+      getMyproducts(id)
+      .then((data)=>{
+        // console.log(data)
+        setRows(data)
+      })
+      .catch((err) => {
+          console.error("Error fetching products:", err);
+        })
+    }
+  },[isStatus,id,setRows])
 
   const handleViewClose = () => {
     setIsModalOpen(false);
@@ -43,11 +55,17 @@ function MyProducts() {
       field: "status",
       headerName: "Status",
       width: 100,
-      // editable: false,
       type: "singleSelect",
       headerAlign: "center",
       align: "center",
       valueOptions: ["Pending", "Approved", "Rejected"],
+    },
+    {
+      field: "title",
+      headerName: "Title",
+      width: 150,
+      headerAlign: "center",
+      align: "left",
     },
     {
       field: "description",
@@ -56,14 +74,12 @@ function MyProducts() {
       width: 200,
       align: "left",
       headerAlign: "center",
-      // editable: true,
     },
     {
-      field: "amount",
-      headerName: "Amount",
+      field: "price",
+      headerName: "Price",
       type: "number",
       width: 180,
-      // editable: true,
       align: "center",
       headerAlign: "center",
       renderCell: (params) => `₹${params.value.toFixed(2)}`,
@@ -79,7 +95,7 @@ function MyProducts() {
         return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "—";
       },
     },
-    { field: "_id", hide: true },
+    // { field: "_id", hide: true },
     {
       field: "action",
       headerName: "Action",
@@ -209,7 +225,7 @@ function MyProducts() {
           <Box
             sx={{
               height: 500,
-              width: "1100px",
+              width: "1165px",
               "& .actions": {
                 color: "text.secondary",
               },
@@ -221,9 +237,7 @@ function MyProducts() {
             <DataGrid
               rows={rows}
               columns={columns}
-              // pageSize={5}
-              // pageSizeOptions={[10]}
-              // disableSelectionOnClick
+              getRowId={(row) => row._id}
               disableRowSelectionOnClick
               disableColumnSelector
               sx={{

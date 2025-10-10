@@ -14,7 +14,9 @@ function SessionProvider({ children }) {
           dispatch(
             setUser({
               isLoggedIn: true,
-              role: data.user.role,
+              role: data.user?.role,
+              status:data.user?.status,
+              id:data.user?.id,
             })
           );
         } else {

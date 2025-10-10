@@ -3,7 +3,8 @@ const initialAuthState = {
     isLoggedIn: false,
     name:"",
     role: "",
-    status:""
+    status:"",
+    id:""
   },
 };
 const authReducer = (state = initialAuthState, action) => {

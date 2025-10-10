@@ -39,13 +39,19 @@ function ViewOnlyModal({ open, onClose,rowData }) {
             </div>
             
             <div className="w-40 p-4 text-black">
-              <p>ID:{rowData.id}</p>
+              <p>ID:{rowData._id}</p>
               <br />
               <p>DESCRIPTION:{rowData.description}</p>
               <br />
-              <p>AMOUNT:{rowData.amount}</p>
+              <p>PRICE:{rowData.price}</p>
               <br />
               <p>CREATED AT:{moment(rowData.createdAt).format("YYYY-MM-DD HH:mm:ss")} </p>
+              <p>Image</p>
+              {
+                rowData.imageUrl ? (
+                `<img src=${rowData.imageUrl}/>`
+              ) : 'No image'
+              }
               </div>
           </div>
         </div>       

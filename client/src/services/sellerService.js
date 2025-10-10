@@ -1,17 +1,20 @@
 import axios from 'axios';
-// http://localhost:3500/api/seller/products/68a854b68f464839ed7f9489/seller
-export const getMyproducts = () =>{
+export const getMyproducts = async(id) =>{
     const url = `http://localhost:3500/api/seller/products/${id}/seller`;
     try{
-
+        const res = await axios.get(url,{
+            withCredentials:true
+        })
+        return res.data?.payload;
     }
     catch(error){
          console.log("Error while getting products",error);
         throw error.response?.data || error; // so you get backend message
     }
 }
+// http://localhost:3500/api/seller/products/68a854b68f464839ed7f9489/seller
 
-export const updatemyProduct =() =>{
+export const updatemyProduct = async() =>{
     // http://localhost:3500/api/seller/products/68a855718f464839ed7f948c
     const url = `http://localhost:3500/api/seller/products/idOfProduct`
     try{

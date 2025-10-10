@@ -73,8 +73,8 @@ function signIn(req,res){
             bcrypt.compare(loginData.password,result.password)
             .then((isMatch)=>{
                 if(isMatch){
-                    const {name,email,role,status} = result;
-                    const userPayload = {name,email,role,status}
+                    const {name,email,role,status,_id} = result;
+                    const userPayload = {name,email,role,status,_id}
                     const token = jwt.sign({id: result._id,name:result.name,role:result.role},process.env.JWT_SECRET,{expiresIn:'7d'})
                     res.cookie('token',token,{
                         httpOnly:true,
@@ -149,6 +149,7 @@ function checkSession(req, res) {
           email: user.email,
           role: user.role,
           status: user.status,
+          id: user._id,
         },
       });
     })
