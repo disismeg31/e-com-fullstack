@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext,useEffect } from "react";
+import { useContext,useEffect,useState} from "react";
 import { useSelector } from "react-redux"
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
@@ -12,12 +12,26 @@ import ViewOnlyModal from "./../../components/ViewOnlyModal.jsx";
 import { SellerContext } from "../../context/SellerContextProvider.jsx";
 import EditModal from "../../components/EditModal.jsx";
 import { getMyproducts } from "../../services/sellerService.js";
+import { Alert, Snackbar } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import { Tailspin } from 'ldrs/react'
+import 'ldrs/react/Tailspin.css'
 
 function MyProducts() {
+  
   const isStatus = useSelector(state=>state.auth.user?.status)
   const id = useSelector(state=>state.auth.user?.id)
    
-  const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData,updateRow } = useContext(SellerContext);
+  const {rows,setRows,handleEditClick,
+    handleDeleteClick,handleViewClick,
+    isEditModalOpen,setIsEditModalOpen,
+    isModalOpen, setIsModalOpen, 
+    rowData,updateRow,deletingRowId,
+    toastOpen,setToastOpen,
+    errorToastOpen,setErrorToastOpen,
+    message,
+  } = useContext(SellerContext);
   
   useEffect(()=>{
     //if status is approved then only call the getProducts Api
@@ -167,7 +181,19 @@ function MyProducts() {
                   className=" h-10 flex items-center hover:cursor-pointer"
                   onClick={() => handleDeleteClick(id)}
                 >
-                  <DeleteIcon fontSize="medium" />
+                  {deletingRowId  === id ? 
+                  (
+                    <Tailspin
+                      size="20"
+                      stroke="5"
+                      speed="0.4"
+                      color="black" 
+                      />
+                    ) 
+                      : 
+                    (
+                    <DeleteIcon fontSize="medium" />
+                  )}
                 </button>
               </Tooltip>
             </div>
@@ -267,6 +293,32 @@ function MyProducts() {
           onUpdate={updateRow}
         />
       )}
+      
+              <Snackbar
+                open={errorToastOpen}
+                autoHideDuration={2000}
+                onClose={() => setErrorToastOpen(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <Alert
+                  icon={<ErrorOutlineIcon fontSize="inherit" />}
+                  severity="error"
+                >
+                  {message}
+                </Alert>
+              </Snackbar>
+             
+              <Snackbar
+                open={toastOpen}
+                autoHideDuration={2000}
+                onClose={() => setToastOpen(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              >
+                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                  {message}
+                </Alert>
+              </Snackbar>
+            
     </div>
   );
 }
