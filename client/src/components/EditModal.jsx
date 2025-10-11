@@ -2,9 +2,13 @@
 import React, { useState } from "react";
 import reactDom from "react-dom";
 import { CgClose } from "react-icons/cg";
+import { Alert, Snackbar } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import {updatemyProduct} from './../services/sellerService'
 
 function EditModal({ open, onClose, rowData }) {
-  const [editData, setEditData] = useState({});
+  const [editData, setEditData] = useState(rowData);
   const MODAL_STYLES = {
     position: "fixed",
     top: "50%",
@@ -33,9 +37,21 @@ function EditModal({ open, onClose, rowData }) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
-  };
+    const changedFields = Object.keys(editData).reduce((acc, key) => {
+      if (editData[key] !== rowData[key]) acc[key] = editData[key];
+      return acc;
+    }, {});
+    console.log("edited data", changedFields);
+    let id = editData._id
+    updatemyProduct(id,changedFields)
+    .then((res)=>{
 
+    })
+    .catch((err)=>{
+      
+    })
+  };
+   console.log(rowData)
   if (!open) return null;
 
   return reactDom.createPortal(
@@ -58,8 +74,8 @@ function EditModal({ open, onClose, rowData }) {
                 className="w-full my-2 bg-gray-200 rounded-md p-2"
                 name="title"
                 type="text"
-                value={rowData.title}
-                onChange={handleInputChange}
+                value={editData.title}
+                onChange={(e)=>handleInputChange(e)}
               />
             </label>
             <br />
@@ -70,8 +86,8 @@ function EditModal({ open, onClose, rowData }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="description"
                 type="text"
-                value={rowData.description}
-                onChange={handleInputChange}
+                value={editData.description}
+                onChange={(e)=>handleInputChange(e)}
               />
             </label>
             <br />
@@ -82,10 +98,11 @@ function EditModal({ open, onClose, rowData }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="stock"
                 id=""
-                onChange={handleInputChange}
+                value={editData.stock}
+                onChange={(e)=>handleInputChange(e)}
               >
                 <option value="" hidden></option>
-                <option value="inStock" selected>
+                <option value="inStock">
                   In Stock
                 </option>
                 <option value="limited">Limited</option>
@@ -100,8 +117,8 @@ function EditModal({ open, onClose, rowData }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="price"
                 type="text"
-                value={rowData.price}
-                onChange={handleInputChange}
+                value={editData.price}
+                onChange={(e)=>handleInputChange(e)}
               />
             </label>
             <br />

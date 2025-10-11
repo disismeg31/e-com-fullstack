@@ -17,6 +17,7 @@ function SessionProvider({ children }) {
               role: data.user?.role,
               status:data.user?.status,
               id:data.user?.id,
+              name:data.user?.name,
             })
           );
         } else {

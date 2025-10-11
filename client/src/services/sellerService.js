@@ -14,11 +14,15 @@ export const getMyproducts = async(id) =>{
 }
 // http://localhost:3500/api/seller/products/68a854b68f464839ed7f9489/seller
 
-export const updatemyProduct = async() =>{
+export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
     // http://localhost:3500/api/seller/products/68a855718f464839ed7f948c
-    const url = `http://localhost:3500/api/seller/products/idOfProduct`
+    const url = `http://localhost:3500/api/seller/products/${idOfProd}`
     try{
-
+        const res = await axios.patch(url,dataToUpdate,{
+            headers: { "Content-Type": "application/json" },
+            withCredentials:true
+        })
+        return res.data?.payload
     }
     catch(error){
          console.log("Error while getting products",error);
