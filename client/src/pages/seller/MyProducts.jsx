@@ -17,7 +17,7 @@ function MyProducts() {
   const isStatus = useSelector(state=>state.auth.user?.status)
   const id = useSelector(state=>state.auth.user?.id)
    
-  const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData } = useContext(SellerContext);
+  const {rows,setRows,handleEditClick,handleDeleteClick,handleViewClick,isEditModalOpen,setIsEditModalOpen,isModalOpen, setIsModalOpen, rowData,updateRow } = useContext(SellerContext);
   
   useEffect(()=>{
     //if status is approved then only call the getProducts Api
@@ -264,6 +264,7 @@ function MyProducts() {
           rowData={rowData}
           open={isEditModalOpen}
           onClose={handleEditClose}
+          onUpdate={updateRow}
         />
       )}
     </div>

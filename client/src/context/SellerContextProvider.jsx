@@ -65,6 +65,9 @@ const [rowData, setRowData] = useState({});
 const [rows, setRows] = useState([]);
 // const [rows, setRows] = useState(initialRows);
 
+const updateRow = (updatedRow) => {
+  setRows((r) =>r.map((row) => (row._id === updatedRow._id ? updatedRow : row)));
+};
 
 const handleEditClick = (id) => {
     console.log(id, "Inside edit function");
@@ -96,7 +99,8 @@ const handleEditClick = (id) => {
         setIsModalOpen,
         isEditModalOpen, 
         setIsEditModalOpen,
-        rowData
+        rowData,
+        updateRow
     }
 
   return (

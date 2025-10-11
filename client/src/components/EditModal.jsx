@@ -1,14 +1,20 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from "react";
+import { useState,useEffect } from "react";
 import reactDom from "react-dom";
 import { CgClose } from "react-icons/cg";
 import { Alert, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {updatemyProduct} from './../services/sellerService'
+import { Tailspin } from 'ldrs/react'
+import 'ldrs/react/Tailspin.css'
 
-function EditModal({ open, onClose, rowData }) {
+function EditModal({ open, onClose, rowData, onUpdate }) {
+  const [toastOpen, setToastOpen] = useState(false);
+  const [errorToastOpen, setErrorToastOpen] = useState(false);
+  const [message,setMessage] = useState("");
   const [editData, setEditData] = useState(rowData);
+  const [loading, setLoading] = useState(false);
   const MODAL_STYLES = {
     position: "fixed",
     top: "50%",
@@ -31,27 +37,56 @@ function EditModal({ open, onClose, rowData }) {
     zIndex: 1000,
   };
 
+  useEffect(() => {
+    if (rowData) setEditData(rowData);
+  }, [rowData]);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setEditData((e) => ({ ...e, [name]: value }));
+    // setEditData((e) => ({ ...e, [name]: value }));
+    setEditData((e) => ({...e,[name]: name === "price" ? Number(value) : value}));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const changedFields = Object.keys(editData).reduce((acc, key) => {
       if (editData[key] !== rowData[key]) acc[key] = editData[key];
       return acc;
     }, {});
-    console.log("edited data", changedFields);
-    let id = editData._id
+    // console.log("edited data", changedFields);
+    let id = editData._id;
+
     updatemyProduct(id,changedFields)
     .then((res)=>{
+      // console.log(res)
+      if(res.status === true){
+      // Merge the changes into the original row
+      const updatedRow = { ...editData, ...changedFields };
+      // Update the row in seller context
+      onUpdate && onUpdate(updatedRow);
 
+        setToastOpen(true);
+        setMessage(res.message);
+        setTimeout(() => {
+        onClose();
+        }, 1000);
+      }
+      else {
+          setMessage(res.message || "Something went wrong");
+          setErrorToastOpen(true);
+        }
     })
     .catch((err)=>{
-      
+      setErrorToastOpen(true);
+      setMessage(err.message)
     })
+    .finally(() => {
+        setLoading(false);
+    });
   };
-   console.log(rowData)
+
+  //  console.log(rowData)
   if (!open) return null;
 
   return reactDom.createPortal(
@@ -135,12 +170,47 @@ function EditModal({ open, onClose, rowData }) {
                 className="w-full  my-2 rounded-md bg-green-300 h-10 p-3 flex justify-center items-center hover:cursor-pointer"
                 type="submit"
               >
-                Submit
+                {loading ? (
+                  <Tailspin
+                    size="20"
+                    stroke="5"
+                    speed="0.4"
+                    color="black" 
+                    />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </form>
         </div>
       </div>
+      {/* {errorToastOpen ? ( */}
+        <Snackbar
+          open={errorToastOpen}
+          autoHideDuration={2000}
+          onClose={() => setErrorToastOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert
+            icon={<ErrorOutlineIcon fontSize="inherit" />}
+            severity="error"
+          >
+            {message}
+          </Alert>
+        </Snackbar>
+      {/* ) : ( */}
+        <Snackbar
+          open={toastOpen}
+          autoHideDuration={2000}
+          onClose={() => setToastOpen(false)}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        >
+          <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+            {message}
+          </Alert>
+        </Snackbar>
+      {/* )} */}
     </>,
 
     document.getElementById("portal")

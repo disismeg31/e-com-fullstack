@@ -22,7 +22,7 @@ export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
             headers: { "Content-Type": "application/json" },
             withCredentials:true
         })
-        return res.data?.payload
+        return res.data
     }
     catch(error){
          console.log("Error while getting products",error);
