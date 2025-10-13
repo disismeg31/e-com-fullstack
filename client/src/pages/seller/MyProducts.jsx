@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useContext,useEffect,useState} from "react";
+import { useContext,useEffect} from "react";
 import { useSelector } from "react-redux"
 import Box from "@mui/material/Box";
 import Tooltip from "@mui/material/Tooltip";
@@ -17,6 +17,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { Tailspin } from 'ldrs/react'
 import 'ldrs/react/Tailspin.css'
+import AddProductModal from "../../components/AddProductModal.jsx";
 
 function MyProducts() {
   
@@ -27,6 +28,8 @@ function MyProducts() {
     handleDeleteClick,handleViewClick,
     isEditModalOpen,setIsEditModalOpen,
     isModalOpen, setIsModalOpen, 
+    isAddModalOpen,setIsAddModalOpen,
+    handleAddProductClick,
     rowData,updateRow,deletingRowId,
     toastOpen,setToastOpen,
     errorToastOpen,setErrorToastOpen,
@@ -55,15 +58,10 @@ function MyProducts() {
     setIsEditModalOpen(false);
   }
 
-  // const handleViewClick = (id) => {
-  //   console.log("here");
-  //   //to find the specific row that was selected
-  //   const selectedRow = rows.find((row) => row.id === id);
-  //   setRowData(selectedRow);
-  //   setIsModalOpen(true);
-  // };
+  const handleAddClose = () =>{
+    setIsAddModalOpen(false);
+  }
 
-  
   const columns = [
     {
       field: "status",
@@ -225,6 +223,7 @@ function MyProducts() {
 
         <button
           disabled={isStatus === "pending" || isStatus === "rejected"}
+          onClick={handleAddProductClick}
           className={`items-center justify-center bg-transparent border px-2 py-1 rounded-xl 
           ${
             isStatus === "pending"
@@ -291,6 +290,13 @@ function MyProducts() {
           open={isEditModalOpen}
           onClose={handleEditClose}
           onUpdate={updateRow}
+        />
+      )}
+
+      {isAddModalOpen &&(
+        <AddProductModal
+        open={isAddModalOpen}
+        onClose={handleAddClose}
         />
       )}
       

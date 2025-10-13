@@ -9,12 +9,24 @@ import {updatemyProduct} from './../services/sellerService'
 import { Tailspin } from 'ldrs/react'
 import 'ldrs/react/Tailspin.css'
 
-function EditModal({ open, onClose, rowData, onUpdate }) {
+function AddProductModal({open, onClose}) {
+    const [newProduct,setNewProduct] = useState({
+        title:"",
+        companyName:"",
+        description:"",
+        price:"",
+        stock:"",
+        category:"",
+        imageUrl:""
+    })
+    // sellerId: and createdBy can be added while submition
   const [toastOpen, setToastOpen] = useState(false);
   const [errorToastOpen, setErrorToastOpen] = useState(false);
   const [message,setMessage] = useState("");
-  const [editData, setEditData] = useState(rowData);
   const [loading, setLoading] = useState(false);
+  const stock = ['inStock', 'limited', 'outOfStock'];
+  const category = ['clothing', 'perfume','accessories']
+
   const MODAL_STYLES = {
     position: "fixed",
     top: "50%",
@@ -37,64 +49,20 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
     zIndex: 1000,
   };
 
-  useEffect(() => {
-    if (rowData) setEditData(rowData);
-  }, [rowData]);
+  const handleInputChange = () =>{
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    // setEditData((e) => ({ ...e, [name]: value }));
-    setEditData((e) => ({...e,[name]: name === "price" ? Number(value) : value}));
-  };
+  }
+  const handleSubmit = () =>{
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setLoading(true);
-    const changedFields = Object.keys(editData).reduce((acc, key) => {
-      if (editData[key] !== rowData[key]) acc[key] = editData[key];
-      return acc;
-    }, {});
-    // console.log("edited data", changedFields);
-    let id = editData._id;
+  }
 
-    updatemyProduct(id,changedFields)
-    .then((res)=>{
-      // console.log(res)
-      if(res.status === true){
-      // Merge the changes into the original row
-      const updatedRow = { ...editData, ...changedFields };
-      // Update the row in seller context
-      onUpdate && onUpdate(updatedRow);
-
-        setToastOpen(true);
-        setMessage(res.message);
-        setTimeout(() => {
-        onClose();
-        }, 1000);
-      }
-      else {
-          setMessage(res.message || "Something went wrong");
-          setErrorToastOpen(true);
-        }
-    })
-    .catch((err)=>{
-      setErrorToastOpen(true);
-      setMessage(err.message)
-    })
-    .finally(() => {
-        setLoading(false);
-    });
-  };
-
-  //  console.log(rowData)
   if (!open) return null;
-
   return reactDom.createPortal(
     <>
-      <div style={OVERLAY_PORTAL}>
+    <div style={OVERLAY_PORTAL}>
         <div style={MODAL_STYLES}>
           <div className="flex justify-between">
-            <p className="text-2xl font-semibold">Edit Product</p>
+            <p className="text-2xl font-semibold">Add Product</p>
             <span
               className="text-black w-6 h-6 rounded-full hover:cursor-pointer flex items-center justify-center"
               onClick={() => onClose()}
@@ -110,7 +78,7 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
                 className="w-full my-2 bg-gray-200 rounded-md p-2"
                 name="title"
                 type="text"
-                value={editData.title}
+                value={newProduct.title}
                 onChange={(e)=>handleInputChange(e)}
               />
             </label>
@@ -122,7 +90,7 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="description"
                 type="text"
-                value={editData.description}
+                value={newProduct.description}
                 onChange={(e)=>handleInputChange(e)}
               />
             </label>
@@ -134,7 +102,7 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="stock"
                 id=""
-                value={editData.stock}
+                value={newProduct.stock}
                 onChange={(e)=>handleInputChange(e)}
               >
                 <option value="" hidden></option>
@@ -153,7 +121,7 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
                 className="w-full  my-2 bg-gray-200 rounded-md p-2"
                 name="price"
                 type="text"
-                value={editData.price}
+                value={newProduct.price}
                 onChange={(e)=>handleInputChange(e)}
               />
             </label>
@@ -186,8 +154,7 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
           </form>
         </div>
       </div>
-      
-        <Snackbar
+    <Snackbar
           open={errorToastOpen}
           autoHideDuration={2000}
           onClose={() => setErrorToastOpen(false)}
@@ -211,11 +178,9 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
             {message}
           </Alert>
         </Snackbar>
-       
     </>,
-
     document.getElementById("portal")
-  );
+  )
 }
 
-export default EditModal;
+export default AddProductModal

@@ -7,6 +7,7 @@ export const SellerContext = createContext();
 function SellerContextProvider({children}) {
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+const [isAddModalOpen,setIsAddModalOpen] = useState(false);
 // const [loading, setLoading] = useState(false);
 const [deletingRowId, setDeletingRowId] = useState(null);
 const [toastOpen, setToastOpen] = useState(false);
@@ -21,6 +22,10 @@ const [rows, setRows] = useState([]);
 const updateRow = (updatedRow) => {
   setRows((r) =>r.map((row) => (row._id === updatedRow._id ? updatedRow : row)));
 };
+
+const handleAddProductClick = () =>{
+    setIsAddModalOpen(true);
+}
 
 const handleEditClick = (id) => {
     const selectedEditRow = rows.find((row)=>row._id === id);
@@ -42,7 +47,7 @@ const handleEditClick = (id) => {
     .then((res)=>{
       if(res.status === true){
         //to remove the deleted row from the ui
-        setRows((r)=>r.filter((row) => row.id !== id));
+        setRows((r)=>r.filter((row) => row._id !== id));
         setDeletingRowId(null); // stop loader
         setToastOpen(true);
         setMessage(res.message);
@@ -72,10 +77,13 @@ const handleEditClick = (id) => {
         handleEditClick,
         handleDeleteClick,
         handleViewClick,
+        handleAddProductClick,
         isModalOpen,
         setIsModalOpen,
         isEditModalOpen, 
         setIsEditModalOpen,
+        isAddModalOpen,
+        setIsAddModalOpen,
         rowData,
         updateRow,
         deletingRowId, 
