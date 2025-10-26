@@ -1,5 +1,6 @@
 const User =  require('./../models/user.js');
 const Product = require('./../models/product.js');
+const cloudinary = require('./../config/cloudinary.js');
 
 function getAllProducts(req,res){
     Product.find({},{__v:0})

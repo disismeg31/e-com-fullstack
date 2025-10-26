@@ -39,7 +39,7 @@ const productSchema = new mongoose.Schema({
         }
     },
     imageUrl:{  
-        type:String,
+        type:Object,
         default:'https://placehold.co/300x300'
         // required:[true,"Please enter the image of the product"],
         // for implimenting image uplade frontend is necessary so for now we're not uploading ,

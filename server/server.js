@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv/config');
 const cookieParser = require('cookie-parser');
-const connectDB = require('./config/mongoose.js');
 
+const connectDB = require('./config/mongoose.js');
+const cloudinaryConfig = require('./config/cloudinary.js');
 const CONSTANTS = require('./shared/constants');
 const app = express();
 const port = CONSTANTS.PORT || 4000;
