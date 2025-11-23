@@ -1,15 +1,16 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import reactDom from "react-dom";
 import { CgClose } from "react-icons/cg";
 import { Alert, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { updatemyProduct } from "./../services/sellerService";
+import { addProduct } from "./../services/sellerService";
 import { Tailspin } from "ldrs/react";
 import "ldrs/react/Tailspin.css";
+import { useSelector } from "react-redux";
 
-function AddProductModal({ open, onClose }) {
+function AddProductModal({ open, onClose, refreshProducts }) {
   const [newProduct, setNewProduct] = useState({
     title: "",
     companyName: "",
@@ -24,8 +25,8 @@ function AddProductModal({ open, onClose }) {
   const [errorToastOpen, setErrorToastOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const stock = ["inStock", "limited", "outOfStock"];
-  const category = ["clothing", "perfume", "accessories"];
+  const role = useSelector((state) => state.auth.user?.role);
+  const sellerId = useSelector((state) => state.auth.user?.id);
 
   const MODAL_STYLES = {
     position: "fixed",
@@ -50,15 +51,57 @@ function AddProductModal({ open, onClose }) {
     zIndex: 1000,
   };
 
-  const handleInputChange = () => {};
-  const handleSubmit = () => {};
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewProduct((n) => ({ ...n, [name]: value }));
+  };
+  const handleProductSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("title", newProduct.title);
+    formData.append("companyName", newProduct.companyName);
+    formData.append("description", newProduct.description);
+    formData.append("price", newProduct.price);
+    formData.append("stock", newProduct.stock);
+    formData.append("category", newProduct.category);
+    formData.append("createdBy", role);
+    formData.append("sellerId", sellerId);
+    if (newProduct.imageUrl) {
+      formData.append("imageUrl", newProduct.imageUrl); // File object
+    }
+
+    addProduct(formData)
+      .then((res) => {
+        if (res.status === true) {
+          setToastOpen(true);
+          setMessage(res.message);
+          setTimeout(() => {
+            onClose();
+            refreshProducts(); //for refetching updated data
+          }, 1000);
+        } else {
+          setMessage(res.message || "Something went wrong");
+          setErrorToastOpen(true);
+        }
+      })
+      .catch((err) => {
+        setErrorToastOpen(true);
+        setMessage(err.message);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+  };
 
   if (!open) return null;
   return reactDom.createPortal(
     <>
       <div style={OVERLAY_PORTAL}>
         <div style={MODAL_STYLES}>
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <p className="text-2xl font-semibold">Add Product</p>
             <span
               className="text-black w-6 h-6 rounded-full hover:cursor-pointer flex items-center justify-center"
               onClick={() => onClose()}
@@ -66,19 +109,17 @@ function AddProductModal({ open, onClose }) {
               <CgClose size={23} />
             </span>
           </div>
-
           <div className="flex">
-
             <div>
-              <div className="flex justify-start">
-                <p className="text-2xl font-semibold">Add Product</p>
-              </div>
-              <form onSubmit={handleSubmit} className="text-black w-[100%]">
+              <form
+                onSubmit={handleProductSubmit}
+                className="text-black w-[100%]"
+              >
                 <label htmlFor="title">
                   Product Title
                   <br />
                   <input
-                    className="w-full my-2 bg-gray-200 rounded-md p-2"
+                    className="w-full my-2 bg-gray-200  rounded-md p-2"
                     name="title"
                     type="text"
                     value={newProduct.title}
@@ -86,14 +127,38 @@ function AddProductModal({ open, onClose }) {
                   />
                 </label>
                 <br />
+                <label htmlFor="companyName">
+                  Company Name
+                  <br />
+                  <input
+                    className="w-full my-2 bg-gray-200  rounded-md p-2"
+                    name="companyName"
+                    type="text"
+                    value={newProduct.companyName}
+                    onChange={(e) => handleInputChange(e)}
+                  />
+                </label>
+                <br />
                 <label htmlFor="description">
                   Product Description
                   <br />
-                  <input
-                    className="w-full  my-2 bg-gray-200 rounded-md p-2"
+                  <textarea
+                    className="w-full  my-2 bg-gray-200  rounded-md p-2"
                     name="description"
                     type="text"
                     value={newProduct.description}
+                    onChange={(e) => handleInputChange(e)}
+                  />
+                </label>
+                <br />
+                <label htmlFor="price">
+                  Product Price
+                  <br />
+                  <input
+                    className="w-full  my-2 bg-gray-200  rounded-md p-2"
+                    name="price"
+                    type="text"
+                    value={newProduct.price}
                     onChange={(e) => handleInputChange(e)}
                   />
                 </label>
@@ -102,7 +167,7 @@ function AddProductModal({ open, onClose }) {
                   Stock
                   <br />
                   <select
-                    className="w-full  my-2 bg-gray-200 rounded-md p-2"
+                    className="w-full  my-2 bg-gray-200  rounded-md p-2"
                     name="stock"
                     id=""
                     value={newProduct.stock}
@@ -115,24 +180,36 @@ function AddProductModal({ open, onClose }) {
                   </select>
                 </label>
                 <br />
-                <label htmlFor="price">
-                  Product Price
+                <label htmlFor="category">
+                  Category
                   <br />
-                  <input
-                    className="w-full  my-2 bg-gray-200 rounded-md p-2"
-                    name="price"
-                    type="text"
-                    value={newProduct.price}
+                  <select
+                    className="w-full  my-2 bg-gray-200  rounded-md p-2"
+                    name="category"
+                    id=""
+                    value={newProduct.category}
                     onChange={(e) => handleInputChange(e)}
-                  />
+                  >
+                    <option value="" hidden></option>
+                    <option value="accessories">Accessories</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="perfume">Perfume</option>
+                  </select>
                 </label>
                 <br />
+
                 <label htmlFor="imageUrl">
                   Upload Image
                   <input
                     className="bg-gray-200 w-full  my-2 rounded-md p-2"
                     name="imageUrl"
                     type="file"
+                    onChange={(e) =>
+                      setNewProduct((n) => ({
+                        ...n,
+                        imageUrl: e.target.files[0],
+                      }))
+                    }
                   />
                 </label>
 
@@ -158,14 +235,12 @@ function AddProductModal({ open, onClose }) {
 
             <div className="p-2 flex justify-center items-center">
               <label htmlFor="ImgPreview">
-                {newProduct.imageUrl.length > 0 ? (
-                  <div>
-                    <img
-                      className="h-70 p-2"
-                      src={newProduct.imageUrl}
-                      alt="image"
-                    />
-                  </div>
+                {newProduct.imageUrl ? (
+                  <img
+                    className="h-60 p-2"
+                    src={URL.createObjectURL(newProduct.imageUrl)}
+                    alt="preview"
+                  />
                 ) : (
                   <div className="h-70 p-2 bg-gray-200 flex justify-center items-center">
                     <p>Product image upload preview will be displayed here</p>
@@ -173,7 +248,6 @@ function AddProductModal({ open, onClose }) {
                 )}
               </label>
             </div>
-
           </div>
         </div>
       </div>

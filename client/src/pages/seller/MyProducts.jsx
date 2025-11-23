@@ -62,6 +62,13 @@ function MyProducts() {
     setIsAddModalOpen(false);
   }
 
+  // for refetching
+  const fetchProducts = () => {
+  if(isStatus === 'approved' && id){
+    getMyproducts(id).then(setRows);
+  }
+  };
+
   const columns = [
     {
       field: "status",
@@ -297,6 +304,7 @@ function MyProducts() {
         <AddProductModal
         open={isAddModalOpen}
         onClose={handleAddClose}
+        refreshProducts={fetchProducts}
         />
       )}
       

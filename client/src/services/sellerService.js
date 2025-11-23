@@ -28,10 +28,14 @@ export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
     }
 }
 
-export const addProduct= ()=>{
+export const addProduct= async(dataToAdd)=>{
     const url = 'http://localhost:3500/api/seller/products'
     try{
-
+        const res = await axios.post(url,dataToAdd,{
+            headers: { "Content-Type": "multipart/form-data" },
+            withCredentials:true
+        })
+        return res.data
     }
     catch(error){
          console.log("Error while adding product",error);

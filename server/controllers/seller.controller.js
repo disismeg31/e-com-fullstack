@@ -1,5 +1,6 @@
 const Product = require("./../models/product.js");
 const cloudinary = require("./../config/cloudinary.js");
+ 
 
 function getMyProducts(req, res) {
   let { id } = req.params;
@@ -23,21 +24,30 @@ function getMyProducts(req, res) {
 /*⬇️ here we need to add the images function 
 with cloudinary sending it to cloudinary**/
 function addNewProducts(req, res) {
-  // let productToAdd = Array.isArray(req.body)? req.body : [req.body];
+   
   let productToAdd = req.body;
+  console.log(req.body,req.file)
+  // Boundary check — confirms whether an image truly exists⬇️
+  if (!req.file && !productToAdd.imageUrl) {
+    console.log("No image uploaded");
+  }
 
   const productToArray = (data) => (Array.isArray(data) ? data : [data]);
-  if (productToAdd.imageUrl) {
+   
+  // Remove harmful ghost data⬇️
+  delete productToAdd.imageUrl;
+
+  if (req.file) {
+    //file upload via multer
     cloudinary.uploader
-      .upload(productToAdd.imageUrl, {
+       
+      .upload(req.file.path, {
         // foldername & presetname
         folder: "ecommerce",
         upload_preset: "ecom-image-store",
       })
       .then((uploadResult) => {
         productToAdd.imageUrl = uploadResult.secure_url;
-        // const NewproductToAddArray = productToArray(productToAdd);
-        // Product.insertMany(NewproductToAddArray)
          return Product.insertMany(productToArray(productToAdd));  
       })
       .then((result) => {
