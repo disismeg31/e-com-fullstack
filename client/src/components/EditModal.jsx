@@ -50,40 +50,41 @@ function EditModal({ open, onClose, rowData, onUpdate }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
-    const changedFields = Object.keys(editData).reduce((acc, key) => {
-      if (editData[key] !== rowData[key]) acc[key] = editData[key];
-      return acc;
-    }, {});
-    // console.log("edited data", changedFields);
-    let id = editData._id;
 
-    updatemyProduct(id,changedFields)
-    .then((res)=>{
-      // console.log(res)
-      if(res.status === true){
-      // Merge the changes into the original row
-      const updatedRow = { ...editData, ...changedFields };
-      // Update the row in seller context
-      onUpdate && onUpdate(updatedRow);
+    
+    const formData = new FormData();
+
+    Object.keys(editData).forEach((key) => {
+    if (editData[key] !== rowData[key]) {
+      formData.append(key, editData[key]);
+    }
+  });
+
+  const fileInput = document.querySelector('input[name="imageUrl"]');
+  if (fileInput?.files?.[0]) {
+    formData.append("imageUrl", fileInput.files[0]);
+  }
+    
+    updatemyProduct(editData._id, formData)
+    .then((res) => {
+      if (res.status === true) {
+        // Update the row in seller context
+        // onUpdate && onUpdate({ ...editData });
+        onUpdate && onUpdate(res.payload);
 
         setToastOpen(true);
         setMessage(res.message);
-        setTimeout(() => {
-        onClose();
-        }, 1000);
+        setTimeout(onClose, 1000);
+      } else {
+        setErrorToastOpen(true);
+        setMessage(res.message);
       }
-      else {
-          setMessage(res.message || "Something went wrong");
-          setErrorToastOpen(true);
-        }
     })
-    .catch((err)=>{
+    .catch((err) => {
       setErrorToastOpen(true);
-      setMessage(err.message)
+      setMessage(err.message);
     })
-    .finally(() => {
-        setLoading(false);
-    });
+    .finally(() => setLoading(false));
   };
 
   //  console.log(rowData)

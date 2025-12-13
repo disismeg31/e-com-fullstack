@@ -1,6 +1,5 @@
 const Product = require("./../models/product.js");
 const cloudinary = require("./../config/cloudinary.js");
- 
 
 function getMyProducts(req, res) {
   let { id } = req.params;
@@ -24,23 +23,22 @@ function getMyProducts(req, res) {
 /*⬇️ here we need to add the images function 
 with cloudinary sending it to cloudinary**/
 function addNewProducts(req, res) {
-   
   let productToAdd = req.body;
-  console.log(req.body,req.file)
+  console.log(req.body, req.file);
   // Boundary check — confirms whether an image truly exists⬇️
   if (!req.file && !productToAdd.imageUrl) {
     console.log("No image uploaded");
   }
 
   const productToArray = (data) => (Array.isArray(data) ? data : [data]);
-   
+
   // Remove harmful ghost data⬇️
   delete productToAdd.imageUrl;
 
   if (req.file) {
     //file upload via multer
     cloudinary.uploader
-       
+
       .upload(req.file.path, {
         // foldername & presetname
         folder: "ecommerce",
@@ -48,7 +46,7 @@ function addNewProducts(req, res) {
       })
       .then((uploadResult) => {
         productToAdd.imageUrl = uploadResult.secure_url;
-         return Product.insertMany(productToArray(productToAdd));  
+        return Product.insertMany(productToArray(productToAdd));
       })
       .then((result) => {
         const dataToDisplay = result.map((r) => r.title);
@@ -67,26 +65,26 @@ function addNewProducts(req, res) {
           status: false,
         });
       });
-  }
-  else{
+  } else {
     Product.insertMany(productToArray(productToAdd))
-  .then((result)=>{
-      const dataToDisplay = result.map((r)=>r.title)
-      res.status(200).json({
-          message:`Successfully Inserted Product${dataToDisplay.length>1 ? 's':'.'}`,
-          payload:dataToDisplay,
-          status:true
+      .then((result) => {
+        const dataToDisplay = result.map((r) => r.title);
+        res.status(200).json({
+          message: `Successfully Inserted Product${
+            dataToDisplay.length > 1 ? "s" : "."
+          }`,
+          payload: dataToDisplay,
+          status: true,
+        });
       })
-  })
-  .catch((err)=>{
-      console.log("addProducts seller err",err)
-      res.status(500).json({
-          message:"Internal server error",
-          status:false
-      })
-  })
+      .catch((err) => {
+        console.log("addProducts seller err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
+      });
   }
-  
 }
 
 function getMySpecificProduct(req, res) {
@@ -118,31 +116,78 @@ function getMySpecificProduct(req, res) {
 function updateMyProduct(req, res) {
   const { id } = req.params;
   let dataToUpdate = req.body;
-  Product.findByIdAndUpdate(id, dataToUpdate, {
-    new: true,
-    runValidators: true,
-  })
-    .then((result) => {
-      if (!result) {
-        return res.status(404).json({
-          message: "Product not found",
+
+  // delete dataToUpdate.imageUrl;
+  if (dataToUpdate?.imageUrl && typeof dataToUpdate.imageUrl === "object") {
+    delete dataToUpdate.imageUrl;
+  }
+
+  if (req.file) {
+    //file upload via multer
+    cloudinary.uploader
+
+      .upload(req.file.path, {
+        // foldername & presetname
+        folder: "ecommerce",
+        upload_preset: "ecom-image-store",
+      })
+      .then((uploadResult) => {
+        dataToUpdate.imageUrl = uploadResult.secure_url;
+        return Product.findByIdAndUpdate(id, dataToUpdate, {
+          new: true,
+          runValidators: true,
+        });
+      })
+      .then((result) => {
+        if (!result) {
+          return res.status(404).json({
+            message: "Product not found",
+            status: false,
+          });
+        }
+
+        res.status(200).json({
+          message: `Successfully Updated Product${
+            result.length > 1 ? "s" : "."
+          }`,
+          payload: result,
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.error("updateMyProduct seller err", err);
+        res.status(500).json({
+          message: "Internal server error",
           status: false,
         });
-      }
-
-      res.status(200).json({
-        message: "Succesfully Updated",
-        payload: { id: result._id, status: result.status },
-        status: true,
       });
+  } else {
+    Product.findByIdAndUpdate(id, dataToUpdate, {
+      new: true,
+      runValidators: true,
     })
-    .catch((err) => {
-      console.log("updateProduct seller err", err);
-      res.status(500).json({
-        message: "Internal server error",
-        status: false,
+      .then((result) => {
+        if (!result) {
+          return res.status(404).json({
+            message: "Product not found",
+            status: false,
+          });
+        }
+
+        res.status(200).json({
+          message: "Succesfully Updated",
+          payload: { id: result._id, status: result.status },
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.log("updateProduct seller err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
       });
-    });
+  }
 }
 
 function deleteMyProduct(req, res) {

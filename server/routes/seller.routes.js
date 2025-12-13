@@ -11,7 +11,7 @@ router.route(CONSTANTS.subURLS.sellers.getProduct).get(sellerController.getMySpe
 
 router.route(CONSTANTS.subURLS.sellers.insertProduct).post(upload.single("imageUrl"),sellerController.addNewProducts);
 
-router.route(CONSTANTS.subURLS.sellers.updateProduct).patch(sellerController.updateMyProduct);
+router.route(CONSTANTS.subURLS.sellers.updateProduct).patch(upload.single("imageUrl"),sellerController.updateMyProduct);
 
 router.route(CONSTANTS.subURLS.sellers.deleteProduct).delete(sellerController.deleteMyProduct);
 

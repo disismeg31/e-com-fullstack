@@ -17,7 +17,8 @@ export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
     const url = `http://localhost:3500/api/seller/products/${idOfProd}`
     try{
         const res = await axios.patch(url,dataToUpdate,{
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "multipart/form-data" },
+            // headers: { "Content-Type": "application/json" },
             withCredentials:true
         })
         return res.data
