@@ -100,7 +100,7 @@ function ViewOnlyModal({ open, onClose,rowData }) {
             <br />
             <label htmlFor="imageUrl">
               Image
-              <img src={rowData.imageUrl} alt="image" />
+              <img style={{height:"100px",width:"400px",objectFit:"cover"}} src={rowData.imageUrl} alt="image" />
             </label>
           </form>
         </div>

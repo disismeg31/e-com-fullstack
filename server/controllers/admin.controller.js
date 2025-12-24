@@ -29,25 +29,93 @@ function getAllProducts(req,res){
     })
 }
 
-function addProducts(req,res){
-    let productToAdd = Array.isArray(req.body)? req.body : [req.body];
-    Product.insertMany(productToAdd)
-    .then((result)=>{
-        const dataTodisplay = result.map((r)=>r.title)
+// function addProducts(req,res){
+//     let productToAdd = Array.isArray(req.body)? req.body : [req.body];
+//     Product.insertMany(productToAdd)
+//     .then((result)=>{
+//         const dataTodisplay = result.map((r)=>r.title)
+//         res.status(200).json({
+//             message:`Successfully Inserted Product${dataTodisplay.length>1 ? 's':'.'}`,
+//             payload:dataTodisplay,
+//             status:true
+//         })
+//     })
+//     .catch((err)=>{
+//         console.log("addProducts admin err",err)
+//         res.status(500).json({
+//             message:"Internal server error",
+//             status:false
+//         })
+//     })    
+// }
+
+/*⬇️ here we need to add the images function 
+with cloudinary sending it to cloudinary**/
+function addProducts(req, res) {
+  let productToAdd = req.body;
+  console.log(req.body, req.file);
+  // Boundary check — confirms whether an image truly exists⬇️
+  if (!req.file && !productToAdd.imageUrl) {
+    console.log("No image uploaded");
+  }
+
+  const productToArray = (data) => (Array.isArray(data) ? data : [data]);
+
+  // Remove harmful ghost data⬇️
+  delete productToAdd.imageUrl;
+
+  if (req.file) {
+    //file upload via multer
+    cloudinary.uploader
+
+      .upload(req.file.path, {
+        // foldername & presetname
+        folder: "ecommerce",
+        upload_preset: "ecom-image-store",
+      })
+      .then((uploadResult) => {
+        productToAdd.imageUrl = uploadResult.secure_url;
+        return Product.insertMany(productToArray(productToAdd));
+      })
+      .then((result) => {
+        const dataToDisplay = result.map((r) => r.title);
         res.status(200).json({
-            message:`Successfully Inserted Product${dataTodisplay.length>1 ? 's':'.'}`,
-            payload:dataTodisplay,
-            status:true
-        })
-    })
-    .catch((err)=>{
-        console.log("addProducts admin err",err)
+          message: `Successfully Inserted Product${
+            dataToDisplay.length > 1 ? "s" : "."
+          }`,
+          payload: dataToDisplay,
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.error("addProducts admin err", err);
         res.status(500).json({
-            message:"Internal server error",
-            status:false
-        })
-    })    
+          message: "Internal server error",
+          status: false,
+        });
+      });
+  } else {
+    Product.insertMany(productToArray(productToAdd))
+      .then((result) => {
+        const dataToDisplay = result.map((r) => r.title);
+        res.status(200).json({
+          message: `Successfully Inserted Product${
+            dataToDisplay.length > 1 ? "s" : "."
+          }`,
+          payload: dataToDisplay,
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.log("addProducts admin err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
+      });
+  }
 }
+
 
 function getProduct(req,res){
     const {id} = req.params;
@@ -77,69 +145,112 @@ function getProduct(req,res){
     })
 }
 
-function updateProduct(req,res){
-    const {id} = req.params;
-    let dataToUpdate = req.body;
-    Product.findByIdAndUpdate(id,dataToUpdate,{ new: true, runValidators: true })
-    .then((result)=>{
-        if(!result){
-            return res.status(404).json({
-                message:"Product not found",
-                status:false
-            })
+// function updateProduct(req,res){
+//     const {id} = req.params;
+//     let dataToUpdate = req.body;
+//     Product.findByIdAndUpdate(id,dataToUpdate,{ new: true, runValidators: true })
+//     .then((result)=>{
+//         if(!result){
+//             return res.status(404).json({
+//                 message:"Product not found",
+//                 status:false
+//             })
+//         }
+
+//         res.status(200).json({
+//             message:"Succesfully Updated",
+//             payload: { id: result._id, status: result.status },
+//             status:true
+//         })
+
+//     })
+//     .catch((err)=>{
+//         console.log("updateProduct admin err",err);
+//         res.status(500).json({
+//             message:"Internal server error",
+//             status:false
+//         })
+//     })
+// }
+
+function updateProduct(req, res) {
+  const { id } = req.params;
+  let dataToUpdate = req.body;
+
+  // delete dataToUpdate.imageUrl;
+  if (dataToUpdate?.imageUrl && typeof dataToUpdate.imageUrl === "object") {
+    delete dataToUpdate.imageUrl;
+  }
+
+  if (req.file) {
+    //file upload via multer
+    cloudinary.uploader
+
+      .upload(req.file.path, {
+        // foldername & presetname
+        folder: "ecommerce",
+        upload_preset: "ecom-image-store",
+      })
+      .then((uploadResult) => {
+        dataToUpdate.imageUrl = uploadResult.secure_url;
+        return Product.findByIdAndUpdate(id, dataToUpdate, {
+          new: true,
+          runValidators: true,
+        });
+      })
+      .then((result) => {
+        if (!result) {
+          return res.status(404).json({
+            message: "Product not found",
+            status: false,
+          });
         }
 
         res.status(200).json({
-            message:"Succesfully Updated",
-            payload: { id: result._id, status: result.status },
-            status:true
-        })
-
-    })
-    .catch((err)=>{
-        console.log("updateProduct admin err",err);
+          message: `Successfully Updated Product${
+            result.length > 1 ? "s" : "."
+          }`,
+          payload: result,
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.error("updateProduct adminr err", err);
         res.status(500).json({
-            message:"Internal server error",
-            status:false
-        })
+          message: "Internal server error",
+          status: false,
+        });
+      });
+  } else {
+    Product.findByIdAndUpdate(id, dataToUpdate, {
+      new: true,
+      runValidators: true,
     })
+      .then((result) => {
+        if (!result) {
+          return res.status(404).json({
+            message: "Product not found",
+            status: false,
+          });
+        }
+
+        res.status(200).json({
+          message: "Succesfully Updated",
+          payload: { id: result._id, status: result.status },
+          status: true,
+        });
+      })
+      .catch((err) => {
+        console.log("updateProduct admin err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
+      });
+  }
 }
 
-// function updateAdminProductStatus(req,res){
-//     Product.updateMany({createdBy:"admin"},{$set:{status:"approved"}})
-//     .then((result)=>{
-//         res.status(200).json({
-//             message: "Admin products status updated successfully",
-//             modifiedCount: result.modifiedCount,
-//             status: true
-//         });
-//     }) 
-//     .catch((err)=>{
-//         console.log("updateAdminStatus admin err",err)
-//         res.status(500).json({
-//             message:"Internal server error",
-//             status:false
-//         })
-//     })
-// }
 
-// function updateAdminSellerIDNull(req,res){
-//     Product.updateMany({createdBy:"admin"},{$set:{sellerId:null}})
-//     .then((result)=>{
-//         res.status(200).json({
-//             message: "Admin products sellerID updated successfully",
-//             modifiedCount: result.modifiedCount,
-//             status: true
-//         });
-//     }) 
-//     .catch((err)=>{
-//         console.log("updateAdminSellerIDNull admin err",err)
-//         res.status(500).json({
-//             message:"Internal server error",
-//             status:false
-//         })
-//     })
-// }
 
 function deleteProduct(req,res){
     const {id} = req.params;

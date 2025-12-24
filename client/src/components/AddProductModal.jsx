@@ -237,7 +237,8 @@ function AddProductModal({ open, onClose, refreshProducts }) {
               <label htmlFor="ImgPreview">
                 {newProduct.imageUrl ? (
                   <img
-                    className="h-60 p-2"
+                    style={{height:"100px",width:"400px",objectFit:"cover"}}
+                    className="p-2"
                     src={URL.createObjectURL(newProduct.imageUrl)}
                     alt="preview"
                   />
