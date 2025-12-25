@@ -3,6 +3,9 @@ import { Outlet,useNavigate } from "react-router-dom"
 import { useState,useEffect,useContext } from "react";
 // import Header from "../components/Header.jsx" 
 import Footer from "../components/Footer.jsx"
+import AdminSideBar from "../components/AdminSideBar.jsx"
+import SAHeader from "../components/SAHeader.jsx" 
+
 // import Sidebar from "../components/Sidebar.jsx";
 import { ThemeContext } from "../context/ThemeContextProvider";
 
@@ -91,13 +94,11 @@ function AdminLayout() {
   return (
      <div style={sideNdout}>
       <aside style={sidebarStyle}>
-        <p className="text-black">Admin Sidebar</p>
-        {/* <Sidebar isSidebarCollapsed={isSidebarCollapsed}/> */}
+        <AdminSideBar isSidebarCollapsed={isSidebarCollapsed} />
         </aside>
       <div style={headerandoutlineandfooter}>
         <div style={headerStyle}>
-        {/* <Header/> */} 
-        <p className="text-black">Admin Header</p>
+        <SAHeader/> 
         </div>
       <div className={themeName} style={outletStyle} ><Outlet/></div>
       <div style={footerStyle}><Footer/></div>

@@ -72,10 +72,7 @@ function App() {
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route element={<ProtectedAdminRoute />}>
                     <Route index element={<AdminDashboard />} />
-                    <Route
-                      path="approvedSellers"
-                      element={<ApprovedSellers />}
-                    />
+                    <Route path="approvedSellers"element={<ApprovedSellers />}/>
                     <Route path="manageProducts" element={<ManageProducts />} />
                     <Route path="sellerRequests" element={<SellerRequests />} />
                   </Route>

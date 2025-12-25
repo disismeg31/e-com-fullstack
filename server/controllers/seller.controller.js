@@ -271,29 +271,6 @@ function deleteMyProduct(req, res) {
         status: false,
       });
     });
-   
-  // Product.findByIdAndDelete(id)
-  //   .then((result) => {
-  //     if (!result) {
-  //       return res.status(404).json({
-  //         message: "Product not found",
-  //         status: false,
-  //       });
-  //     }
-
-  //     res.status(200).json({
-  //       message: "Succesfully Deleted",
-  //       payload: { id: result._id, title: result.title },
-  //       status: true,
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.log("deleteProduct seller err", err);
-  //     res.status(500).json({
-  //       message: "Internal server error",
-  //       status: false,
-  //     });
-  //   });
 }
 
 module.exports = {
