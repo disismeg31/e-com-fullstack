@@ -1,32 +1,30 @@
-const User =  require('./../models/user.js');
-const Product = require('./../models/product.js');
-const cloudinary = require('./../config/cloudinary.js');
+const User = require("./../models/user.js");
+const Product = require("./../models/product.js");
+const cloudinary = require("./../config/cloudinary.js");
 
-function getAllProducts(req,res){
-    Product.find({},{__v:0})
-    .then((result)=>{
-        if(result.length === 0){
-            res.status(404).json({
-                message:"No products Found Add New Products",
-                status:false
-            })
-        }
-        else{
-            res.status(200).json({
-                message:"Succesfully fetched products",
-                payload:result,
-                status:true
-            })
-        }
-
+function getAllProducts(req, res) {
+  Product.find({}, { __v: 0 })
+    .then((result) => {
+      if (result.length === 0) {
+        res.status(404).json({
+          message: "No products Found Add New Products",
+          status: false,
+        });
+      } else {
+        res.status(200).json({
+          message: "Succesfully fetched products",
+          payload: result,
+          status: true,
+        });
+      }
     })
-    .catch((err)=>{
-        console.log("getAllProducts admin err",err)
-        res.status(500).json({
-            message:"Internal server error",
-            status:false
-        })
-    })
+    .catch((err) => {
+      console.log("getAllProducts admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
 }
 
 // function addProducts(req,res){
@@ -46,7 +44,7 @@ function getAllProducts(req,res){
 //             message:"Internal server error",
 //             status:false
 //         })
-//     })    
+//     })
 // }
 
 /*⬇️ here we need to add the images function 
@@ -116,139 +114,31 @@ function addProducts(req, res) {
   }
 }
 
-
-function getProduct(req,res){
-    const {id} = req.params;
-    Product.find({_id:id},{__v:0})
-    .then((result)=>{
-        if(result.length === 0){
-            res.status(404).json({
-                message:"No product Found",
-                status:false
-            })
-        }
-        else{
-            res.status(200).json({
-                message:"Succesfully fetched product",
-                payload:result,
-                status:true
-            })
-        }
-
+function getProduct(req, res) {
+  const { id } = req.params;
+  Product.find({ _id: id }, { __v: 0 })
+    .then((result) => {
+      if (result.length === 0) {
+        res.status(404).json({
+          message: "No product Found",
+          status: false,
+        });
+      } else {
+        res.status(200).json({
+          message: "Succesfully fetched product",
+          payload: result,
+          status: true,
+        });
+      }
     })
-    .catch((err)=>{
-        console.log("getProduct of admin err",err)
-        res.status(500).json({
-            message:"Internal server error",
-            status:false
-        })
-    })
+    .catch((err) => {
+      console.log("getProduct of admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
 }
-
-// function updateProduct(req,res){
-//     const {id} = req.params;
-//     let dataToUpdate = req.body;
-//     Product.findByIdAndUpdate(id,dataToUpdate,{ new: true, runValidators: true })
-//     .then((result)=>{
-//         if(!result){
-//             return res.status(404).json({
-//                 message:"Product not found",
-//                 status:false
-//             })
-//         }
-
-//         res.status(200).json({
-//             message:"Succesfully Updated",
-//             payload: { id: result._id, status: result.status },
-//             status:true
-//         })
-
-//     })
-//     .catch((err)=>{
-//         console.log("updateProduct admin err",err);
-//         res.status(500).json({
-//             message:"Internal server error",
-//             status:false
-//         })
-//     })
-// }
-
-// function updateProduct(req, res) {
-//   const { id } = req.params;
-//   let dataToUpdate = req.body;
-
-//   // delete dataToUpdate.imageUrl;
-//   if (dataToUpdate?.imageUrl && typeof dataToUpdate.imageUrl === "object") {
-//     delete dataToUpdate.imageUrl;
-//   }
-
-//   if (req.file) {
-//     //file upload via multer
-//     cloudinary.uploader
-
-//       .upload(req.file.path, {
-//         // foldername & presetname
-//         folder: "ecommerce",
-//         upload_preset: "ecom-image-store",
-//       })
-//       .then((uploadResult) => {
-//         dataToUpdate.imageUrl = uploadResult.secure_url;
-//         return Product.findByIdAndUpdate(id, dataToUpdate, {
-//           new: true,
-//           runValidators: true,
-//         });
-//       })
-//       .then((result) => {
-//         if (!result) {
-//           return res.status(404).json({
-//             message: "Product not found",
-//             status: false,
-//           });
-//         }
-
-//         res.status(200).json({
-//           message: `Successfully Updated Product${
-//             result.length > 1 ? "s" : "."
-//           }`,
-//           payload: result,
-//           status: true,
-//         });
-//       })
-//       .catch((err) => {
-//         console.error("updateProduct adminr err", err);
-//         res.status(500).json({
-//           message: "Internal server error",
-//           status: false,
-//         });
-//       });
-//   } else {
-//     Product.findByIdAndUpdate(id, dataToUpdate, {
-//       new: true,
-//       runValidators: true,
-//     })
-//       .then((result) => {
-//         if (!result) {
-//           return res.status(404).json({
-//             message: "Product not found",
-//             status: false,
-//           });
-//         }
-
-//         res.status(200).json({
-//           message: "Succesfully Updated",
-//           payload: { id: result._id, status: result.status },
-//           status: true,
-//         });
-//       })
-//       .catch((err) => {
-//         console.log("updateProduct admin err", err);
-//         res.status(500).json({
-//           message: "Internal server error",
-//           status: false,
-//         });
-//       });
-//   }
-// }
 
 function updateProduct(req, res) {
   const { id } = req.params;
@@ -261,7 +151,8 @@ function updateProduct(req, res) {
   }
 
   // 1️⃣ Fetch existing product FIRST
-  Product.findById(id).then((existingProduct) => {
+  Product.findById(id)
+  .then((existingProduct) => {
     if (!existingProduct) {
       throw { status: 404, message: "Product not found" };
     }
@@ -277,7 +168,11 @@ function updateProduct(req, res) {
         })
         .then((uploadResult) => {
           // 4️⃣ Delete old Cloudinary image
-          if (existingProduct.imageUrl) {
+          if (
+            existingProduct.imageUrl &&
+            existingProduct.imageUrl.includes("/upload/") &&
+            existingProduct.imageUrl.includes("/ecommerce/")
+          ) {
             const publicId = existingProduct.imageUrl
               .split("/upload/")[1]
               .replace(/^v\d+\//, "")
@@ -315,7 +210,7 @@ function updateProduct(req, res) {
           });
         })
         .catch((err) => {
-          console.error("updateMyProduct seller err", err);
+          console.error("updateProduct admin err", err);
           res.status(500).json({
             message: "Internal server error",
             status: false,
@@ -341,50 +236,23 @@ function updateProduct(req, res) {
           });
         })
         .catch((err) => {
-          console.log("updateProduct seller err", err);
+          console.log("Product.findByIdAndUpdate admin err", err);
           res.status(500).json({
             message: "Internal server error",
             status: false,
           });
         });
     }
+  })
+  .catch((err) => {
+        console.log("updateProduct admin err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
   });
 }
 
-
-
-// function deleteProduct(req,res){
-//     const {id} = req.params;
-    
-//     if(!id){
-//         return res.status(400).json({
-//             message:"ID is required",
-//             status:false
-//         })
-//     }
-//     Product.findByIdAndDelete(id)
-//     .then((result)=>{
-//         if(!result){
-//             return res.status(404).json({
-//                 message:"Product not found",
-//                 status:false
-//             })  
-//         }
-
-//         res.status(200).json({
-//             message:"Succesfully Deleted",
-//             payload:{ id: result._id, title: result.title },
-//             status:true
-//         })
-//     })
-//     .catch((err)=>{
-//         console.log("deleteProduct admin err",err)
-//         res.status(500).json({
-//             message:"Internal server error",
-//             status:false
-//         })
-//     })
-// }
 
 function deleteProduct(req, res) {
   const { id } = req.params;
@@ -395,8 +263,8 @@ function deleteProduct(req, res) {
       status: false,
     });
   }
-  
-   let productToDelete;
+
+  let productToDelete;
 
   // 1️⃣ Find product first
   Product.findById(id)
@@ -420,10 +288,10 @@ function deleteProduct(req, res) {
         return cloudinary.uploader.destroy(publicId);
       }
     })
-    .then(()=>{
+    .then(() => {
       // 3️⃣ Delete product from DB
       return Product.findByIdAndDelete(id);
-      })
+    })
     .then(() => {
       res.status(200).json({
         message: "Successfully Deleted",
@@ -443,130 +311,128 @@ function deleteProduct(req, res) {
     });
 }
 
-function updateProductStatus(req,res){
-    const allowed = ['rejected','approved','pending']
-    const { id } = req.params;      // ID from URL
-    const { status } = req.body;    // status from button click
-    if(!id || !status){
-        return res.status(400).json({
-            message:"ID and Status are is required",
-            status:false
-        })
-    }
+function updateProductStatus(req, res) {
+  const allowed = ["rejected", "approved", "pending"];
+  const { id } = req.params; // ID from URL
+  const { status } = req.body; // status from button click
+  if (!id || !status) {
+    return res.status(400).json({
+      message: "ID and Status are is required",
+      status: false,
+    });
+  }
 
-    if (!allowed.includes(status)) {
-        return res.status(400).json({
-            message:"Invalid status value",
-            status:false
-        })
-    }
+  if (!allowed.includes(status)) {
+    return res.status(400).json({
+      message: "Invalid status value",
+      status: false,
+    });
+  }
 
-    Product.findByIdAndUpdate(id,{status},{ new: true, runValidators: true })
-    .then((result)=>{
-        if(!result){
-            return res.status(404).json({
-                message:"Product not found",
-                status:false
-            })
-        }
+  Product.findByIdAndUpdate(id, { status }, { new: true, runValidators: true })
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({
+          message: "Product not found",
+          status: false,
+        });
+      }
 
+      res.status(200).json({
+        message: "Succesfully Updated",
+        payload: { id: result._id, status: result.status },
+        status: true,
+      });
+    })
+    .catch((err) => {
+      console.log("updateProductStatus admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
+}
+
+function getAllSellers(req, res) {
+  User.find({ role: "seller" }, { __v: 0, password: 0 })
+    .then((result) => {
+      if (result.length === 0) {
+        res.status(404).json({
+          message: "No sellers found , Add sellers",
+          payload: result,
+          status: false,
+        });
+      } else {
         res.status(200).json({
-            message:"Succesfully Updated",
-            payload: { id: result._id, status: result.status },
-            status:true
-        })
+          message: "Succesfully fetched sellers!!",
+          payload: result,
+          status: true,
+        });
+      }
     })
-    .catch((err)=>{
-        console.log("updateProductStatus admin err",err)
-        res.status(500).json({
-            message:"Internal server error",
-            status:false
-         })
-    })
+    .catch((err) => {
+      console.log("getAllSellers admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
 }
 
-function getAllSellers(req,res){
-    User.find({role:'seller'},{__v:0,password:0})
-    .then((result)=>{
-        if(result.length === 0){
-            res.status(404).json({
-            message:"No sellers found , Add sellers",
-            payload:result,
-            status:false
-        })
-        }
-        else{
-            res.status(200).json({
-            message:"Succesfully fetched sellers!!",
-            payload:result,
-            status:true
-        })
-        }    
+function updateSellerStatus(req, res) {
+  const allowed = ["rejected", "approved", "pending"];
+  const { id } = req.params; // ID from URL
+  const { status } = req.body; // status from button click
+  if (!id || !status) {
+    return res.status(400).json({
+      message: "ID and Status are is required",
+      status: false,
+    });
+  }
+
+  if (!allowed.includes(status)) {
+    return res.status(400).json({
+      message: "Invalid status value",
+      status: false,
+    });
+  }
+
+  // get the sellers list an from that list update the specific status - this is too much work so we're not doing that❌
+  // or simpley just update the status like below ✅⬇️
+
+  User.findByIdAndUpdate(id, { status }, { new: true, runValidators: true })
+    .then((result) => {
+      if (!result) {
+        return res.status(404).json({
+          message: "User not found",
+          status: false,
+        });
+      }
+
+      res.status(200).json({
+        message: "Succesfully Updated Seller status",
+        payload: { id: result._id, status: result.status },
+        status: true,
+      });
     })
-    .catch((err)=>{
-        console.log("getAllSellers admin err",err)
-         res.status(500).json({
-            message:"Internal server error",
-            status:false
-         })
-    })
+    .catch((err) => {
+      console.log("updateSellerStatus admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
 }
-
-function updateSellerStatus(req,res){
-     const allowed = ['rejected','approved','pending']
-     const { id } = req.params;      // ID from URL
-     const { status } = req.body;    // status from button click
-    if(!id || !status){
-        return res.status(400).json({
-            message:"ID and Status are is required",
-            status:false
-        })
-    }
-
-    if (!allowed.includes(status)) {
-        return res.status(400).json({
-            message:"Invalid status value",
-            status:false
-        })
-    }
-
-    // get the sellers list an from that list update the specific status - this is too much work so we're not doing that❌
-    // or simpley just update the status like below ✅⬇️
-
-    User.findByIdAndUpdate(id,{status},{ new: true, runValidators: true })
-    .then((result)=>{
-        if(!result){
-            return res.status(404).json({
-                message:"User not found",
-                status:false
-            })
-        }
-
-        res.status(200).json({
-            message:"Succesfully Updated Seller status",
-            payload: { id: result._id, status: result.status },
-            status:true
-        })
-    })
-    .catch((err)=>{
-        console.log("updateSellerStatus admin err",err)
-        res.status(500).json({
-            message:"Internal server error",
-            status:false
-         })
-    })
-}
-
 
 module.exports = {
-    getAllProducts,
-    addProducts,
-    getProduct,
-    updateProduct,
-    deleteProduct,
-    updateProductStatus,
-    getAllSellers,
-    updateSellerStatus,
-    // updateAdminProductStatus,
-    // updateAdminSellerIDNull
-}
+  getAllProducts,
+  addProducts,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+  updateProductStatus,
+  getAllSellers,
+  updateSellerStatus,
+  // updateAdminProductStatus,
+  // updateAdminSellerIDNull
+};

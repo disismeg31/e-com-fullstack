@@ -124,7 +124,8 @@ function updateMyProduct(req, res) {
   }
 
   // 1️⃣ Fetch existing product FIRST
-  Product.findById(id).then((existingProduct) => {
+  Product.findById(id)
+  .then((existingProduct) => {
     if (!existingProduct) {
       throw { status: 404, message: "Product not found" };
     }
@@ -140,7 +141,9 @@ function updateMyProduct(req, res) {
         })
         .then((uploadResult) => {
           // 4️⃣ Delete old Cloudinary image
-          if (existingProduct.imageUrl) {
+          if (existingProduct.imageUrl &&
+            existingProduct.imageUrl.includes("/upload/") &&
+            existingProduct.imageUrl.includes("/ecommerce/")) {
             const publicId = existingProduct.imageUrl
               .split("/upload/")[1]
               .replace(/^v\d+\//, "")
@@ -204,13 +207,20 @@ function updateMyProduct(req, res) {
           });
         })
         .catch((err) => {
-          console.log("updateProduct seller err", err);
+          console.log("Product.findByIdAndUpdate seller err", err);
           res.status(500).json({
             message: "Internal server error",
             status: false,
           });
         });
     }
+  })
+  .catch((err) => {
+        console.log("updateProduct seller err", err);
+        res.status(500).json({
+          message: "Internal server error",
+          status: false,
+        });
   });
 }
 

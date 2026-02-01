@@ -6,6 +6,7 @@ import { Alert, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { addProduct } from "./../services/sellerService";
+import { addProductAdmin } from "../services/adminService";
 import { Tailspin } from "ldrs/react";
 import "ldrs/react/Tailspin.css";
 import { useSelector } from "react-redux";
@@ -27,6 +28,11 @@ function AddProductModal({ open, onClose, refreshProducts }) {
   const [loading, setLoading] = useState(false);
   const role = useSelector((state) => state.auth.user?.role);
   const sellerId = useSelector((state) => state.auth.user?.id);
+
+  const whoToCall = {
+      seller: addProduct,
+      admin: addProductAdmin,
+    };
 
   const MODAL_STYLES = {
     position: "fixed",
@@ -58,6 +64,16 @@ function AddProductModal({ open, onClose, refreshProducts }) {
   const handleProductSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
+
+    const updateFn = whoToCall[role];
+
+    if (!updateFn) {
+      setErrorToastOpen(true);
+      setMessage("Invalid role");
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData();
     formData.append("title", newProduct.title);
     formData.append("companyName", newProduct.companyName);
@@ -71,7 +87,8 @@ function AddProductModal({ open, onClose, refreshProducts }) {
       formData.append("imageUrl", newProduct.imageUrl); // File object
     }
 
-    addProduct(formData)
+
+    updateFn(formData)
       .then((res) => {
         if (res.status === true) {
           setToastOpen(true);

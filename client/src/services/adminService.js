@@ -29,7 +29,7 @@ export const getTheproduct = async(id) =>{
     }
 }
  
-export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
+export const updateProductAdmin = async(idOfProd,dataToUpdate) =>{
     const url = `http://localhost:3500/api/admin/products/${idOfProd}`
     try{
         const res = await axios.patch(url,dataToUpdate,{
@@ -45,7 +45,7 @@ export const updatemyProduct = async(idOfProd,dataToUpdate) =>{
     }
 }
 
-export const addProduct= async(dataToAdd)=>{
+export const addProductAdmin= async(dataToAdd)=>{
     const url = 'http://localhost:3500/api/admin/products'
     try{
         const res = await axios.post(url,dataToAdd,{
