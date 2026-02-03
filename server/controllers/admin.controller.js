@@ -379,6 +379,32 @@ function getAllSellers(req, res) {
     });
 }
 
+function getAllSellersWhereStatusPending(req, res) {
+  User.find({ role: "seller", status: "pending" }, { __v: 0, password: 0 })
+    .then((result) => {
+      if (result.length === 0) {
+        res.status(404).json({
+          message: "No sellers found , Add sellers",
+          payload: result,
+          status: false,
+        });
+      } else {
+        res.status(200).json({
+          message: "Succesfully fetched sellers!!",
+          payload: result,
+          status: true,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("getAllSellers admin err", err);
+      res.status(500).json({
+        message: "Internal server error",
+        status: false,
+      });
+    });
+}
+
 function updateSellerStatus(req, res) {
   const allowed = ["rejected", "approved", "pending"];
   const { id } = req.params; // ID from URL
@@ -433,6 +459,7 @@ module.exports = {
   updateProductStatus,
   getAllSellers,
   updateSellerStatus,
+  getAllSellersWhereStatusPending,
   // updateAdminProductStatus,
   // updateAdminSellerIDNull
 };

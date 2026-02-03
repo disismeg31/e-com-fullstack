@@ -91,6 +91,18 @@ export const updateSellerStatus = async(idOfSeller,statusToUpdate)=>{
 
 }
 
+export const getSellerRequests = async()=>{
+    const url = `http://localhost:3500/api/admin/users/seller/requests`
+    try{
+        const res = await axios.patch(url)
+        return res.data?.payload
+    }
+    catch(error){
+        console.log("Error while getting selles requests",error);
+        throw error.response?.data || error; // so you get backend message
+    }
+}
+
 export const updateSellerProductStatus = async(idOfProd,statusToUpdate) =>{
     const url = `http://localhost:3500/api/admin/products/${idOfProd}`
     try{

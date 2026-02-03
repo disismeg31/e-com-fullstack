@@ -44,6 +44,7 @@ const CONSTANTS = {
             updateProduct:'/:id',
             deleteProduct:'/:id',
             updateProductStatus:'/:id',
+            getAllSellerPendingRequests:'/seller/requests'
         },
         customer:{
             getProducts:'',

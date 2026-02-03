@@ -9,6 +9,8 @@ router.route(CONSTANTS.subURLS.admin.getAllProducts).get(adminController.getAllP
 
 router.route(CONSTANTS.subURLS.admin.getAllSellers).get(adminController.getAllSellers);
 
+router.route(CONSTANTS.subURLS.admin.getAllSellerPendingRequests).get(adminController.getAllSellersWhereStatusPending);
+
 router.route(CONSTANTS.subURLS.admin.insertProducts).post(upload.single("imageUrl"),adminController.addProducts);
 
 router.route(CONSTANTS.subURLS.admin.updateProduct).patch(upload.single("imageUrl"),adminController.updateProduct);
