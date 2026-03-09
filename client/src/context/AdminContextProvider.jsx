@@ -10,6 +10,7 @@ const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 const [isAddModalOpen,setIsAddModalOpen] = useState(false);
 // const [loading, setLoading] = useState(false);
 const [deletingRowId, setDeletingRowId] = useState(null);
+const [selectedRowId,setSelectedRowId] = useState(null); //for accept and  reject seller apis requests
 const [toastOpen, setToastOpen] = useState(false);
 const [errorToastOpen, setErrorToastOpen] = useState(false);
 const [message,setMessage] = useState("");

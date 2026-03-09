@@ -2,6 +2,11 @@
 import { useContext,useEffect} from "react";
 import Box from "@mui/material/Box";
 // icons from react icons ❌✔️
+import Tooltip from "@mui/material/Tooltip";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import moment from "moment";
 import { DataGrid } from "@mui/x-data-grid";
 import ViewOnlyModal from "./../../components/ViewOnlyModal.jsx";
 import { AdminContext } from "../../context/AdminContextProvider.jsx";
@@ -29,13 +34,131 @@ function SellerRequests() {
     useEffect(()=>{
           getSellerRequests()
           .then((data)=>{
-            // console.log(data)
+            console.log(data)
             setRows(data)
           })
           .catch((err) => {
               console.error("Error fetching products:", err);
             })
       },[setRows])
+
+    const handleViewClose = () => {
+    setIsModalOpen(false);
+  };
+
+    const columns = [
+        {
+          field: "name",
+          headerName: "Name",
+          width: 150,
+          headerAlign: "center",
+          align: "left",
+        },
+        {
+          field: "email",
+          headerName: "Email",
+          width: 200,
+          headerAlign: "center",
+          align: "left",
+        },
+        {
+          field: "status",
+          headerName: "Status",
+          width: 200,
+          headerAlign: "center",
+          align: "center",
+        },
+        {
+          field: "createdAt",
+          headerName: "Created At",
+          align: "center",
+          headerAlign: "center",
+          width: 280,
+          renderCell: (params) => {
+            const value = params.row?.createdAt;
+            return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "—";
+          },
+        },
+        // { field: "_id", hide: true },
+        {
+          field: "action",
+          headerName: "Action",
+          width: 190,
+          renderCell: ({ id }) => {
+            return (
+              <>
+                <div className="flex justify-between items-center h-12">
+                  <Tooltip
+                    title="View"
+                    slotProps={{
+                      popper: {
+                        modifiers: [
+                          {
+                            name: "offset",
+                            options: {
+                              offset: [0, -19],
+                            },
+                          },
+                        ],
+                      },
+                    }}
+                  >
+                    <button
+                      className=" h-10 flex items-center hover:cursor-pointer"
+                      onClick={() => handleViewClick(id)}
+                    >
+                      <VisibilityIcon fontSize="medium" />
+                    </button>
+                  </Tooltip>
+                  <div>
+                    <button
+                      className=" bg-green-400 rounded-2xl p-2.5 h-7 flex items-center hover:cursor-pointer hover:bg-green-500"
+                      onClick={() => handleEditClick(id)}
+                    >
+                      {deletingRowId  === id ? 
+                      (
+                        <Tailspin
+                          size="20"
+                          stroke="5"
+                          speed="0.4"
+                          color="black" 
+                          />
+                        ) 
+                          : 
+                        (
+                        <p className="text-xs font-bold">Accept</p>
+                      )}
+                      {/* <EditIcon fontSize="medium" /> */}
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      className="bg-red-500 p-2.5 rounded-2xl h-7 flex items-center hover:cursor-pointer hover:bg-red-600"
+                      onClick={() => handleDeleteClick(id)}
+                    >
+                      {deletingRowId  === id ? 
+                      (
+                        <Tailspin
+                          size="20"
+                          stroke="5"
+                          speed="0.4"
+                          color="black" 
+                          />
+                        ) 
+                          : 
+                        (
+                          <p className="text-xs font-bold">Reject</p>
+                        // <DeleteIcon fontSize="medium" />
+                      )}
+                    </button>
+                  </div>    
+                    
+                </div>
+              </>
+            );
+          },
+        },
+      ];
 
   return (
     <div className="m-4">
@@ -86,23 +209,6 @@ function SellerRequests() {
           onClose={handleViewClose}
         />
       )}
-      {isEditModalOpen && (
-        <EditModal
-          rowData={rowData}
-          open={isEditModalOpen}
-          onClose={handleEditClose}
-          onUpdate={updateRow}
-        />
-      )}
-
-      {isAddModalOpen &&(
-        <AddProductModal
-        open={isAddModalOpen}
-        onClose={handleAddClose}
-        refreshProducts={fetchProducts}
-        />
-      )}
-      
               <Snackbar
                 open={errorToastOpen}
                 autoHideDuration={2000}

@@ -94,7 +94,7 @@ export const updateSellerStatus = async(idOfSeller,statusToUpdate)=>{
 export const getSellerRequests = async()=>{
     const url = `http://localhost:3500/api/admin/users/seller/requests`
     try{
-        const res = await axios.patch(url)
+        const res = await axios.get(url)
         return res.data?.payload
     }
     catch(error){

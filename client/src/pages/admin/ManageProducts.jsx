@@ -93,6 +93,13 @@ const {rows,setRows,handleEditClick,
         align: "left",
       },
       {
+        field: "createdBy",
+        headerName: "OwnedBy",
+        width: 150,
+        headerAlign: "center",
+        align: "left",
+      },
+      {
         field: "description",
         headerName: "Description",
         type: "string",
