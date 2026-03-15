@@ -20,12 +20,10 @@ import 'ldrs/react/Tailspin.css'
 
 function SellerRequests() {
   const {rows,setRows,handleEditClick,
-      handleDeleteClick,handleViewClick,
-      isEditModalOpen,setIsEditModalOpen,
+      handleReject,handleApproval,
+      handleViewClick,
       isModalOpen, setIsModalOpen, 
-      isAddModalOpen,setIsAddModalOpen,
-      handleAddProductClick,
-      rowData,updateRow,deletingRowId,
+      rowData,updateRow,deletingRowId,loadingAction,
       toastOpen,setToastOpen,
       errorToastOpen,setErrorToastOpen,
       message,
@@ -34,11 +32,11 @@ function SellerRequests() {
     useEffect(()=>{
           getSellerRequests()
           .then((data)=>{
-            console.log(data)
+            // console.log(data)
             setRows(data)
           })
           .catch((err) => {
-              console.error("Error fetching products:", err);
+              console.error("Error fetching seller requests:", err);
             })
       },[setRows])
 
@@ -52,14 +50,14 @@ function SellerRequests() {
           headerName: "Name",
           width: 150,
           headerAlign: "center",
-          align: "left",
+          align: "center",
         },
         {
           field: "email",
           headerName: "Email",
           width: 200,
           headerAlign: "center",
-          align: "left",
+          align: "center",
         },
         {
           field: "status",
@@ -83,39 +81,18 @@ function SellerRequests() {
         {
           field: "action",
           headerName: "Action",
+          headerAlign: "center",
           width: 190,
           renderCell: ({ id }) => {
             return (
               <>
-                <div className="flex justify-between items-center h-12">
-                  <Tooltip
-                    title="View"
-                    slotProps={{
-                      popper: {
-                        modifiers: [
-                          {
-                            name: "offset",
-                            options: {
-                              offset: [0, -19],
-                            },
-                          },
-                        ],
-                      },
-                    }}
-                  >
-                    <button
-                      className=" h-10 flex items-center hover:cursor-pointer"
-                      onClick={() => handleViewClick(id)}
-                    >
-                      <VisibilityIcon fontSize="medium" />
-                    </button>
-                  </Tooltip>
+                <div className="flex justify-evenly items-center h-12">
                   <div>
                     <button
                       className=" bg-green-400 rounded-2xl p-2.5 h-7 flex items-center hover:cursor-pointer hover:bg-green-500"
-                      onClick={() => handleEditClick(id)}
+                      onClick={() => handleApproval(id,"approved")}
                     >
-                      {deletingRowId  === id ? 
+                      {loadingAction.id === id && loadingAction.type === "accept" ? 
                       (
                         <Tailspin
                           size="20"
@@ -134,9 +111,9 @@ function SellerRequests() {
                   <div>
                     <button
                       className="bg-red-500 p-2.5 rounded-2xl h-7 flex items-center hover:cursor-pointer hover:bg-red-600"
-                      onClick={() => handleDeleteClick(id)}
+                      onClick={() => handleReject(id,"rejected")}
                     >
-                      {deletingRowId  === id ? 
+                      {loadingAction.id === id && loadingAction.type === "reject" ?
                       (
                         <Tailspin
                           size="20"

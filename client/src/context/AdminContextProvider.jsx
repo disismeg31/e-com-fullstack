@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import {createContext,useState}from 'react';
-import {deleteProduct} from './../services/adminService'
+import {deleteProduct,updateSellerStatus} from './../services/adminService'
 
 export const AdminContext = createContext();
 
@@ -19,6 +19,11 @@ const [rowData, setRowData] = useState({});
 
 const [rows, setRows] = useState([]);
 // const [rows, setRows] = useState(initialRows);
+
+const [loadingAction, setLoadingAction] = useState({
+  id: null,
+  type: null
+});
 
   const updateRow = (updatedRow) => {
     setRows((r) =>r.map((row) => (row._id === updatedRow._id ? updatedRow : row)));
@@ -67,9 +72,92 @@ const [rows, setRows] = useState([]);
       // .finally(()=>{
       //   setLoading(false);
       // })
-  
-      
     };
+    const handleReject = (id,statusToUpdate) => {
+      console.log("inside reject function call");
+      setLoadingAction({ id, type: "reject" });
+      // setDeletingRowId(id);
+      updateSellerStatus(id,statusToUpdate)
+      .then((res)=>{
+        if(res.status === true){
+          setRows((r)=>r.filter((row) => row._id !== id));
+          // setDeletingRowId(null); // stop loader
+          // setLoadingAction({ id:null, type: null });
+          setToastOpen(true);
+          setMessage(res.message);
+        }
+        else{
+            setMessage(res.message || "Something went wrong");
+            setErrorToastOpen(true);
+            // setDeletingRowId(null); // also stop loader in failure
+            // setLoadingAction({ id:null, type: null });
+
+        }
+          setLoadingAction({ id:null, type: null });
+        
+      })
+      .catch((err)=>{
+          setLoadingAction({ id:null, type: null });
+          // setDeletingRowId(null);
+          setErrorToastOpen(true);
+          setMessage(err.message)
+      })
+    }
+    const handleApproval = (id,statusToUpdate) => {
+      console.log("inside approval function call");
+      // setDeletingRowId(id);
+      setLoadingAction({ id:id, type: "accept" });
+      updateSellerStatus(id,statusToUpdate)
+      .then((res)=>{
+        if(res.status === true){
+          setRows((r)=>r.filter((row) => row._id !== id));
+          // setDeletingRowId(null); // stop loader
+          setLoadingAction({ id:null, type: null });
+          setToastOpen(true);
+          setMessage(res.message);
+        }
+        else{
+            setMessage(res.message || "Something went wrong");
+            setErrorToastOpen(true);
+            // setDeletingRowId(null); // also stop loader in failure
+            setLoadingAction({ id:null, type: null });
+        }
+        setLoadingAction({ id:null, type: null });
+
+      })
+      .catch((err)=>{
+          // setDeletingRowId(null);
+          setLoadingAction({ id:null, type: null });
+          setErrorToastOpen(true);
+          setMessage(err.message)
+      })
+    }
+
+    const handlePause=(id,statusToUpdate)=>{
+      console.log("inside approval function call");
+      setLoadingAction({ id:id, type: "accept" });
+      updateSellerStatus(id,statusToUpdate)
+      .then((res)=>{
+        if(res.status === true){
+          setRows((r)=>r.filter((row) => row._id !== id));
+          setLoadingAction({ id:null, type: null });
+          setToastOpen(true);
+          setMessage(res.message);
+        }
+        else{
+            setMessage(res.message || "Something went wrong");
+            setErrorToastOpen(true);
+            setLoadingAction({ id:null, type: null });
+        }
+        setLoadingAction({ id:null, type: null });
+
+      })
+      .catch((err)=>{
+          setLoadingAction({ id:null, type: null });
+          setErrorToastOpen(true);
+          setMessage(err.message)
+      })
+    }
   
   
       const data={
@@ -94,6 +182,10 @@ const [rows, setRows] = useState([]);
           errorToastOpen, 
           setErrorToastOpen,
           message,
+          handleReject,
+          handleApproval,
+          handlePause,
+          loadingAction
       }
   
     return (

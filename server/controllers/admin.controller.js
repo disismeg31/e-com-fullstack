@@ -353,8 +353,9 @@ function updateProductStatus(req, res) {
     });
 }
 
+// get all approved sellers
 function getAllSellers(req, res) {
-  User.find({ role: "seller" }, { __v: 0, password: 0 })
+  User.find({ role: "seller",status:'approved' }, { __v: 0, password: 0 })
     .then((result) => {
       if (result.length === 0) {
         res.status(404).json({
@@ -379,6 +380,7 @@ function getAllSellers(req, res) {
     });
 }
 
+//sellers with status pending for seller requests
 function getAllSellersWhereStatusPending(req, res) {
   User.find({ role: "seller", status: "pending" }, { __v: 0, password: 0 })
     .then((result) => {

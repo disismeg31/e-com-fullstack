@@ -77,7 +77,8 @@ try{
 export const updateSellerStatus = async(idOfSeller,statusToUpdate)=>{
     const url = `http://localhost:3500/api/admin/users/sellers/${idOfSeller}`
     try{
-        const res = await axios.patch(url,statusToUpdate,{
+        const res = await axios.patch(url,{ status: statusToUpdate },
+        {
         //    headers: { "Content-Type": "multipart/form-data" },
             headers: { "Content-Type": "application/json" },
             withCredentials:true
@@ -99,6 +100,18 @@ export const getSellerRequests = async()=>{
     }
     catch(error){
         console.log("Error while getting selles requests",error);
+        throw error.response?.data || error; // so you get backend message
+    }
+}
+
+export const getApprovedSellers = async()=>{
+    const url = `http://localhost:3500/api/admin/users/sellers`
+    try{
+        const res = await axios.get(url)
+        return res.data?.payload
+    }
+    catch(error){
+        console.log("Error while getting approved selles",error);
         throw error.response?.data || error; // so you get backend message
     }
 }
